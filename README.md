@@ -1,36 +1,82 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Spritascore — Application Risk & Cost Calculator
 
-## Getting Started
+Plataforma B2B de calculadoras de riesgo, costo y madurez para aplicaciones de software. Estima el impacto económico de defectos de calidad, vulnerabilidades OWASP y riesgos sectoriales.
 
-First, run the development server:
+**Dominio:** [spritascore.com](https://spritascore.com)
+
+## Calculadoras incluidas
+
+1. **Costo de no calidad en el código** — ISO/IEC 25010 / ISO/IEC 9126
+2. **Costo de vulnerabilidad OWASP Top 10** — Aplicaciones web (2021)
+3. **Costo de vulnerabilidad OWASP Mobile Top 10** — Apps móviles (2024)
+4. **Costo de vulnerabilidad por sector** — 18 sectores industriales
+
+## Stack tecnológico
+
+- Next.js 16 (App Router)
+- React 19 + TypeScript
+- Tailwind CSS 4
+- Recharts (gráficos)
+- Zod + React Hook Form (validación)
+- Radix UI (componentes base)
+
+## Requisitos
+
+- Node.js 18.17+
+- npm 9+
+
+## Instalación local
 
 ```bash
+cd spritascore
+npm install
+cp .env.example .env.local
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abra [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Variables de entorno
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Variable | Descripción |
+|----------|-------------|
+| `CRM_WEBHOOK_URL` | Webhook para envío de leads (HubSpot, Zapier, Salesforce) |
 
-## Learn More
+## Despliegue en Vercel
 
-To learn more about Next.js, take a look at the following resources:
+1. Conecte el repositorio en [vercel.com](https://vercel.com)
+2. Configure `CRM_WEBHOOK_URL` en Environment Variables
+3. Deploy automático en cada push a `main`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run build   # Verificar build local
+npx vercel      # Deploy manual (opcional)
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Estructura del proyecto
 
-## Deploy on Vercel
+```
+src/
+├── app/                    # Páginas y API routes
+│   ├── calculadora/[slug]  # Wizard de calculadoras
+│   ├── resultados/[id]     # Resultados + lead capture
+│   ├── reporte/[id]        # Reporte imprimible/PDF
+│   └── api/crm/            # Webhook de leads
+├── components/             # UI y componentes de negocio
+├── data/                   # Configuración (OWASP, ISO, sectores)
+├── i18n/                   # Traducciones (es, en, pt)
+├── lib/                    # Lógica de cálculo y utilidades
+└── types/                  # Tipos TypeScript
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Arquitectura
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Configuración desacoplada:** Fórmulas, multiplicadores y textos en `/data` y `/lib`
+- **Motor de recomendaciones:** Reglas basadas en score, sector, controles y tipo de calculadora
+- **Lead gating:** Resultado parcial visible; reporte completo tras captura de email
+- **Persistencia:** localStorage (preparado para CRM vía webhook)
+- **Analítica:** Eventos `calculator_started`, `calculator_completed`, `lead_submitted`, `report_downloaded`, `cta_clicked`
+
+## Disclaimer
+
+Los resultados son estimaciones orientativas. No constituyen auditoría formal, certificación ni opinión legal.
