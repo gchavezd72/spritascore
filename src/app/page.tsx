@@ -1,79 +1,246 @@
 "use client";
 
-import { Hero } from "@/components/Hero";
-import { CalculatorSelector } from "@/components/CalculatorSelector";
+import Link from "next/link";
 import { Reveal } from "@/components/Reveal";
-import { MousePointerClick, ClipboardList, Calculator, Rocket } from "lucide-react";
+import { CountUp, ScoreRing, ScoreGauge, HeroBg } from "@/components/site/animated";
 import { useTranslations } from "@/components/LanguageProvider";
+import { CALCULATOR_CONFIGS } from "@/data/calculatorConfigs";
+import { tr } from "@/lib/translate";
 
 export default function HomePage() {
-  const { t } = useTranslations();
-  const hw = t.howItWorks;
-  const cc = t.contactCta;
-  const icons = [MousePointerClick, ClipboardList, Calculator, Rocket];
+  const { t, locale } = useTranslations();
+  const l = t.landing;
+  const cs = t.calculatorSelector;
 
   return (
-    <>
-      <Hero />
-      <CalculatorSelector />
-
-      <section id="como-funciona" className="py-20 bg-background border-t border-border-hairline">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <Reveal>
-            <h2 className="text-3xl font-bold text-brand-navy text-center mb-12 tracking-tight">
-              {hw.title}
-            </h2>
-          </Reveal>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            {hw.steps.map((step, i) => {
-              const Icon = icons[i];
-              return (
-                <Reveal key={step.title} delay={i * 90}>
-                  <div className="text-center">
-                    <div className="inline-flex p-4 rounded-xl bg-brand-green/10 text-brand-green mb-4 transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-105">
-                      <Icon className="h-8 w-8" />
-                    </div>
-                    <h3 className="font-bold text-brand-navy mb-2">{step.title}</h3>
-                    <p className="text-sm text-muted-foreground">{step.desc}</p>
-                  </div>
-                </Reveal>
-              );
-            })}
+    <div className="sc">
+      {/* Hero */}
+      <section className="hero" id="hero">
+        <HeroBg />
+        <div className="wrap hero-in">
+          <div className="hero-copy">
+            <Reveal>
+              <span className="eyebrow">{l.hero.eyebrow}</span>
+              <h1 className="h1">
+                {l.hero.h1a}
+                <br />
+                <span className="it">{l.hero.h1b}</span>
+              </h1>
+              <p className="lead">{l.hero.lead}</p>
+              <div className="hero-cta">
+                <Link href="#calculadoras" className="btn btn-solid">
+                  {l.hero.cta1} <span className="arr">↗</span>
+                </Link>
+                <Link href="#contacto" className="btn btn-ghost">
+                  {l.hero.cta2}
+                </Link>
+              </div>
+            </Reveal>
+          </div>
+          <div className="ring-wrap">
+            <ScoreRing label={l.hero.scoreLabel} locale={locale} />
           </div>
         </div>
+        <div className="scrollcue">
+          <span className="ln" />
+          <span>{l.hero.scroll}</span>
+        </div>
       </section>
 
-      <section className="py-16 bg-surface border-t border-border-hairline">
-        <div className="container mx-auto px-4 max-w-4xl text-center">
+      {/* Strip marquee */}
+      <div className="strip">
+        <div className="mq">
+          {[...l.marquee, ...l.marquee].map((m, i) => (
+            <span key={i}>{m}</span>
+          ))}
+        </div>
+      </div>
+
+      {/* Statement */}
+      <section className="statement" id="statement">
+        <div className="grid-lines" />
+        <div className="wrap" style={{ position: "relative", zIndex: 2 }}>
           <Reveal>
-            <p className="text-lg text-muted-foreground italic mb-4">&quot;{hw.quote}&quot;</p>
-            <p className="text-brand-navy font-semibold">{hw.quoteSub}</p>
+            <span className="eyebrow">{l.statement.eyebrow}</span>
+            <h2 className="stmt-h" style={{ marginTop: 24 }}>
+              {l.statement.before}
+              <span className="hl">{l.statement.pct}</span>
+              {l.statement.after}
+            </h2>
+            <p className="stmt-sub">{l.statement.sub}</p>
           </Reveal>
         </div>
       </section>
 
-      <section id="contacto" className="py-20 bg-background border-t border-border-hairline">
-        <div className="container mx-auto px-4 max-w-3xl text-center">
+      {/* Stats */}
+      <section className="sec">
+        <div className="wrap">
           <Reveal>
-            <h2 className="text-3xl font-bold mb-4 tracking-tight text-brand-navy">{cc.title}</h2>
-            <p className="text-muted-foreground mb-8 leading-relaxed">{cc.body}</p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
-                href="mailto:info@spritascore.com?subject=Diagnóstico%20técnico%20Spritascore"
-                className="inline-flex items-center justify-center gap-2 bg-brand-green text-white font-semibold px-8 py-3 rounded-lg shadow-sm hover:brightness-105 hover:shadow-md active:scale-[0.98] transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)]"
-              >
-                {cc.requestDiagnostic}
-              </a>
-              <a
-                href="mailto:info@spritascore.com?subject=Agendar%20llamada%20Spritascore"
-                className="inline-flex items-center justify-center gap-2 border border-border-strong text-brand-navy font-semibold px-8 py-3 rounded-lg hover:bg-surface-hover hover:border-brand-navy/40 transition-colors"
-              >
-                {cc.scheduleCall}
-              </a>
+            <div className="stats">
+              {l.stats.map((s) => (
+                <div className="stat" key={s.label}>
+                  <div className="stat-n">
+                    <CountUp target={s.n} locale={locale} />
+                  </div>
+                  <div className="stat-l">{s.label}</div>
+                </div>
+              ))}
             </div>
           </Reveal>
         </div>
       </section>
-    </>
+
+      {/* Calculators */}
+      <section className="sec" id="calculadoras">
+        <div className="wrap">
+          <Reveal>
+            <div className="svc-head">
+              <div>
+                <span className="eyebrow">{l.calc.eyebrow}</span>
+                <h2 className="h2" style={{ marginTop: 20 }}>
+                  {l.calc.h2}
+                </h2>
+              </div>
+              <p className="lead">{l.calc.lead}</p>
+            </div>
+          </Reveal>
+          <Reveal>
+            <div className="svc-grid">
+              {CALCULATOR_CONFIGS.map((calc, i) => (
+                <Link href={`/calculadora/${calc.slug}`} className="svc" key={calc.id}>
+                  <span className="go">↗</span>
+                  <span className="svc-tag">{cs.categories[calc.category]}</span>
+                  <div className="svc-i">{String(i + 1).padStart(2, "0")}</div>
+                  <h3 className="h3">{tr(calc.title, locale)}</h3>
+                  <p>{tr(calc.shortDescription, locale)}</p>
+                  <div className="svc-meta">
+                    {cs.complexity} {cs.complexityLabels[calc.complexity]} · {tr(calc.estimatedTime, locale)}
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* The score (dark) */}
+      <section className="sec dark" id="producto">
+        <div className="grid-lines" />
+        <div className="wrap prod-in">
+          <Reveal>
+            <span className="eyebrow">{l.score.eyebrow}</span>
+            <h2 className="h2 serif" style={{ margin: "22px 0 24px" }}>
+              SpritaScore<span className="it">.</span>
+            </h2>
+            <p className="lead">{l.score.lead}</p>
+            <div className="prod-pts">
+              {l.score.points.map((p) => (
+                <div className="prod-pt" key={p.k}>
+                  <span className="k">{p.k}</span>
+                  <span className="v">{p.v}</span>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+          <div>
+            <ScoreGauge sub={l.score.gaugeSub} locale={locale} />
+          </div>
+        </div>
+      </section>
+
+      {/* How it works */}
+      <section className="sec method" id="metodo">
+        <div className="wrap">
+          <Reveal>
+            <div className="svc-head">
+              <div>
+                <span className="eyebrow">{l.method.eyebrow}</span>
+                <h2 className="h2" style={{ marginTop: 20 }}>
+                  {l.method.h2}
+                </h2>
+              </div>
+              <p className="lead">{l.method.lead}</p>
+            </div>
+          </Reveal>
+          <Reveal>
+            <div className="steps">
+              {l.method.steps.map((step, i) => (
+                <div className="step" key={step.t}>
+                  <span className="dot" />
+                  {i < l.method.steps.length - 1 && <span className="bar" />}
+                  <div className="step-n">{String(i + 1).padStart(2, "0")}</div>
+                  <h3 className="h3">{step.t}</h3>
+                  <p>{step.d}</p>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Sectors */}
+      <section className="sec" id="sectores">
+        <div className="wrap">
+          <Reveal>
+            <span className="eyebrow">{l.sectors.eyebrow}</span>
+            <h2 className="h2" style={{ marginTop: 20, maxWidth: 840 }}>
+              {l.sectors.h2}
+            </h2>
+            <div className="sectors">
+              {l.sectors.chips.map((chip) => (
+                <span className="chip" key={chip}>
+                  {chip}
+                </span>
+              ))}
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Quote */}
+      <section className="sec quote">
+        <div className="wrap">
+          <Reveal>
+            <span className="eyebrow" style={{ color: "var(--green2)" }}>
+              {l.quote.eyebrow}
+            </span>
+            <p className="quote-t">
+              {l.quote.before}
+              <span className="hl">{l.quote.hl}</span>
+              {l.quote.after}
+            </p>
+            <div className="quote-a">{l.quote.author}</div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="sec cta" id="contacto">
+        <div className="wrap">
+          <Reveal>
+            <div className="cta-box">
+              <div className="rings" />
+              <div style={{ position: "relative", zIndex: 2 }}>
+                <span className="eyebrow">{l.cta.eyebrow}</span>
+                <h2 className="h2" style={{ marginTop: 20 }}>
+                  {l.cta.h2}
+                </h2>
+              </div>
+              <div className="cta-actions">
+                <a
+                  href="mailto:info@spritascore.com?subject=Diagn%C3%B3stico%20t%C3%A9cnico%20Spritascore"
+                  className="btn btn-light"
+                >
+                  {l.cta.btn} <span className="arr">↗</span>
+                </a>
+                <span className="overline" style={{ color: "rgba(255,255,255,.85)" }}>
+                  {l.cta.note}
+                </span>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+    </div>
   );
 }

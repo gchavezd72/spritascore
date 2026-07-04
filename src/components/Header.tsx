@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { Logo } from "@/components/Logo";
-import { CalculatorsMegaMenu } from "@/components/CalculatorsMegaMenu";
 import { useTranslations } from "@/components/LanguageProvider";
 import { cn } from "@/lib/utils";
 import type { Locale } from "@/types/calculator";
@@ -11,43 +11,56 @@ const LOCALES: Locale[] = ["es", "en", "pt"];
 
 export function Header() {
   const { t, locale, setLocale } = useTranslations();
+  const n = t.landing.nav;
+  const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 12);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
-    <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border-hairline">
-      <div className="container mx-auto px-4 max-w-7xl flex items-center justify-between h-16">
-        <Logo className="text-xl" />
-        <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-muted-foreground">
-          <CalculatorsMegaMenu />
-          <Link href="/#como-funciona" className="nav-underline hover:text-brand-navy transition-colors">
-            {t.nav.howItWorks}
-          </Link>
-          <Link href="/#contacto" className="nav-underline hover:text-brand-navy transition-colors">
-            {t.nav.contact}
-          </Link>
+    <header className={cn("sc hd", scrolled && "scrolled", open && "open")}>
+      <div className="wrap hd-in">
+        <Logo className="text-lg" />
+        <nav className="nav" onClick={() => setOpen(false)}>
+          <Link href="/#calculadoras">{n.calculators}</Link>
+          <Link href="/#producto">{n.score}</Link>
+          <Link href="/#metodo">{n.how}</Link>
+          <Link href="/#sectores">{n.sectors}</Link>
+          <Link href="/#contacto">{n.contact}</Link>
         </nav>
-        <div className="flex items-center gap-3">
-          <div className="flex items-center rounded-lg border border-border-strong text-xs font-semibold overflow-hidden">
+        <div className="hd-right">
+          <div className="lang">
             {LOCALES.map((loc) => (
               <button
                 key={loc}
                 type="button"
+                className={locale === loc ? "on" : ""}
                 onClick={() => setLocale(loc)}
-                className={cn(
-                  "px-2.5 py-1.5 transition-colors uppercase",
-                  locale === loc ? "bg-brand-green text-white" : "text-muted-foreground hover:bg-surface-hover"
-                )}
                 aria-pressed={locale === loc}
               >
-                {loc}
+                {loc.toUpperCase()}
               </button>
             ))}
           </div>
-          <Link
-            href="/#calculadoras"
-            className="bg-brand-green text-white text-sm font-semibold px-4 py-2 rounded-lg shadow-sm hover:brightness-105 hover:shadow-md active:scale-[0.98] transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)]"
-          >
-            {t.nav.calculateNow}
+          <Link href="/#calculadoras" className="btn btn-solid noshrink">
+            {n.calcNow}
           </Link>
+          <button
+            type="button"
+            className="burger"
+            onClick={() => setOpen((o) => !o)}
+            aria-label="Menu"
+            aria-expanded={open}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
         </div>
       </div>
     </header>

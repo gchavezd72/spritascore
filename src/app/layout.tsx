@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Space_Mono } from "next/font/google";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { CookieConsent } from "@/components/CookieConsent";
@@ -16,26 +16,36 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const spaceMono = Space_Mono({
+  variable: "--font-space-mono",
+  weight: ["400", "700"],
+  subsets: ["latin"],
+});
+
 export const metadata: Metadata = {
   title: {
-    default: "Spritascore — Application Risk & Cost Calculator",
-    template: "%s | Spritascore",
+    default: "SpritaScore — Seguridad de aplicaciones, DevSecOps y ASPM | Calculadora de riesgo y costo",
+    template: "%s | SpritaScore",
   },
   description:
-    "Calcula el costo económico de vulnerabilidades, deuda técnica y riesgos de calidad en software. Basado en ISO/IEC 25010, OWASP Top 10 y criterios por sector.",
+    "Convierte el riesgo técnico en impacto financiero. Seguridad de aplicaciones para equipos DevSecOps: ASPM, análisis de código con IA, gestión de vulnerabilidades y SBOM. Calcula en minutos el costo de una vulnerabilidad o de la mala calidad del código.",
   keywords: [
-    "calculadora de costo de deuda técnica",
-    "calculadora OWASP Top 10",
-    "calculadora vulnerabilidades móviles",
-    "calculadora riesgo por sector",
-    "costo de no calidad en software",
-    "application security risk calculator",
+    "seguridad de aplicaciones",
+    "DevSecOps",
+    "ASPM",
+    "análisis de código IA",
+    "gestión de vulnerabilidades",
+    "SBOM",
+    "OWASP Top 10",
+    "EU Cyber Resilience Act",
+    "deuda técnica",
+    "ISO 25010",
   ],
   openGraph: {
-    title: "Spritascore — Application Risk & Cost Calculator",
-    description: "Convierte riesgos técnicos en impacto financiero en menos de 5 minutos.",
+    title: "SpritaScore — Seguridad de aplicaciones, DevSecOps y ASPM",
+    description: "Convierte el riesgo técnico en impacto financiero: ASPM, análisis de código con IA, gestión de vulnerabilidades y SBOM.",
     url: "https://spritascore.com",
-    siteName: "Spritascore",
+    siteName: "SpritaScore",
     locale: "es_ES",
     type: "website",
   },
@@ -47,7 +57,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
+    <html lang="es" className={`${geistSans.variable} ${geistMono.variable} ${spaceMono.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
         <LanguageProvider>
           <Header />

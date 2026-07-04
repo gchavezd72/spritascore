@@ -225,6 +225,82 @@ export const es = {
     s6BodyBefore: "Si tiene preguntas sobre esta política, escríbanos a",
     s6BodyAfter: ".",
   },
+  landing: {
+    nav: { calculators: "Calculadoras", score: "El score", how: "Cómo funciona", sectors: "Sectores", contact: "Contacto", calcNow: "Calcular ahora" },
+    hero: {
+      eyebrow: "Application Risk & Cost Calculator",
+      h1a: "Convierte el riesgo técnico",
+      h1b: "en impacto financiero.",
+      lead: "Calcula cuánto le puede costar a tu empresa una vulnerabilidad o la mala calidad del código — en minutos y con muy pocas preguntas.",
+      cta1: "Calcular mi riesgo",
+      cta2: "Solicitar diagnóstico",
+      scoreLabel: "Score de riesgo",
+      scroll: "Desliza",
+    },
+    marquee: ["ISO/IEC 25010", "OWASP Top 10", "OWASP Mobile Top 10", "EU Cyber Resilience Act", "ASPM"],
+    statement: {
+      eyebrow: "Seguridad de aplicaciones · DevSecOps · ASPM",
+      before: "El ",
+      pct: "80%",
+      after: " de las brechas comienzan en el código.",
+      sub: "No dejes que la velocidad de la IA comprometa tu seguridad — pon el análisis de código con IA, la gestión de vulnerabilidades y el SBOM en el lenguaje que tu dirección entiende.",
+    },
+    stats: [
+      { n: 6, label: "Calculadoras especializadas de riesgo" },
+      { n: 5, label: "Minutos, de media, por estimación" },
+      { n: 4, label: "Estándares y marcos aplicados" },
+      { n: 3, label: "Idiomas: ES · EN · PT" },
+    ],
+    calc: {
+      eyebrow: "Las calculadoras",
+      h2: "Seis modelos para ponerle precio al riesgo.",
+      lead: "Traducen riesgos técnicos y regulatorios en impacto financiero ejecutivo. Responde en pocos minutos, sin compromiso.",
+    },
+    score: {
+      eyebrow: "El score",
+      lead: "Cada calculadora te devuelve un score de riesgo y una estimación económica: convertimos vulnerabilidades, deuda técnica y brechas de compliance en una cifra que tu comité entiende.",
+      points: [
+        { k: "Explicable", v: "Ves los factores clave que mueven el resultado. Sin cajas negras." },
+        { k: "Accionable", v: "Recibes recomendaciones priorizadas para remediar." },
+        { k: "Ejecutivo", v: "Habla el lenguaje financiero de tu dirección." },
+      ],
+      gaugeSub: "Score de riesgo · sobre 1000",
+    },
+    method: {
+      eyebrow: "Cómo funciona",
+      h2: "De la duda a la decisión en cuatro pasos.",
+      lead: "Sin compromiso y en pocos minutos, con muy pocas preguntas.",
+      steps: [
+        { t: "Seleccione", d: "Elige la calculadora que corresponde a tu escenario de riesgo." },
+        { t: "Responda", d: "Completa el wizard con el contexto de tu empresa y aplicación." },
+        { t: "Calcule", d: "Obtén score de riesgo, estimación económica y factores clave." },
+        { t: "Actúe", d: "Recibe recomendaciones priorizadas y solicita un diagnóstico técnico." },
+      ],
+    },
+    sectors: {
+      eyebrow: "Riesgo por sector",
+      h2: "El costo de una vulnerabilidad cambia según tu industria.",
+      chips: ["Banca & finanzas", "Seguros", "Salud", "Retail & consumo", "Industria & energía", "Sector público", "Tecnología", "Real estate"],
+    },
+    quote: {
+      eyebrow: "El principio",
+      before: "«No todos los defectos cuestan lo mismo. Los más peligrosos no siempre son los más ",
+      hl: "visibles",
+      after: ".»",
+      author: "La idea detrás de SpritaScore",
+    },
+    cta: {
+      eyebrow: "Diagnóstico técnico",
+      h2: "Esto es una estimación. Validemos tu exposición real.",
+      btn: "Solicitar diagnóstico",
+      note: "o agenda una llamada — info@spritascore.com",
+    },
+    footer: {
+      tagline: "Una herramienta para que equipos de tecnología, seguridad y cumplimiento prioricen riesgos con lenguaje financiero.",
+      productTitle: "Producto",
+      product: { score: "El score", how: "Cómo funciona", sectors: "Sectores" },
+    },
+  },
 };
 
 export type TranslationKeys = typeof es;
