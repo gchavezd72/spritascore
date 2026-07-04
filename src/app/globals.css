@@ -1,23 +1,39 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f8fafc;
-  --foreground: #0f172a;
-  --brand-navy: #0c1e3c;
-  --brand-navy-light: #1e3a5f;
-  --brand-orange: #f97316;
-  --risk-low: #22c55e;
+  --background: #f7f8fa;
+  --foreground: #12213b;
+  --surface: #ffffff;
+  --surface-hover: #f1f4f9;
+  --muted-foreground: #5b6472;
+  --border-hairline: #e6e9ef;
+  --border-strong: #cfd5e0;
+  --brand-navy: #12213b;
+  --brand-navy-light: #4a5d82;
+  --brand-green: #1fbf6c;
+  --brand-gray: #c7ccd3;
+  --brand-gray-light: #f0f1f3;
+  --risk-low: #1fbf6c;
   --risk-moderate: #eab308;
   --risk-high: #f97316;
   --risk-critical: #ef4444;
+
+  --ease-linear-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border-hairline: var(--border-hairline);
+  --color-border-strong: var(--border-strong);
   --color-brand-navy: var(--brand-navy);
   --color-brand-navy-light: var(--brand-navy-light);
-  --color-brand-orange: var(--brand-orange);
+  --color-brand-green: var(--brand-green);
+  --color-brand-gray: var(--brand-gray);
+  --color-brand-gray-light: var(--brand-gray-light);
   --color-risk-low: var(--risk-low);
   --color-risk-moderate: var(--risk-moderate);
   --color-risk-high: var(--risk-high);
@@ -30,6 +46,118 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  letter-spacing: -0.018em;
+}
+
+/* Soft ambient gradient behind the hero (light, Linear-style) */
+.glow-ambient {
+  background:
+    radial-gradient(620px circle at 12% 18%, color-mix(in srgb, var(--brand-green) 10%, transparent), transparent 62%),
+    radial-gradient(560px circle at 88% -5%, color-mix(in srgb, var(--brand-navy-light) 14%, transparent), transparent 60%);
+}
+
+.hairline {
+  border: 1px solid var(--border-hairline);
+}
+
+::selection {
+  background: color-mix(in srgb, var(--brand-green) 28%, transparent);
+  color: var(--brand-navy);
+}
+
+/* ---------- Linear-style motion ---------- */
+
+/* Step transition inside the wizard */
+@keyframes fadeInStep {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Scroll reveal (driven by the <Reveal> component) */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.7s var(--ease-linear-out),
+    transform 0.7s var(--ease-linear-out);
+  will-change: opacity, transform;
+}
+.reveal[data-visible="true"] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* First-paint fade-up used on hero content */
+@keyframes revealUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-reveal-up {
+  animation: revealUp 0.8s var(--ease-linear-out) both;
+}
+
+/* Slow drift of the ambient hero glow */
+@keyframes glowDrift {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); opacity: 0.9; }
+  50% { transform: translate3d(2%, 1.5%, 0) scale(1.06); opacity: 1; }
+}
+.animate-glow-drift {
+  animation: glowDrift 14s ease-in-out infinite;
+}
+
+/* Animated underline for nav links */
+.nav-underline {
+  position: relative;
+}
+.nav-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  height: 1.5px;
+  width: 100%;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s var(--ease-linear-out);
+}
+.nav-underline:hover::after {
+  transform: scaleX(1);
+}
+
+/* Cards lift subtly like Linear surfaces */
+.lift {
+  transition:
+    transform 0.28s var(--ease-linear-out),
+    box-shadow 0.28s var(--ease-linear-out),
+    border-color 0.28s var(--ease-linear-out);
+  will-change: transform;
+}
+.lift:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px -12px color-mix(in srgb, var(--brand-navy) 22%, transparent);
+}
+
+.parallax-layer {
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .animate-reveal-up,
+  .animate-glow-drift,
+  .lift,
+  .nav-underline::after,
+  .parallax-layer {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
 
 @media print {
@@ -39,5 +167,6 @@ body {
   }
   body {
     background: white;
+    color: #12213b;
   }
 }

@@ -11,7 +11,7 @@ const badgeVariants = cva(
         moderado: "bg-risk-moderate/15 text-yellow-700",
         alto: "bg-risk-high/15 text-risk-high",
         critico: "bg-risk-critical/15 text-risk-critical",
-        outline: "border border-slate-300 text-slate-700",
+        outline: "border border-border-strong text-muted-foreground",
       },
     },
     defaultVariants: { variant: "default" },

@@ -1,8 +1,10 @@
+import { LocalizedText } from "@/types/calculator";
+
 export interface OwaspCategory {
   id: string;
   name: string;
   nameEs: string;
-  description: string;
+  description: LocalizedText;
   severityWeight: number;
   remediationHours: { min: number; max: number };
   complexityFactor: number;
@@ -13,7 +15,10 @@ export const OWASP_TOP10_2021: OwaspCategory[] = [
     id: "A01",
     name: "Broken Access Control",
     nameEs: "Control de acceso roto",
-    description: "Restricciones de acceso mal implementadas que permiten acciones no autorizadas.",
+    description: {
+      es: "Restricciones de acceso mal implementadas que permiten acciones no autorizadas.",
+      en: "Poorly implemented access restrictions that allow unauthorized actions.",
+    },
     severityWeight: 9,
     remediationHours: { min: 40, max: 200 },
     complexityFactor: 1.5,
@@ -22,7 +27,10 @@ export const OWASP_TOP10_2021: OwaspCategory[] = [
     id: "A02",
     name: "Cryptographic Failures",
     nameEs: "Fallos criptográficos",
-    description: "Fallas en protección de datos sensibles en tránsito o reposo.",
+    description: {
+      es: "Fallas en protección de datos sensibles en tránsito o reposo.",
+      en: "Failures in protecting sensitive data in transit or at rest.",
+    },
     severityWeight: 8,
     remediationHours: { min: 24, max: 120 },
     complexityFactor: 1.4,
@@ -31,7 +39,10 @@ export const OWASP_TOP10_2021: OwaspCategory[] = [
     id: "A03",
     name: "Injection",
     nameEs: "Inyección",
-    description: "Datos hostiles enviados a intérprete como SQL, NoSQL, OS o LDAP.",
+    description: {
+      es: "Datos hostiles enviados a intérprete como SQL, NoSQL, OS o LDAP.",
+      en: "Hostile data sent to an interpreter such as SQL, NoSQL, OS, or LDAP.",
+    },
     severityWeight: 9,
     remediationHours: { min: 16, max: 80 },
     complexityFactor: 1.3,
@@ -40,7 +51,10 @@ export const OWASP_TOP10_2021: OwaspCategory[] = [
     id: "A04",
     name: "Insecure Design",
     nameEs: "Diseño inseguro",
-    description: "Fallas arquitectónicas que requieren rediseño de controles de seguridad.",
+    description: {
+      es: "Fallas arquitectónicas que requieren rediseño de controles de seguridad.",
+      en: "Architectural flaws that require redesigning security controls.",
+    },
     severityWeight: 8,
     remediationHours: { min: 80, max: 400 },
     complexityFactor: 2.0,
@@ -49,7 +63,10 @@ export const OWASP_TOP10_2021: OwaspCategory[] = [
     id: "A05",
     name: "Security Misconfiguration",
     nameEs: "Configuración insegura",
-    description: "Configuraciones por defecto inseguras, permisos excesivos o headers faltantes.",
+    description: {
+      es: "Configuraciones por defecto inseguras, permisos excesivos o headers faltantes.",
+      en: "Insecure default configurations, excessive permissions, or missing security headers.",
+    },
     severityWeight: 7,
     remediationHours: { min: 8, max: 60 },
     complexityFactor: 1.1,
@@ -58,7 +75,10 @@ export const OWASP_TOP10_2021: OwaspCategory[] = [
     id: "A06",
     name: "Vulnerable and Outdated Components",
     nameEs: "Componentes vulnerables y obsoletos",
-    description: "Dependencias con vulnerabilidades conocidas sin parches aplicados.",
+    description: {
+      es: "Dependencias con vulnerabilidades conocidas sin parches aplicados.",
+      en: "Dependencies with known vulnerabilities that remain unpatched.",
+    },
     severityWeight: 7,
     remediationHours: { min: 16, max: 100 },
     complexityFactor: 1.2,
@@ -67,7 +87,10 @@ export const OWASP_TOP10_2021: OwaspCategory[] = [
     id: "A07",
     name: "Identification and Authentication Failures",
     nameEs: "Fallos de identificación y autenticación",
-    description: "Controles de autenticación débiles o mal implementados.",
+    description: {
+      es: "Controles de autenticación débiles o mal implementados.",
+      en: "Weak or poorly implemented authentication controls.",
+    },
     severityWeight: 8,
     remediationHours: { min: 32, max: 160 },
     complexityFactor: 1.5,
@@ -76,7 +99,10 @@ export const OWASP_TOP10_2021: OwaspCategory[] = [
     id: "A08",
     name: "Software and Data Integrity Failures",
     nameEs: "Fallos de integridad de software y datos",
-    description: "Código o infraestructura sin verificación de integridad en CI/CD.",
+    description: {
+      es: "Código o infraestructura sin verificación de integridad en CI/CD.",
+      en: "Code or infrastructure lacking integrity verification within CI/CD pipelines.",
+    },
     severityWeight: 7,
     remediationHours: { min: 40, max: 200 },
     complexityFactor: 1.6,
@@ -85,7 +111,10 @@ export const OWASP_TOP10_2021: OwaspCategory[] = [
     id: "A09",
     name: "Security Logging and Monitoring Failures",
     nameEs: "Fallos de logging y monitoreo de seguridad",
-    description: "Detección, escalamiento y respuesta insuficientes ante incidentes.",
+    description: {
+      es: "Detección, escalamiento y respuesta insuficientes ante incidentes.",
+      en: "Insufficient detection, escalation, and response to security incidents.",
+    },
     severityWeight: 6,
     remediationHours: { min: 24, max: 120 },
     complexityFactor: 1.3,
@@ -94,7 +123,10 @@ export const OWASP_TOP10_2021: OwaspCategory[] = [
     id: "A10",
     name: "Server-Side Request Forgery",
     nameEs: "SSRF (Server-Side Request Forgery)",
-    description: "La aplicación obtiene recursos remotos sin validar URLs de destino.",
+    description: {
+      es: "La aplicación obtiene recursos remotos sin validar URLs de destino.",
+      en: "The application fetches remote resources without validating destination URLs.",
+    },
     severityWeight: 7,
     remediationHours: { min: 16, max: 80 },
     complexityFactor: 1.4,

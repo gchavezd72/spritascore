@@ -1,9 +1,11 @@
+import { LocalizedText } from "@/types/calculator";
+
 export interface QualityDimension {
   id: string;
   name: string;
   nameEs: string;
   iso9126Mapping?: string;
-  description: string;
+  description: LocalizedText;
   weight: number;
 }
 
@@ -13,7 +15,10 @@ export const ISO_25010_DIMENSIONS: QualityDimension[] = [
     name: "Functional Suitability",
     nameEs: "Adecuación funcional",
     iso9126Mapping: "Funcionalidad",
-    description: "Grado en que el software proporciona funciones que satisfacen necesidades declaradas.",
+    description: {
+      es: "Grado en que el software proporciona funciones que satisfacen necesidades declaradas.",
+      en: "Degree to which the software provides functions that satisfy stated needs.",
+    },
     weight: 1.0,
   },
   {
@@ -21,14 +26,20 @@ export const ISO_25010_DIMENSIONS: QualityDimension[] = [
     name: "Performance Efficiency",
     nameEs: "Eficiencia de desempeño",
     iso9126Mapping: "Eficiencia",
-    description: "Rendimiento relativo a cantidad de recursos utilizados.",
+    description: {
+      es: "Rendimiento relativo a cantidad de recursos utilizados.",
+      en: "Performance relative to the amount of resources used.",
+    },
     weight: 1.1,
   },
   {
     id: "compatibility",
     name: "Compatibility",
     nameEs: "Compatibilidad",
-    description: "Capacidad de intercambiar información con otros sistemas.",
+    description: {
+      es: "Capacidad de intercambiar información con otros sistemas.",
+      en: "Ability to exchange information with other systems.",
+    },
     weight: 0.9,
   },
   {
@@ -36,7 +47,10 @@ export const ISO_25010_DIMENSIONS: QualityDimension[] = [
     name: "Usability",
     nameEs: "Usabilidad",
     iso9126Mapping: "Usabilidad",
-    description: "Facilidad de uso y aprendizaje para usuarios objetivo.",
+    description: {
+      es: "Facilidad de uso y aprendizaje para usuarios objetivo.",
+      en: "Ease of use and learnability for target users.",
+    },
     weight: 0.8,
   },
   {
@@ -44,14 +58,20 @@ export const ISO_25010_DIMENSIONS: QualityDimension[] = [
     name: "Reliability",
     nameEs: "Fiabilidad",
     iso9126Mapping: "Confiabilidad",
-    description: "Capacidad de funcionar bajo condiciones especificadas por un período.",
+    description: {
+      es: "Capacidad de funcionar bajo condiciones especificadas por un período.",
+      en: "Ability to perform under specified conditions for a period of time.",
+    },
     weight: 1.3,
   },
   {
     id: "security",
     name: "Security",
     nameEs: "Seguridad",
-    description: "Protección contra accesos no autorizados y vulnerabilidades.",
+    description: {
+      es: "Protección contra accesos no autorizados y vulnerabilidades.",
+      en: "Protection against unauthorized access and vulnerabilities.",
+    },
     weight: 1.5,
   },
   {
@@ -59,7 +79,10 @@ export const ISO_25010_DIMENSIONS: QualityDimension[] = [
     name: "Maintainability",
     nameEs: "Mantenibilidad",
     iso9126Mapping: "Mantenibilidad",
-    description: "Facilidad de modificar, corregir y evolucionar el software.",
+    description: {
+      es: "Facilidad de modificar, corregir y evolucionar el software.",
+      en: "Ease of modifying, correcting, and evolving the software.",
+    },
     weight: 1.4,
   },
   {
@@ -67,7 +90,10 @@ export const ISO_25010_DIMENSIONS: QualityDimension[] = [
     name: "Portability",
     nameEs: "Portabilidad",
     iso9126Mapping: "Portabilidad",
-    description: "Capacidad de transferirse de un entorno a otro.",
+    description: {
+      es: "Capacidad de transferirse de un entorno a otro.",
+      en: "Ability to be transferred from one environment to another.",
+    },
     weight: 0.9,
   },
 ];

@@ -1,9 +1,18 @@
 import type { Recommendation } from "@/types/calculator";
 
-export const RECOMMENDATION_TEMPLATES: Omit<Recommendation, "id">[] = [
+type RecommendationTemplate = Omit<Recommendation, "id"> & { key: string };
+
+export const RECOMMENDATION_TEMPLATES: RecommendationTemplate[] = [
   {
-    title: "Diagnóstico técnico inmediato",
-    description: "Solicite una evaluación especializada para validar el nivel real de exposición y priorizar acciones de remediación.",
+    key: "diagnostico-inmediato",
+    title: {
+      es: "Diagnóstico técnico inmediato",
+      en: "Immediate technical diagnosis",
+    },
+    description: {
+      es: "Solicite una evaluación especializada para validar el nivel real de exposición y priorizar acciones de remediación.",
+      en: "Commission a specialized assessment to validate the real level of exposure and prioritize remediation actions.",
+    },
     priority: "critica",
     effort: "bajo",
     impact: "alto",
@@ -12,8 +21,15 @@ export const RECOMMENDATION_TEMPLATES: Omit<Recommendation, "id">[] = [
     type: "ejecutiva",
   },
   {
-    title: "Implementar análisis estático de código (SAST)",
-    description: "Detecte defectos y vulnerabilidades en etapas tempranas del ciclo de desarrollo.",
+    key: "sast-implementar",
+    title: {
+      es: "Implementar análisis estático de código (SAST)",
+      en: "Implement static application security testing (SAST)",
+    },
+    description: {
+      es: "Detecte defectos y vulnerabilidades en etapas tempranas del ciclo de desarrollo.",
+      en: "Detect defects and vulnerabilities in early stages of the development lifecycle.",
+    },
     priority: "alta",
     effort: "medio",
     impact: "alto",
@@ -22,8 +38,15 @@ export const RECOMMENDATION_TEMPLATES: Omit<Recommendation, "id">[] = [
     type: "tecnica",
   },
   {
-    title: "Medir y gestionar deuda técnica",
-    description: "Establezca métricas de deuda técnica y umbrales de calidad para priorizar refactorización.",
+    key: "deuda-tecnica-medir",
+    title: {
+      es: "Medir y gestionar deuda técnica",
+      en: "Measure and manage technical debt",
+    },
+    description: {
+      es: "Establezca métricas de deuda técnica y umbrales de calidad para priorizar refactorización.",
+      en: "Establish technical debt metrics and quality thresholds to prioritize refactoring.",
+    },
     priority: "alta",
     effort: "medio",
     impact: "alto",
@@ -32,8 +55,15 @@ export const RECOMMENDATION_TEMPLATES: Omit<Recommendation, "id">[] = [
     type: "operativa",
   },
   {
-    title: "Automatizar quality gates en CI/CD",
-    description: "Bloquee despliegues que no cumplan umbrales mínimos de calidad y seguridad.",
+    key: "quality-gates-cicd",
+    title: {
+      es: "Automatizar quality gates en CI/CD",
+      en: "Automate quality gates in CI/CD",
+    },
+    description: {
+      es: "Bloquee despliegues que no cumplan umbrales mínimos de calidad y seguridad.",
+      en: "Block deployments that fail to meet minimum quality and security thresholds.",
+    },
     priority: "alta",
     effort: "medio",
     impact: "alto",
@@ -42,8 +72,15 @@ export const RECOMMENDATION_TEMPLATES: Omit<Recommendation, "id">[] = [
     type: "tecnica",
   },
   {
-    title: "Revisar controles de acceso y autorización",
-    description: "Valide que los controles de acceso implementen el principio de mínimo privilegio.",
+    key: "controles-acceso-revisar",
+    title: {
+      es: "Revisar controles de acceso y autorización",
+      en: "Review access control and authorization",
+    },
+    description: {
+      es: "Valide que los controles de acceso implementen el principio de mínimo privilegio.",
+      en: "Validate that access controls implement the principle of least privilege.",
+    },
     priority: "critica",
     effort: "medio",
     impact: "alto",
@@ -52,8 +89,15 @@ export const RECOMMENDATION_TEMPLATES: Omit<Recommendation, "id">[] = [
     type: "tecnica",
   },
   {
-    title: "Implementar SCA y SBOM",
-    description: "Identifique dependencias vulnerables y mantenga un inventario de componentes de software.",
+    key: "sca-implementar",
+    title: {
+      es: "Implementar análisis de composición de software (SCA)",
+      en: "Implement software composition analysis (SCA)",
+    },
+    description: {
+      es: "Escanee dependencias de terceros y librerías de código abierto para identificar componentes con vulnerabilidades conocidas antes de que lleguen a producción.",
+      en: "Scan third-party dependencies and open-source libraries to identify components with known vulnerabilities before they reach production.",
+    },
     priority: "alta",
     effort: "medio",
     impact: "alto",
@@ -62,8 +106,66 @@ export const RECOMMENDATION_TEMPLATES: Omit<Recommendation, "id">[] = [
     type: "tecnica",
   },
   {
-    title: "Fortalecer monitoreo y logging de seguridad",
-    description: "Implemente detección, alertas y respuesta ante incidentes de seguridad.",
+    key: "sbom-mantener",
+    title: {
+      es: "Generar y mantener un SBOM completo",
+      en: "Generate and maintain a complete SBOM",
+    },
+    description: {
+      es: "Construya y mantenga actualizado un inventario de materiales de software (SBOM) para saber exactamente qué componentes y versiones corren en cada aplicación, y reaccionar rápido ante una vulnerabilidad nueva en la cadena de suministro.",
+      en: "Build and keep an up-to-date software bill of materials (SBOM) to know exactly which components and versions run in each application, and react quickly to a new vulnerability in the supply chain.",
+    },
+    priority: "alta",
+    effort: "medio",
+    impact: "alto",
+    timeframe: "30-dias",
+    area: "seguridad",
+    type: "tecnica",
+  },
+  {
+    key: "dast-implementar",
+    title: {
+      es: "Implementar pruebas dinámicas de seguridad (DAST)",
+      en: "Implement dynamic application security testing (DAST)",
+    },
+    description: {
+      es: "Pruebe la aplicación en ejecución para detectar vulnerabilidades explotables en tiempo real (inyección, autenticación, configuración) que el análisis estático no puede ver.",
+      en: "Test the running application to detect exploitable vulnerabilities in real time (injection, authentication, configuration) that static analysis cannot see.",
+    },
+    priority: "alta",
+    effort: "medio",
+    impact: "alto",
+    timeframe: "30-dias",
+    area: "seguridad",
+    type: "tecnica",
+  },
+  {
+    key: "iast-adoptar",
+    title: {
+      es: "Adoptar pruebas interactivas de seguridad (IAST)",
+      en: "Adopt interactive application security testing (IAST)",
+    },
+    description: {
+      es: "Combine instrumentación en tiempo de ejecución con pruebas funcionales para detectar vulnerabilidades con mayor precisión y menos falsos positivos, directamente en el pipeline de CI/CD.",
+      en: "Combine runtime instrumentation with functional testing to detect vulnerabilities with greater precision and fewer false positives, directly in the CI/CD pipeline.",
+    },
+    priority: "media",
+    effort: "medio",
+    impact: "alto",
+    timeframe: "60-dias",
+    area: "desarrollo",
+    type: "tecnica",
+  },
+  {
+    key: "monitoreo-logging-fortalecer",
+    title: {
+      es: "Fortalecer monitoreo y logging de seguridad",
+      en: "Strengthen security monitoring and logging",
+    },
+    description: {
+      es: "Implemente detección, alertas y respuesta ante incidentes de seguridad.",
+      en: "Implement detection, alerting, and incident response for security events.",
+    },
     priority: "alta",
     effort: "alto",
     impact: "alto",
@@ -72,8 +174,15 @@ export const RECOMMENDATION_TEMPLATES: Omit<Recommendation, "id">[] = [
     type: "operativa",
   },
   {
-    title: "Validar configuración segura",
-    description: "Revise configuraciones de servidores, cloud y aplicaciones contra benchmarks de seguridad.",
+    key: "config-segura-validar",
+    title: {
+      es: "Validar configuración segura",
+      en: "Validate secure configuration",
+    },
+    description: {
+      es: "Revise configuraciones de servidores, cloud y aplicaciones contra benchmarks de seguridad.",
+      en: "Review server, cloud, and application configurations against security benchmarks.",
+    },
     priority: "media",
     effort: "bajo",
     impact: "medio",
@@ -82,8 +191,15 @@ export const RECOMMENDATION_TEMPLATES: Omit<Recommendation, "id">[] = [
     type: "tecnica",
   },
   {
-    title: "Plan de remediación ejecutivo (30 días)",
-    description: "Defina un plan de acción con responsables, plazos y métricas de reducción de riesgo.",
+    key: "plan-remediacion-30d",
+    title: {
+      es: "Plan de remediación ejecutivo (30 días)",
+      en: "Executive remediation plan (30 days)",
+    },
+    description: {
+      es: "Defina un plan de acción con responsables, plazos y métricas de reducción de riesgo.",
+      en: "Define an action plan with owners, deadlines, and risk-reduction metrics.",
+    },
     priority: "critica",
     effort: "medio",
     impact: "alto",
@@ -92,8 +208,15 @@ export const RECOMMENDATION_TEMPLATES: Omit<Recommendation, "id">[] = [
     type: "ejecutiva",
   },
   {
-    title: "Roadmap de reducción de riesgo (60 días)",
-    description: "Establezca un programa estructurado de mejora de seguridad y calidad.",
+    key: "roadmap-riesgo-60d",
+    title: {
+      es: "Roadmap de reducción de riesgo (60 días)",
+      en: "Risk-reduction roadmap (60 days)",
+    },
+    description: {
+      es: "Establezca un programa estructurado de mejora de seguridad y calidad.",
+      en: "Establish a structured program for security and quality improvement.",
+    },
     priority: "alta",
     effort: "alto",
     impact: "alto",
@@ -102,8 +225,15 @@ export const RECOMMENDATION_TEMPLATES: Omit<Recommendation, "id">[] = [
     type: "ejecutiva",
   },
   {
-    title: "Monitoreo preventivo y baseline de calidad",
-    description: "Establezca métricas base y monitoreo continuo para detectar degradación temprana.",
+    key: "monitoreo-preventivo-baseline",
+    title: {
+      es: "Monitoreo preventivo y baseline de calidad",
+      en: "Preventive monitoring and quality baseline",
+    },
+    description: {
+      es: "Establezca métricas base y monitoreo continuo para detectar degradación temprana.",
+      en: "Establish baseline metrics and continuous monitoring to detect early degradation.",
+    },
     priority: "media",
     effort: "bajo",
     impact: "medio",
@@ -112,8 +242,15 @@ export const RECOMMENDATION_TEMPLATES: Omit<Recommendation, "id">[] = [
     type: "operativa",
   },
   {
-    title: "Evaluación de madurez de seguridad",
-    description: "Realice un assessment para identificar brechas en controles y procesos de seguridad.",
+    key: "madurez-seguridad-evaluacion",
+    title: {
+      es: "Evaluación de madurez de seguridad",
+      en: "Security maturity assessment",
+    },
+    description: {
+      es: "Realice un assessment para identificar brechas en controles y procesos de seguridad.",
+      en: "Conduct an assessment to identify gaps in security controls and processes.",
+    },
     priority: "alta",
     effort: "medio",
     impact: "alto",
@@ -122,8 +259,15 @@ export const RECOMMENDATION_TEMPLATES: Omit<Recommendation, "id">[] = [
     type: "operativa",
   },
   {
-    title: "Evidencia técnica para auditorías",
-    description: "Documente controles, pruebas y hallazgos para cumplimiento regulatorio.",
+    key: "evidencia-auditorias",
+    title: {
+      es: "Evidencia técnica para auditorías",
+      en: "Technical evidence for audits",
+    },
+    description: {
+      es: "Documente controles, pruebas y hallazgos para cumplimiento regulatorio.",
+      en: "Document controls, tests, and findings for regulatory compliance.",
+    },
     priority: "alta",
     effort: "alto",
     impact: "alto",
@@ -132,8 +276,15 @@ export const RECOMMENDATION_TEMPLATES: Omit<Recommendation, "id">[] = [
     type: "regulatoria",
   },
   {
-    title: "Revisar almacenamiento local en apps móviles",
-    description: "Asegure que datos sensibles en dispositivos estén cifrados y protegidos.",
+    key: "almacenamiento-local-movil",
+    title: {
+      es: "Revisar almacenamiento local en apps móviles",
+      en: "Review local storage in mobile apps",
+    },
+    description: {
+      es: "Asegure que datos sensibles en dispositivos estén cifrados y protegidos.",
+      en: "Ensure sensitive data on devices is encrypted and protected.",
+    },
     priority: "alta",
     effort: "medio",
     impact: "alto",
@@ -142,8 +293,15 @@ export const RECOMMENDATION_TEMPLATES: Omit<Recommendation, "id">[] = [
     type: "tecnica",
   },
   {
-    title: "Análisis de supply chain móvil",
-    description: "Audite SDKs, dependencias y componentes de terceros en aplicaciones móviles.",
+    key: "supply-chain-movil",
+    title: {
+      es: "Análisis de supply chain móvil",
+      en: "Mobile supply chain analysis",
+    },
+    description: {
+      es: "Audite SDKs, dependencias y componentes de terceros en aplicaciones móviles.",
+      en: "Audit SDKs, dependencies, and third-party components in mobile applications.",
+    },
     priority: "alta",
     effort: "medio",
     impact: "alto",
@@ -152,8 +310,15 @@ export const RECOMMENDATION_TEMPLATES: Omit<Recommendation, "id">[] = [
     type: "tecnica",
   },
   {
-    title: "Protección contra ingeniería inversa",
-    description: "Implemente ofuscación, anti-tampering y detección de jailbreak/root.",
+    key: "ingenieria-inversa-proteccion",
+    title: {
+      es: "Protección contra ingeniería inversa",
+      en: "Protection against reverse engineering",
+    },
+    description: {
+      es: "Implemente ofuscación, anti-tampering y detección de jailbreak/root.",
+      en: "Implement obfuscation, anti-tampering, and jailbreak/root detection.",
+    },
     priority: "media",
     effort: "alto",
     impact: "medio",
@@ -162,8 +327,15 @@ export const RECOMMENDATION_TEMPLATES: Omit<Recommendation, "id">[] = [
     type: "tecnica",
   },
   {
-    title: "Mapear hallazgos contra ISO/IEC 25010",
-    description: "Alinee métricas de calidad con el modelo internacional para reportes ejecutivos.",
+    key: "iso25010-mapeo",
+    title: {
+      es: "Mapear hallazgos contra ISO/IEC 25010",
+      en: "Map findings against ISO/IEC 25010",
+    },
+    description: {
+      es: "Alinee métricas de calidad con el modelo internacional para reportes ejecutivos.",
+      en: "Align quality metrics with the international model for executive reporting.",
+    },
     priority: "media",
     effort: "bajo",
     impact: "medio",
@@ -172,8 +344,15 @@ export const RECOMMENDATION_TEMPLATES: Omit<Recommendation, "id">[] = [
     type: "operativa",
   },
   {
-    title: "Definir KPIs ejecutivos de calidad",
-    description: "Traduzca métricas técnicas en indicadores comprensibles para la dirección.",
+    key: "kpis-calidad-definir",
+    title: {
+      es: "Definir KPIs ejecutivos de calidad",
+      en: "Define executive quality KPIs",
+    },
+    description: {
+      es: "Traduzca métricas técnicas en indicadores comprensibles para la dirección.",
+      en: "Translate technical metrics into indicators that leadership can understand.",
+    },
     priority: "media",
     effort: "bajo",
     impact: "medio",
@@ -182,8 +361,15 @@ export const RECOMMENDATION_TEMPLATES: Omit<Recommendation, "id">[] = [
     type: "ejecutiva",
   },
   {
-    title: "Pruebas de seguridad recurrentes",
-    description: "Establezca un programa de pentesting y DAST periódico.",
+    key: "pruebas-seguridad-recurrentes",
+    title: {
+      es: "Pruebas de seguridad recurrentes",
+      en: "Recurring security testing",
+    },
+    description: {
+      es: "Establezca un programa de pentesting y DAST periódico.",
+      en: "Establish a program of periodic pentesting and DAST.",
+    },
     priority: "alta",
     effort: "alto",
     impact: "alto",
@@ -192,8 +378,15 @@ export const RECOMMENDATION_TEMPLATES: Omit<Recommendation, "id">[] = [
     type: "tecnica",
   },
   {
-    title: "Gobierno de calidad de código",
-    description: "Defina estándares, revisiones y responsables para mantener calidad sostenible.",
+    key: "gobierno-calidad-codigo",
+    title: {
+      es: "Gobierno de calidad de código",
+      en: "Code quality governance",
+    },
+    description: {
+      es: "Defina estándares, revisiones y responsables para mantener calidad sostenible.",
+      en: "Define standards, reviews, and owners to maintain sustainable quality.",
+    },
     priority: "media",
     effort: "medio",
     impact: "alto",
@@ -201,15 +394,151 @@ export const RECOMMENDATION_TEMPLATES: Omit<Recommendation, "id">[] = [
     area: "desarrollo",
     type: "operativa",
   },
+  {
+    key: "aspm-consolidar",
+    title: {
+      es: "Consolidar hallazgos en una plataforma ASPM",
+      en: "Consolidate findings in an ASPM platform",
+    },
+    description: {
+      es: "Centralice alertas de SAST, DAST, SCA, cloud y contenedores en un solo lugar para eliminar duplicados y correlacionar hallazgos por aplicación.",
+      en: "Centralize SAST, DAST, SCA, cloud, and container alerts in one place to eliminate duplicates and correlate findings by application.",
+    },
+    priority: "alta",
+    effort: "medio",
+    impact: "alto",
+    timeframe: "30-dias",
+    area: "seguridad",
+    type: "operativa",
+  },
+  {
+    key: "explotabilidad-priorizar",
+    title: {
+      es: "Priorizar por explotabilidad y contexto de negocio",
+      en: "Prioritize by exploitability and business context",
+    },
+    description: {
+      es: "Ordene los hallazgos por explotabilidad real, exposición y criticidad del activo en vez de tratarlos todos igual.",
+      en: "Rank findings by real exploitability, exposure, and asset criticality instead of treating them all the same.",
+    },
+    priority: "alta",
+    effort: "bajo",
+    impact: "alto",
+    timeframe: "30-dias",
+    area: "seguridad",
+    type: "operativa",
+  },
+  {
+    key: "herramientas-redundantes-eliminar",
+    title: {
+      es: "Eliminar herramientas de seguridad redundantes",
+      en: "Eliminate redundant security tools",
+    },
+    description: {
+      es: "Audite el solapamiento entre sus herramientas actuales y consolide las que generan el mismo tipo de hallazgo.",
+      en: "Audit the overlap between your current tools and consolidate those that generate the same type of finding.",
+    },
+    priority: "media",
+    effort: "bajo",
+    impact: "medio",
+    timeframe: "60-dias",
+    area: "seguridad",
+    type: "operativa",
+  },
+  {
+    key: "vuln-management-programa",
+    title: {
+      es: "Establecer un programa de gestión de vulnerabilidades",
+      en: "Establish a vulnerability management program",
+    },
+    description: {
+      es: "Defina un proceso formal de identificación, clasificación, remediación y verificación de vulnerabilidades con responsables y SLAs por severidad.",
+      en: "Define a formal process for identifying, classifying, remediating, and verifying vulnerabilities with owners and severity-based SLAs.",
+    },
+    priority: "alta",
+    effort: "medio",
+    impact: "alto",
+    timeframe: "60-dias",
+    area: "seguridad",
+    type: "operativa",
+  },
+  {
+    key: "secure-coding-capacitacion",
+    title: {
+      es: "Capacitar al equipo en prácticas de desarrollo seguro",
+      en: "Train the team on secure development practices",
+    },
+    description: {
+      es: "Entrene a desarrolladores en secure coding y en la interpretación de hallazgos de SAST/DAST/SCA para reducir la reintroducción de los mismos defectos.",
+      en: "Train developers in secure coding and in interpreting SAST/DAST/SCA findings to reduce the reintroduction of the same defects.",
+    },
+    priority: "media",
+    effort: "medio",
+    impact: "medio",
+    timeframe: "90-dias",
+    area: "desarrollo",
+    type: "operativa",
+  },
+  {
+    key: "cra-expediente-tecnico",
+    title: {
+      es: "Documentar evaluación de conformidad y expediente técnico",
+      en: "Document conformity assessment and technical file",
+    },
+    description: {
+      es: "Prepare el expediente técnico (arquitectura, análisis de riesgos, pruebas, SBOM) requerido por el CRA y, si su producto es importante o crítico, inicie la evaluación de conformidad con un organismo notificado.",
+      en: "Prepare the technical file (architecture, risk analysis, testing, SBOM) required by the CRA and, if your product is important or critical, initiate the conformity assessment with a notified body.",
+    },
+    priority: "alta",
+    effort: "alto",
+    impact: "alto",
+    timeframe: "60-dias",
+    area: "cumplimiento",
+    type: "regulatoria",
+  },
+  {
+    key: "cra-reporte-incidentes",
+    title: {
+      es: "Definir proceso de reporte de incidentes en 24/72 horas",
+      en: "Define a 24/72-hour incident reporting process",
+    },
+    description: {
+      es: "Establezca un procedimiento operativo para notificar a ENISA/CSIRT una vulnerabilidad explotada activamente en menos de 24 horas y un reporte detallado en 72 horas, como exige el CRA.",
+      en: "Establish an operational procedure to notify ENISA/CSIRT of an actively exploited vulnerability within 24 hours and provide a detailed report within 72 hours, as required by the CRA.",
+    },
+    priority: "critica",
+    effort: "medio",
+    impact: "alto",
+    timeframe: "30-dias",
+    area: "cumplimiento",
+    type: "regulatoria",
+  },
+  {
+    key: "cra-periodo-soporte",
+    title: {
+      es: "Definir y comunicar el período de soporte de seguridad",
+      en: "Define and communicate the security support period",
+    },
+    description: {
+      es: "Establezca y publique el período durante el cual el producto recibirá actualizaciones de seguridad, alineado con su vida útil esperada, como exige el CRA.",
+      en: "Establish and publish the period during which the product will receive security updates, aligned with its expected lifespan, as required by the CRA.",
+    },
+    priority: "media",
+    effort: "bajo",
+    impact: "medio",
+    timeframe: "30-dias",
+    area: "cumplimiento",
+    type: "regulatoria",
+  },
 ];
 
-export function getRecommendationByTitle(title: string): Recommendation {
-  const template = RECOMMENDATION_TEMPLATES.find((r) => r.title === title);
+export function getRecommendationByKey(key: string): Recommendation {
+  const template = RECOMMENDATION_TEMPLATES.find((r) => r.key === key);
   if (!template) {
     return {
-      id: `rec-${Date.now()}`,
-      title,
-      description: "",
+      id: `rec-${key}`,
+      title: { es: key, en: key },
+      description: { es: "", en: "" },
       priority: "media",
       effort: "medio",
       impact: "medio",
@@ -218,5 +547,6 @@ export function getRecommendationByTitle(title: string): Recommendation {
       type: "tecnica",
     };
   }
-  return { ...template, id: `rec-${title.slice(0, 20).replace(/\s/g, "-").toLowerCase()}` };
+  const { key: _key, ...rest } = template;
+  return { ...rest, id: `rec-${key}` };
 }

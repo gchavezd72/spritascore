@@ -15,12 +15,15 @@ import { calculate } from "@/lib/calculateCost";
 import { saveResult } from "@/lib/storage";
 import { trackEvent } from "@/lib/analytics";
 import { getCurrencyForCountry } from "@/lib/formatCurrency";
+import { tr } from "@/lib/translate";
+import { useTranslations } from "@/components/LanguageProvider";
+import type { TranslationKeys } from "@/i18n/es";
 
 interface CalculatorWizardProps {
   config: CalculatorConfig;
 }
 
-function buildSchema(config: CalculatorConfig) {
+function buildSchema(config: CalculatorConfig, t: TranslationKeys) {
   const shape: Record<string, z.ZodTypeAny> = {};
   for (const step of config.steps) {
     for (const field of step.fields) {
@@ -31,16 +34,16 @@ function buildSchema(config: CalculatorConfig) {
           shape[field.name] = z.coerce.number().min(field.min ?? 0);
           break;
         case "multiselect":
-          shape[field.name] = z.array(z.string()).min(1, "Seleccione al menos una opción");
+          shape[field.name] = z.array(z.string()).min(1, t.wizard.validation.selectAtLeastOne);
           break;
         case "checkbox":
           shape[field.name] = z.union([
             z.literal(true),
             z.string().transform((v) => v === "on" || v === "true"),
-          ]).refine((v) => v === true, { message: "Debe aceptar para continuar" });
+          ]).refine((v) => v === true, { message: t.wizard.validation.mustAccept });
           break;
         default:
-          shape[field.name] = z.string().min(1, "Campo requerido");
+          shape[field.name] = z.string().min(1, t.wizard.validation.fieldRequired);
       }
     }
   }
@@ -49,8 +52,9 @@ function buildSchema(config: CalculatorConfig) {
 
 export function CalculatorWizard({ config }: CalculatorWizardProps) {
   const router = useRouter();
+  const { t, locale } = useTranslations();
   const [currentStep, setCurrentStep] = useState(0);
-  const schema = buildSchema(config);
+  const schema = buildSchema(config, t);
   const methods = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -69,6 +73,8 @@ export function CalculatorWizard({ config }: CalculatorWizardProps) {
   const steps = config.steps;
   const progress = ((currentStep + 1) / steps.length) * 100;
   const step = steps[currentStep];
+  const isLastStep = currentStep === steps.length - 1;
+  const stepsRemaining = steps.length - 1 - currentStep;
 
   const validateCurrentStep = async () => {
     const fieldNames = step.fields.map((f) => f.name);
@@ -99,7 +105,7 @@ export function CalculatorWizard({ config }: CalculatorWizardProps) {
       trackEvent("calculator_started", { calculator: config.id });
     }
 
-    const result = calculate(config.id, values as Record<string, unknown>, currency);
+    const result = calculate(config.id, values as Record<string, unknown>, currency, locale);
     saveResult(result);
     trackEvent("calculator_completed", {
       calculator: config.id,
@@ -114,17 +120,24 @@ export function CalculatorWizard({ config }: CalculatorWizardProps) {
     <FormProvider {...methods}>
       <div className="max-w-3xl mx-auto">
         <div className="mb-8">
-          <div className="flex justify-between text-sm text-slate-500 mb-2">
-            <span>Paso {currentStep + 1} de {steps.length}</span>
+          <div className="flex justify-between text-sm text-muted-foreground mb-2">
+            <span>
+              {t.wizard.step} {currentStep + 1} {t.wizard.of} {steps.length}
+              {isLastStep
+                ? ` — ${t.wizard.lastStep}`
+                : stepsRemaining === 1
+                  ? ` — ${t.wizard.oneStepLeft}`
+                  : ""}
+            </span>
             <span>{Math.round(progress)}%</span>
           </div>
           <Progress value={progress} />
         </div>
 
-        <Card>
+        <Card key={currentStep} className="animate-[fadeInStep_0.3s_ease-out]">
           <CardHeader>
-            <CardTitle>{step.title}</CardTitle>
-            <CardDescription>{step.description}</CardDescription>
+            <CardTitle>{tr(step.title, locale)}</CardTitle>
+            <CardDescription>{tr(step.description, locale)}</CardDescription>
           </CardHeader>
           <CardContent>
             <QuestionStep fields={step.fields} />
@@ -138,17 +151,17 @@ export function CalculatorWizard({ config }: CalculatorWizardProps) {
             disabled={currentStep === 0}
           >
             <ArrowLeft className="h-4 w-4" />
-            Anterior
+            {t.wizard.previous}
           </Button>
           <Button onClick={handleNext}>
-            {currentStep === steps.length - 1 ? (
+            {isLastStep ? (
               <>
                 <Calculator className="h-4 w-4" />
-                Calcular resultado
+                {t.wizard.calculate}
               </>
             ) : (
               <>
-                Siguiente
+                {t.wizard.next}
                 <ArrowRight className="h-4 w-4" />
               </>
             )}

@@ -4,15 +4,15 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 cursor-pointer",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-semibold transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 cursor-pointer active:scale-[0.98]",
   {
     variants: {
       variant: {
-        default: "bg-brand-orange text-white hover:bg-brand-orange/90 focus-visible:ring-brand-orange",
+        default: "bg-brand-green text-white shadow-sm hover:brightness-105 hover:shadow-md focus-visible:ring-brand-green",
         secondary: "bg-brand-navy text-white hover:bg-brand-navy-light focus-visible:ring-brand-navy",
-        outline: "border-2 border-brand-navy text-brand-navy hover:bg-brand-navy hover:text-white",
-        ghost: "text-brand-navy hover:bg-slate-100",
-        danger: "bg-risk-critical text-white hover:bg-risk-critical/90",
+        outline: "border border-border-strong text-brand-navy hover:bg-surface-hover hover:border-brand-navy/40 focus-visible:ring-brand-navy/30",
+        ghost: "text-muted-foreground hover:text-brand-navy hover:bg-surface-hover",
+        danger: "bg-risk-critical text-white hover:brightness-105",
       },
       size: {
         default: "h-11 px-6 py-2",

@@ -1,4 +1,4 @@
-import { getRecommendationByTitle } from "@/data/recommendations";
+import { getRecommendationByKey } from "@/data/recommendations";
 import type {
   CalculatorId,
   Recommendation,
@@ -13,12 +13,12 @@ interface RecommendationContext {
   riskFactors: string[];
 }
 
-function pickUnique(recommendations: Recommendation[], limit = 8): Recommendation[] {
+function pickUnique(recommendations: Recommendation[], limit = 10): Recommendation[] {
   const seen = new Set<string>();
   const result: Recommendation[] = [];
   for (const rec of recommendations) {
-    if (!seen.has(rec.title)) {
-      seen.add(rec.title);
+    if (!seen.has(rec.id)) {
+      seen.add(rec.id);
       result.push(rec);
     }
     if (result.length >= limit) break;
@@ -35,18 +35,18 @@ export function generateRecommendations(
   days90: Recommendation[];
 } {
   const { score, riskLevel, inputs } = context;
-  const titles: string[] = [];
+  const keys: string[] = [];
 
   if (riskLevel === "critico") {
-    titles.push("Diagnóstico técnico inmediato");
+    keys.push("diagnostico-inmediato");
   }
 
   if (score > 75) {
-    titles.push("Plan de remediación ejecutivo (30 días)");
+    keys.push("plan-remediacion-30d");
   } else if (score >= 50) {
-    titles.push("Roadmap de reducción de riesgo (60 días)");
+    keys.push("roadmap-riesgo-60d");
   } else {
-    titles.push("Monitoreo preventivo y baseline de calidad");
+    keys.push("monitoreo-preventivo-baseline");
   }
 
   const dataTypes = (inputs.dataTypes as string[]) ?? [];
@@ -55,8 +55,8 @@ export function generateRecommendations(
     dataTypes.length > 0 &&
     (exposure === "publica" || exposure === "api-publica" || exposure === "externa")
   ) {
-    titles.push("Revisar controles de acceso y autorización");
-    titles.push("Fortalecer monitoreo y logging de seguridad");
+    keys.push("controles-acceso-revisar");
+    keys.push("monitoreo-logging-fortalecer");
   }
 
   if (
@@ -64,49 +64,84 @@ export function generateRecommendations(
     (inputs.codeAge as number) > 5 ||
     inputs.linesOfCode === ">5m"
   ) {
-    titles.push("Medir y gestionar deuda técnica");
+    keys.push("deuda-tecnica-medir");
   }
 
   if (context.calculatorId === "iso-quality") {
-    titles.push("Implementar análisis estático de código (SAST)");
-    titles.push("Automatizar quality gates en CI/CD");
-    titles.push("Mapear hallazgos contra ISO/IEC 25010");
-    titles.push("Definir KPIs ejecutivos de calidad");
-    titles.push("Gobierno de calidad de código");
+    keys.push("sast-implementar");
+    keys.push("quality-gates-cicd");
+    keys.push("iso25010-mapeo");
+    keys.push("kpis-calidad-definir");
+    keys.push("gobierno-calidad-codigo");
+    keys.push("sbom-mantener");
+    keys.push("secure-coding-capacitacion");
   }
 
   if (context.calculatorId === "owasp-web") {
-    titles.push("Implementar SCA y SBOM");
-    titles.push("Validar configuración segura");
-    titles.push("Pruebas de seguridad recurrentes");
+    keys.push("sca-implementar");
+    keys.push("sbom-mantener");
+    keys.push("dast-implementar");
+    keys.push("config-segura-validar");
+    keys.push("pruebas-seguridad-recurrentes");
+    keys.push("vuln-management-programa");
+    if (inputs.environment === "produccion") {
+      keys.push("iast-adoptar");
+    }
   }
 
   if (context.calculatorId === "owasp-mobile") {
-    titles.push("Revisar almacenamiento local en apps móviles");
+    keys.push("almacenamiento-local-movil");
+    keys.push("sca-implementar");
     if (inputs.thirdPartySdks === "si" || inputs.thirdPartySdks === true) {
-      titles.push("Análisis de supply chain móvil");
+      keys.push("supply-chain-movil");
+      keys.push("sbom-mantener");
     }
-    titles.push("Protección contra ingeniería inversa");
+    keys.push("ingenieria-inversa-proteccion");
+    keys.push("vuln-management-programa");
   }
 
   const controls = (inputs.controls as string[]) ?? [];
   if (controls.includes("none") || controls.length === 0) {
-    titles.push("Evaluación de madurez de seguridad");
+    keys.push("madurez-seguridad-evaluacion");
   }
 
   if (controls.includes("none") === false && inputs.sector) {
     const regulatedSectors = ["banca", "fintech", "salud", "gobierno", "farmaceutica", "energia"];
     if (regulatedSectors.includes(inputs.sector as string)) {
-      titles.push("Evidencia técnica para auditorías");
+      keys.push("evidencia-auditorias");
     }
   }
 
   if (context.calculatorId === "sector") {
-    titles.push("Evidencia técnica para auditorías");
-    titles.push("Pruebas de seguridad recurrentes");
+    keys.push("evidencia-auditorias");
+    keys.push("pruebas-seguridad-recurrentes");
+    keys.push("aspm-consolidar");
+    keys.push("sbom-mantener");
+    keys.push("vuln-management-programa");
   }
 
-  const all = pickUnique(titles.map(getRecommendationByTitle), 8);
+  if (context.calculatorId === "aspm-cost") {
+    keys.push("aspm-consolidar");
+    keys.push("explotabilidad-priorizar");
+    keys.push("herramientas-redundantes-eliminar");
+    keys.push("sbom-mantener");
+    keys.push("vuln-management-programa");
+    keys.push("quality-gates-cicd");
+  }
+
+  if (context.calculatorId === "cra-compliance") {
+    keys.push("cra-reporte-incidentes");
+    keys.push("sbom-mantener");
+    keys.push("vuln-management-programa");
+    keys.push("sca-implementar");
+    keys.push("sast-implementar");
+    keys.push("dast-implementar");
+    keys.push("cra-expediente-tecnico");
+    keys.push("cra-periodo-soporte");
+    keys.push("aspm-consolidar");
+  }
+
+  const all = pickUnique(keys.map(getRecommendationByKey), 10);
 
   return {
     all,

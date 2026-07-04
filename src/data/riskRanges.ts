@@ -1,13 +1,14 @@
-import type { RiskLevel } from "@/types/calculator";
+import type { LocalizedText, Locale, RiskLevel } from "@/types/calculator";
+import { tr } from "@/lib/translate";
 
 export const RISK_LEVELS: Record<
   RiskLevel,
-  { min: number; max: number; label: string; color: string }
+  { min: number; max: number; label: LocalizedText; color: string }
 > = {
-  bajo: { min: 0, max: 30, label: "Bajo", color: "#22c55e" },
-  moderado: { min: 31, max: 55, label: "Moderado", color: "#eab308" },
-  alto: { min: 56, max: 75, label: "Alto", color: "#f97316" },
-  critico: { min: 76, max: 100, label: "Crítico", color: "#ef4444" },
+  bajo: { min: 0, max: 30, label: { es: "Bajo", en: "Low" }, color: "#22c55e" },
+  moderado: { min: 31, max: 55, label: { es: "Moderado", en: "Moderate" }, color: "#eab308" },
+  alto: { min: 56, max: 75, label: { es: "Alto", en: "High" }, color: "#f97316" },
+  critico: { min: 76, max: 100, label: { es: "Crítico", en: "Critical" }, color: "#ef4444" },
 };
 
 export function getRiskLevel(score: number): RiskLevel {
@@ -17,6 +18,6 @@ export function getRiskLevel(score: number): RiskLevel {
   return "critico";
 }
 
-export function getRiskLevelLabel(level: RiskLevel): string {
-  return RISK_LEVELS[level].label;
+export function getRiskLevelLabel(level: RiskLevel, locale: Locale = "es"): string {
+  return tr(RISK_LEVELS[level].label, locale);
 }

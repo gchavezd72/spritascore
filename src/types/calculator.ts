@@ -2,13 +2,23 @@ export type CalculatorId =
   | "iso-quality"
   | "owasp-web"
   | "owasp-mobile"
-  | "sector";
+  | "sector"
+  | "aspm-cost"
+  | "cra-compliance";
 
 export type RiskLevel = "bajo" | "moderado" | "alto" | "critico";
 
 export type Currency = "USD" | "EUR" | "MXN" | "BRL" | "COP" | "CLP" | "PEN";
 
 export type Locale = "es" | "en" | "pt";
+
+export type CalculatorCategory = "seguridad" | "calidad" | "compliance" | "ahorros";
+
+export interface LocalizedText {
+  es: string;
+  en: string;
+  pt?: string;
+}
 
 export type RecommendationPriority = "critica" | "alta" | "media" | "baja";
 export type EffortLevel = "bajo" | "medio" | "alto";
@@ -28,8 +38,8 @@ export type RecommendationType =
 
 export interface Recommendation {
   id: string;
-  title: string;
-  description: string;
+  title: LocalizedText;
+  description: LocalizedText;
   priority: RecommendationPriority;
   effort: EffortLevel;
   impact: ImpactLevel;
@@ -81,6 +91,7 @@ export interface CalculationResult {
   currency: Currency;
   createdAt: string;
   leadCaptured: boolean;
+  hoursPerYear?: number;
 }
 
 export interface LeadData {
@@ -96,8 +107,8 @@ export interface LeadData {
 
 export interface WizardStep {
   id: string;
-  title: string;
-  description: string;
+  title: LocalizedText;
+  description: LocalizedText;
   fields: WizardField[];
 }
 
@@ -112,11 +123,11 @@ export type FieldType =
 
 export interface WizardField {
   name: string;
-  label: string;
+  label: LocalizedText;
   type: FieldType;
-  tooltip?: string;
+  tooltip?: LocalizedText;
   placeholder?: string;
-  options?: { value: string; label: string }[];
+  options?: { value: string; label: LocalizedText }[];
   min?: number;
   max?: number;
   required?: boolean;
@@ -126,9 +137,10 @@ export interface WizardField {
 export interface CalculatorConfig {
   id: CalculatorId;
   slug: string;
-  title: string;
-  shortDescription: string;
+  category: CalculatorCategory;
+  title: LocalizedText;
+  shortDescription: LocalizedText;
   complexity: "baja" | "media" | "alta";
-  estimatedTime: string;
+  estimatedTime: LocalizedText;
   steps: WizardStep[];
 }

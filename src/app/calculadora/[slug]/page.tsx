@@ -2,6 +2,8 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getCalculatorBySlug, CALCULATOR_CONFIGS } from "@/data/calculatorConfigs";
 import { CalculatorWizard } from "@/components/CalculatorWizard";
+import { CalculatorPageHeader } from "@/components/CalculatorPageHeader";
+import { tr } from "@/lib/translate";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -21,11 +23,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     "owasp-top10-web": "Calculadora de costo de vulnerabilidad OWASP Top 10",
     "owasp-mobile-top10": "Calculadora de vulnerabilidades móviles OWASP Mobile Top 10",
     "riesgo-por-sector": "Calculadora de riesgo y costo por sector industrial",
+    "costo-de-no-usar-aspm": "Calculadora de costo de no tener un ASPM",
+    "compliance-eu-cra": "Evaluación de compliance con el EU Cyber Resilience Act",
   };
 
   return {
-    title: seoTitles[slug] ?? config.title,
-    description: config.shortDescription,
+    title: seoTitles[slug] ?? tr(config.title, "es"),
+    description: tr(config.shortDescription, "es"),
   };
 }
 
@@ -35,12 +39,9 @@ export default async function CalculatorPage({ params }: PageProps) {
   if (!config) notFound();
 
   return (
-    <div className="py-12 bg-slate-50 min-h-screen">
+    <div className="py-12 bg-background min-h-screen">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-10">
-          <h1 className="text-3xl font-bold text-brand-navy mb-2">{config.title}</h1>
-          <p className="text-slate-600">{config.shortDescription}</p>
-        </div>
+        <CalculatorPageHeader config={config} />
         <CalculatorWizard config={config} />
       </div>
     </div>

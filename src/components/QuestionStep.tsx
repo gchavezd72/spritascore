@@ -8,6 +8,8 @@ import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
+import { tr } from "@/lib/translate";
+import { useTranslations } from "@/components/LanguageProvider";
 
 interface QuestionStepProps {
   fields: WizardField[];
@@ -15,13 +17,12 @@ interface QuestionStepProps {
 
 export function QuestionStep({ fields }: QuestionStepProps) {
   const { register, setValue, watch, formState: { errors } } = useFormContext();
+  const { t, locale } = useTranslations();
 
   if (fields.length === 0) {
     return (
       <div className="text-center py-8">
-        <p className="text-lg text-slate-600">
-          Revise la información ingresada y presione &quot;Calcular resultado&quot; para obtener su estimación.
-        </p>
+        <p className="text-lg text-muted-foreground">{t.wizard.reviewPrompt}</p>
       </div>
     );
   }
@@ -37,17 +38,17 @@ export function QuestionStep({ fields }: QuestionStepProps) {
             <div key={field.name} className="space-y-2">
               <div className="flex items-center gap-2">
                 <Label htmlFor={field.name}>
-                  {field.label}
+                  {tr(field.label, locale)}
                   {field.required && <span className="text-risk-critical ml-1">*</span>}
                 </Label>
                 {field.tooltip && (
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <button type="button" className="text-slate-400 hover:text-brand-navy">
+                      <button type="button" className="text-muted-foreground hover:text-foreground">
                         <HelpCircle className="h-4 w-4" />
                       </button>
                     </TooltipTrigger>
-                    <TooltipContent>{field.tooltip}</TooltipContent>
+                    <TooltipContent>{tr(field.tooltip, locale)}</TooltipContent>
                   </Tooltip>
                 )}
               </div>
@@ -68,7 +69,8 @@ export function QuestionStep({ fields }: QuestionStepProps) {
               {field.type === "select" && field.options && (
                 <Select
                   id={field.name}
-                  options={field.options}
+                  options={field.options.map((o) => ({ value: o.value, label: tr(o.label, locale) }))}
+                  placeholder={t.wizard.selectPlaceholder}
                   value={value ?? ""}
                   {...register(field.name)}
                 />
@@ -82,15 +84,15 @@ export function QuestionStep({ fields }: QuestionStepProps) {
                     min={field.min ?? 1}
                     max={field.max ?? 5}
                     step={1}
-                    className="w-full accent-brand-orange"
+                    className="w-full accent-brand-green"
                     {...register(field.name, { valueAsNumber: true })}
                   />
-                  <div className="flex justify-between text-xs text-slate-500">
-                    <span>1 — Muy deficiente</span>
-                    <span className="font-semibold text-brand-navy text-sm">
+                  <div className="flex justify-between text-xs text-muted-foreground">
+                    <span>1 — {t.wizard.sliderWorst}</span>
+                    <span className="font-semibold text-foreground text-sm">
                       {value ?? field.defaultValue ?? 3}
                     </span>
-                    <span>5 — Excelente</span>
+                    <span>5 — {t.wizard.sliderBest}</span>
                   </div>
                 </div>
               )}
@@ -99,10 +101,10 @@ export function QuestionStep({ fields }: QuestionStepProps) {
                 <label className="flex items-center gap-3 cursor-pointer">
                   <input
                     type="checkbox"
-                    className="h-4 w-4 rounded border-slate-300 accent-brand-orange"
+                    className="h-4 w-4 rounded border-border-strong accent-brand-green"
                     {...register(field.name)}
                   />
-                  <span className="text-sm text-slate-600">{field.label}</span>
+                  <span className="text-sm text-muted-foreground">{tr(field.label, locale)}</span>
                 </label>
               )}
 
@@ -116,7 +118,7 @@ export function QuestionStep({ fields }: QuestionStepProps) {
                         key={opt.value}
                         className={cn(
                           "flex items-center gap-2 p-3 rounded-lg border cursor-pointer transition-colors",
-                          isChecked ? "border-brand-orange bg-brand-orange/5" : "border-slate-200 hover:border-slate-300"
+                          isChecked ? "border-brand-green bg-brand-green/10" : "border-border-hairline hover:border-border-strong"
                         )}
                       >
                         <input
@@ -130,9 +132,9 @@ export function QuestionStep({ fields }: QuestionStepProps) {
                               setValue(field.name, current.filter((v) => v !== opt.value));
                             }
                           }}
-                          className="accent-brand-orange"
+                          className="accent-brand-green"
                         />
-                        <span className="text-sm">{opt.label}</span>
+                        <span className="text-sm">{tr(opt.label, locale)}</span>
                       </label>
                     );
                   })}
