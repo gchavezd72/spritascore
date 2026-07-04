@@ -13,7 +13,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { saveResult, saveLead } from "@/lib/storage";
 import { trackEvent } from "@/lib/analytics";
-import { useTranslations } from "@/components/LanguageProvider";
+import { useReportContext } from "@/hooks/useReportContext";
 
 interface ResultsViewProps {
   result: CalculationResult;
@@ -22,7 +22,7 @@ interface ResultsViewProps {
 export function ResultsView({ result: initialResult }: ResultsViewProps) {
   const [result, setResult] = useState(initialResult);
   const [unlocked, setUnlocked] = useState(initialResult.leadCaptured);
-  const { t } = useTranslations();
+  const { reportLocale, localizedResult, t } = useReportContext(result);
   const rv = t.resultsView;
 
   const handleLeadSuccess = (lead: LeadData) => {
@@ -39,15 +39,15 @@ export function ResultsView({ result: initialResult }: ResultsViewProps) {
       <Card>
         <CardContent className="pt-8">
           <div className="flex flex-col lg:flex-row gap-8 items-center">
-            <RiskScore score={result.score} riskLevel={result.riskLevel} />
+            <RiskScore score={localizedResult.score} riskLevel={localizedResult.riskLevel} reportLocale={reportLocale} />
             <div className="flex-1 text-center lg:text-left">
-              {result.hoursPerYear !== undefined && (
+              {localizedResult.hoursPerYear !== undefined && (
                 <div className="inline-flex items-center gap-2 bg-brand-green/10 text-brand-green font-semibold px-4 py-2 rounded-lg mb-3">
                   <Clock className="h-4 w-4" />
-                  ≈{result.hoursPerYear.toLocaleString()} {rv.hoursRecoverable} ({(result.hoursPerYear / 2080).toFixed(1)} {rv.fteEquivalent})
+                  ≈{localizedResult.hoursPerYear.toLocaleString()} {rv.hoursRecoverable} ({(localizedResult.hoursPerYear / 2080).toFixed(1)} {rv.fteEquivalent})
                 </div>
               )}
-              <p className="text-lg text-muted-foreground mb-2">{result.partialSummary}</p>
+              <p className="text-lg text-muted-foreground mb-2">{localizedResult.partialSummary}</p>
               <p className="text-sm text-muted-foreground italic">&quot;{rv.quote}&quot;</p>
             </div>
           </div>
@@ -65,11 +65,11 @@ export function ResultsView({ result: initialResult }: ResultsViewProps) {
               <CardTitle>{rv.executiveSummary}</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-foreground/90 leading-relaxed">{result.executiveSummary}</p>
+              <p className="text-foreground/90 leading-relaxed">{localizedResult.executiveSummary}</p>
             </CardContent>
           </Card>
 
-          <CostBreakdown cost={result.cost} currency={result.currency} />
+          <CostBreakdown cost={localizedResult.cost} currency={localizedResult.currency} reportLocale={reportLocale} />
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <Card>
@@ -77,7 +77,7 @@ export function ResultsView({ result: initialResult }: ResultsViewProps) {
                 <CardTitle className="text-lg">{rv.impactMatrix}</CardTitle>
               </CardHeader>
               <CardContent>
-                <ImpactMatrix matrix={result.impactMatrix} />
+                <ImpactMatrix matrix={localizedResult.impactMatrix} reportLocale={reportLocale} />
               </CardContent>
             </Card>
             <Card>
@@ -89,7 +89,7 @@ export function ResultsView({ result: initialResult }: ResultsViewProps) {
               </CardHeader>
               <CardContent>
                 <ul className="space-y-3">
-                  {result.riskFactors.map((factor, i) => (
+                  {localizedResult.riskFactors.map((factor, i) => (
                     <li key={i} className="flex items-start gap-3 text-sm text-foreground/90">
                       <span className="flex-shrink-0 w-6 h-6 rounded-full bg-risk-high/10 text-risk-high flex items-center justify-center text-xs font-bold">
                         {i + 1}
@@ -105,8 +105,8 @@ export function ResultsView({ result: initialResult }: ResultsViewProps) {
           <div>
             <h3 className="text-xl font-bold text-foreground mb-4">{rv.recommendations}</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {result.recommendations.map((rec) => (
-                <RecommendationCard key={rec.id} recommendation={rec} />
+              {localizedResult.recommendations.map((rec) => (
+                <RecommendationCard key={rec.id} recommendation={rec} reportLocale={reportLocale} />
               ))}
             </div>
           </div>

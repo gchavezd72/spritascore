@@ -1,16 +1,18 @@
 "use client";
 
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from "recharts";
-import type { ImpactMatrix as ImpactMatrixType } from "@/types/calculator";
+import type { ImpactMatrix as ImpactMatrixType, Locale } from "@/types/calculator";
+import { getTranslations } from "@/i18n";
 import { useTranslations } from "@/components/LanguageProvider";
 
 interface ImpactMatrixProps {
   matrix: ImpactMatrixType;
+  reportLocale?: Locale;
 }
 
-export function ImpactMatrix({ matrix }: ImpactMatrixProps) {
-  const { t } = useTranslations();
-  const labels = t.impactMatrixLabels;
+export function ImpactMatrix({ matrix, reportLocale }: ImpactMatrixProps) {
+  const { locale: uiLocale } = useTranslations();
+  const labels = getTranslations(reportLocale ?? uiLocale).impactMatrixLabels;
   const data = [
     { dimension: labels.financial, value: matrix.financial },
     { dimension: labels.technical, value: matrix.technical },

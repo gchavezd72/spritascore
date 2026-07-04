@@ -1,20 +1,24 @@
 "use client";
 
 import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
-import type { RiskLevel } from "@/types/calculator";
+import type { Locale, RiskLevel } from "@/types/calculator";
 import { RISK_LEVELS } from "@/data/riskRanges";
 import { Badge } from "@/components/ui/badge";
 import { tr } from "@/lib/translate";
+import { getTranslations } from "@/i18n";
 import { useTranslations } from "@/components/LanguageProvider";
 
 interface RiskScoreProps {
   score: number;
   riskLevel: RiskLevel;
   size?: "sm" | "lg";
+  reportLocale?: Locale;
 }
 
-export function RiskScore({ score, riskLevel, size = "lg" }: RiskScoreProps) {
-  const { t, locale } = useTranslations();
+export function RiskScore({ score, riskLevel, size = "lg", reportLocale }: RiskScoreProps) {
+  const { locale: uiLocale } = useTranslations();
+  const locale = reportLocale ?? uiLocale;
+  const t = getTranslations(locale);
   const config = RISK_LEVELS[riskLevel];
   const data = [
     { name: "score", value: score },

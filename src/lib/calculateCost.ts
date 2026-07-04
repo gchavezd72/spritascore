@@ -94,7 +94,7 @@ export function calculateIsoQuality(
     const rating = num(inputs[dim.id], 3);
     qualityRatings.push(rating);
     dimensionRisks.push({
-      name: pickLocale(locale, { es: dim.nameEs, en: dim.name, pt: dim.name }),
+      name: pickLocale(locale, { es: dim.nameEs, en: dim.name, pt: dim.namePt }),
       risk: dimensionRiskScore(rating, dim.weight),
     });
   }
@@ -1059,20 +1059,28 @@ export function calculate(
   currency: Currency,
   locale: Locale = "es"
 ): CalculationResult {
+  let result: CalculationResult;
   switch (calculatorId) {
     case "iso-quality":
-      return calculateIsoQuality(inputs, currency, locale);
+      result = calculateIsoQuality(inputs, currency, locale);
+      break;
     case "owasp-web":
-      return calculateOwaspWeb(inputs, currency, locale);
+      result = calculateOwaspWeb(inputs, currency, locale);
+      break;
     case "owasp-mobile":
-      return calculateOwaspMobile(inputs, currency, locale);
+      result = calculateOwaspMobile(inputs, currency, locale);
+      break;
     case "sector":
-      return calculateSector(inputs, currency, locale);
+      result = calculateSector(inputs, currency, locale);
+      break;
     case "aspm-cost":
-      return calculateAspmCost(inputs, currency, locale);
+      result = calculateAspmCost(inputs, currency, locale);
+      break;
     case "cra-compliance":
-      return calculateCraCompliance(inputs, currency, locale);
+      result = calculateCraCompliance(inputs, currency, locale);
+      break;
     default:
       throw new Error(`Unknown calculator: ${calculatorId}`);
   }
+  return { ...result, locale };
 }

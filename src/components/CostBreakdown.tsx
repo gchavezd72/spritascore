@@ -1,22 +1,24 @@
 "use client";
 
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip, Cell } from "recharts";
-import type { CostBreakdown as CostBreakdownType } from "@/types/calculator";
-import type { Currency } from "@/types/calculator";
+import type { CostBreakdown as CostBreakdownType, Currency, Locale } from "@/types/calculator";
 import { formatCurrency } from "@/lib/formatCurrency";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { getTranslations } from "@/i18n";
 import { useTranslations } from "@/components/LanguageProvider";
 
 interface CostBreakdownProps {
   cost: CostBreakdownType;
   currency: Currency;
+  /** When set, section labels match the report/result locale instead of the header toggle. */
+  reportLocale?: Locale;
 }
 
 const COLORS = ["#1fbf6c", "#3b6fe0", "#8b5cf6", "#ef4444", "#0ea5a0", "#eab308", "#64748b"];
 
-export function CostBreakdown({ cost, currency }: CostBreakdownProps) {
-  const { t } = useTranslations();
-  const cb = t.costBreakdown;
+export function CostBreakdown({ cost, currency, reportLocale }: CostBreakdownProps) {
+  const { locale: uiLocale } = useTranslations();
+  const cb = getTranslations(reportLocale ?? uiLocale).costBreakdown;
   const chartData = cost.items.map((item, i) => ({
     name: item.label.length > 20 ? item.label.slice(0, 18) + "…" : item.label,
     fullName: item.label,

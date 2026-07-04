@@ -89,6 +89,8 @@ export interface CalculationResult {
   partialSummary: string;
   inputs: Record<string, unknown>;
   currency: Currency;
+  /** Set by calculate(); legacy results may omit this. */
+  locale?: Locale;
   createdAt: string;
   leadCaptured: boolean;
   hoursPerYear?: number;

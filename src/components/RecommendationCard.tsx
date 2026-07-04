@@ -1,6 +1,7 @@
-import type { Recommendation } from "@/types/calculator";
+import type { Locale, Recommendation } from "@/types/calculator";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { getTranslations } from "@/i18n";
 import { tr } from "@/lib/translate";
 import { useTranslations } from "@/components/LanguageProvider";
 
@@ -13,11 +14,13 @@ const PRIORITY_VARIANTS = {
 
 interface RecommendationCardProps {
   recommendation: Recommendation;
+  reportLocale?: Locale;
 }
 
-export function RecommendationCard({ recommendation }: RecommendationCardProps) {
-  const { t, locale } = useTranslations();
-  const rc = t.recommendationCard;
+export function RecommendationCard({ recommendation, reportLocale }: RecommendationCardProps) {
+  const { locale: uiLocale } = useTranslations();
+  const locale = reportLocale ?? uiLocale;
+  const rc = getTranslations(locale).recommendationCard;
 
   return (
     <Card className="lift hover:border-brand-green/30">
