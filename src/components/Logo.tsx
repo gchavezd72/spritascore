@@ -22,14 +22,7 @@ export function Logo({ className, showScore = true, variant = "dark" }: LogoProp
     >
       <span className={wordmark}>Sprita</span>
       <span className="relative inline-flex items-baseline">
-        <span className="relative inline-block">
-          <span className={cn("font-semibold", secondary)}>i</span>
-          <span
-            className="absolute bottom-full left-1/2 mb-0.5 h-[0.22em] w-[0.22em] -translate-x-1/2 rounded-[1px] bg-brand-green"
-            aria-hidden
-          />
-        </span>
-        <span className={cn("font-semibold", secondary)}>T</span>
+        <span className={cn("font-semibold", secondary)}>iT</span>
       </span>
       {showScore && (
         <>
