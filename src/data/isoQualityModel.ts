@@ -18,6 +18,7 @@ export const ISO_25010_DIMENSIONS: QualityDimension[] = [
     description: {
       es: "Grado en que el software proporciona funciones que satisfacen necesidades declaradas.",
       en: "Degree to which the software provides functions that satisfy stated needs.",
+      pt: "Grau em que o software oferece funções que atendem às necessidades declaradas.",
     },
     weight: 1.0,
   },
@@ -29,6 +30,7 @@ export const ISO_25010_DIMENSIONS: QualityDimension[] = [
     description: {
       es: "Rendimiento relativo a cantidad de recursos utilizados.",
       en: "Performance relative to the amount of resources used.",
+      pt: "Desempenho em relação à quantidade de recursos utilizados.",
     },
     weight: 1.1,
   },
@@ -39,6 +41,7 @@ export const ISO_25010_DIMENSIONS: QualityDimension[] = [
     description: {
       es: "Capacidad de intercambiar información con otros sistemas.",
       en: "Ability to exchange information with other systems.",
+      pt: "Capacidade de trocar informações com outros sistemas.",
     },
     weight: 0.9,
   },
@@ -50,6 +53,7 @@ export const ISO_25010_DIMENSIONS: QualityDimension[] = [
     description: {
       es: "Facilidad de uso y aprendizaje para usuarios objetivo.",
       en: "Ease of use and learnability for target users.",
+      pt: "Facilidade de uso e aprendizado para os usuários-alvo.",
     },
     weight: 0.8,
   },
@@ -61,6 +65,7 @@ export const ISO_25010_DIMENSIONS: QualityDimension[] = [
     description: {
       es: "Capacidad de funcionar bajo condiciones especificadas por un período.",
       en: "Ability to perform under specified conditions for a period of time.",
+      pt: "Capacidade de operar sob condições especificadas por um período de tempo.",
     },
     weight: 1.3,
   },
@@ -71,6 +76,7 @@ export const ISO_25010_DIMENSIONS: QualityDimension[] = [
     description: {
       es: "Protección contra accesos no autorizados y vulnerabilidades.",
       en: "Protection against unauthorized access and vulnerabilities.",
+      pt: "Proteção contra acessos não autorizados e vulnerabilidades.",
     },
     weight: 1.5,
   },
@@ -82,6 +88,7 @@ export const ISO_25010_DIMENSIONS: QualityDimension[] = [
     description: {
       es: "Facilidad de modificar, corregir y evolucionar el software.",
       en: "Ease of modifying, correcting, and evolving the software.",
+      pt: "Facilidade de modificar, corrigir e evoluir o software.",
     },
     weight: 1.4,
   },
@@ -93,6 +100,7 @@ export const ISO_25010_DIMENSIONS: QualityDimension[] = [
     description: {
       es: "Capacidad de transferirse de un entorno a otro.",
       en: "Ability to be transferred from one environment to another.",
+      pt: "Capacidade de ser transferido de um ambiente para outro.",
     },
     weight: 0.9,
   },

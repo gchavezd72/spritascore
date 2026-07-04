@@ -18,6 +18,7 @@ export const OWASP_MOBILE_TOP10_2024: OwaspMobileCategory[] = [
     description: {
       es: "Credenciales hardcodeadas, almacenadas inseguramente o reutilizadas.",
       en: "Hardcoded credentials, insecurely stored credentials, or credential reuse.",
+      pt: "Credenciais hardcoded, armazenadas de forma insegura ou reutilizadas.",
     },
     severityWeight: 9,
     remediationHours: { min: 24, max: 120 },
@@ -30,6 +31,7 @@ export const OWASP_MOBILE_TOP10_2024: OwaspMobileCategory[] = [
     description: {
       es: "SDKs, librerías y dependencias móviles sin validación de seguridad.",
       en: "Mobile SDKs, libraries, and dependencies lacking security validation.",
+      pt: "SDKs, bibliotecas e dependências móveis sem validação de segurança.",
     },
     severityWeight: 8,
     remediationHours: { min: 40, max: 200 },
@@ -42,6 +44,7 @@ export const OWASP_MOBILE_TOP10_2024: OwaspMobileCategory[] = [
     description: {
       es: "Controles de identidad débiles en apps móviles.",
       en: "Weak identity controls in mobile applications.",
+      pt: "Controles de identidade fracos em aplicativos móveis.",
     },
     severityWeight: 9,
     remediationHours: { min: 32, max: 160 },
@@ -54,6 +57,7 @@ export const OWASP_MOBILE_TOP10_2024: OwaspMobileCategory[] = [
     description: {
       es: "Datos de usuario no validados en cliente y APIs móviles.",
       en: "Unvalidated user data on the client and mobile APIs.",
+      pt: "Dados de usuário não validados no cliente e nas APIs móveis.",
     },
     severityWeight: 8,
     remediationHours: { min: 24, max: 100 },
@@ -66,6 +70,7 @@ export const OWASP_MOBILE_TOP10_2024: OwaspMobileCategory[] = [
     description: {
       es: "Tráfico sin cifrado adecuado o certificados mal validados.",
       en: "Traffic without adequate encryption or improperly validated certificates.",
+      pt: "Tráfego sem criptografia adequada ou certificados validados incorretamente.",
     },
     severityWeight: 8,
     remediationHours: { min: 16, max: 80 },
@@ -78,6 +83,7 @@ export const OWASP_MOBILE_TOP10_2024: OwaspMobileCategory[] = [
     description: {
       es: "Recolección y uso de datos sin controles de privacidad apropiados.",
       en: "Data collection and use without appropriate privacy controls.",
+      pt: "Coleta e uso de dados sem controles de privacidade adequados.",
     },
     severityWeight: 7,
     remediationHours: { min: 32, max: 150 },
@@ -90,6 +96,7 @@ export const OWASP_MOBILE_TOP10_2024: OwaspMobileCategory[] = [
     description: {
       es: "App vulnerable a ingeniería inversa, tampering o debugging.",
       en: "App vulnerable to reverse engineering, tampering, or debugging.",
+      pt: "Aplicativo vulnerável a engenharia reversa, adulteração ou depuração.",
     },
     severityWeight: 7,
     remediationHours: { min: 40, max: 200 },
@@ -102,6 +109,7 @@ export const OWASP_MOBILE_TOP10_2024: OwaspMobileCategory[] = [
     description: {
       es: "Permisos excesivos, debug habilitado o configuración insegura.",
       en: "Excessive permissions, debugging enabled, or insecure configuration.",
+      pt: "Permissões excessivas, depuração habilitada ou configuração insegura.",
     },
     severityWeight: 6,
     remediationHours: { min: 8, max: 60 },
@@ -114,6 +122,7 @@ export const OWASP_MOBILE_TOP10_2024: OwaspMobileCategory[] = [
     description: {
       es: "Datos sensibles almacenados sin cifrado en el dispositivo.",
       en: "Sensitive data stored without encryption on the device.",
+      pt: "Dados sensíveis armazenados sem criptografia no dispositivo.",
     },
     severityWeight: 9,
     remediationHours: { min: 24, max: 120 },
@@ -126,6 +135,7 @@ export const OWASP_MOBILE_TOP10_2024: OwaspMobileCategory[] = [
     description: {
       es: "Algoritmos débiles, implementación incorrecta o claves expuestas.",
       en: "Weak algorithms, incorrect implementation, or exposed keys.",
+      pt: "Algoritmos fracos, implementação incorreta ou chaves expostas.",
     },
     severityWeight: 8,
     remediationHours: { min: 32, max: 140 },

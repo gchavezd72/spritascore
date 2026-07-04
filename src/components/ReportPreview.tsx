@@ -5,7 +5,7 @@ import { formatCurrency } from "@/lib/formatCurrency";
 import { getRiskLevelLabel } from "@/data/riskRanges";
 import { getCalculatorById } from "@/data/calculatorConfigs";
 import { trackEvent } from "@/lib/analytics";
-import { tr } from "@/lib/translate";
+import { localeDateTag, tr } from "@/lib/translate";
 import { useTranslations } from "@/components/LanguageProvider";
 
 interface ReportPreviewProps {
@@ -32,7 +32,7 @@ export function ReportPreview({ result }: ReportPreviewProps) {
           <p className="text-sm text-slate-500">{rp.productName}</p>
         </div>
         <div className="text-right text-sm text-slate-500">
-          <p>{new Date(result.createdAt).toLocaleDateString(locale === "en" ? "en-US" : "es-ES", { dateStyle: "long" })}</p>
+          <p>{new Date(result.createdAt).toLocaleDateString(localeDateTag(locale), { dateStyle: "long" })}</p>
           <p>ID: {result.id.slice(0, 12)}</p>
         </div>
       </div>

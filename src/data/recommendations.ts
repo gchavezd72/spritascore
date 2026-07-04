@@ -8,10 +8,12 @@ export const RECOMMENDATION_TEMPLATES: RecommendationTemplate[] = [
     title: {
       es: "Diagnóstico técnico inmediato",
       en: "Immediate technical diagnosis",
+      pt: "Diagnóstico técnico imediato",
     },
     description: {
       es: "Solicite una evaluación especializada para validar el nivel real de exposición y priorizar acciones de remediación.",
       en: "Commission a specialized assessment to validate the real level of exposure and prioritize remediation actions.",
+      pt: "Solicite uma avaliação especializada para validar o nível real de exposição e priorizar ações de remediação.",
     },
     priority: "critica",
     effort: "bajo",
@@ -25,10 +27,12 @@ export const RECOMMENDATION_TEMPLATES: RecommendationTemplate[] = [
     title: {
       es: "Implementar análisis estático de código (SAST)",
       en: "Implement static application security testing (SAST)",
+      pt: "Implementar análise estática de código (SAST)",
     },
     description: {
       es: "Detecte defectos y vulnerabilidades en etapas tempranas del ciclo de desarrollo.",
       en: "Detect defects and vulnerabilities in early stages of the development lifecycle.",
+      pt: "Detecte defeitos e vulnerabilidades nas etapas iniciais do ciclo de desenvolvimento.",
     },
     priority: "alta",
     effort: "medio",
@@ -42,10 +46,12 @@ export const RECOMMENDATION_TEMPLATES: RecommendationTemplate[] = [
     title: {
       es: "Medir y gestionar deuda técnica",
       en: "Measure and manage technical debt",
+      pt: "Medir e gerenciar dívida técnica",
     },
     description: {
       es: "Establezca métricas de deuda técnica y umbrales de calidad para priorizar refactorización.",
       en: "Establish technical debt metrics and quality thresholds to prioritize refactoring.",
+      pt: "Estabeleça métricas de dívida técnica e limites de qualidade para priorizar refatoração.",
     },
     priority: "alta",
     effort: "medio",
@@ -59,10 +65,12 @@ export const RECOMMENDATION_TEMPLATES: RecommendationTemplate[] = [
     title: {
       es: "Automatizar quality gates en CI/CD",
       en: "Automate quality gates in CI/CD",
+      pt: "Automatizar quality gates no CI/CD",
     },
     description: {
       es: "Bloquee despliegues que no cumplan umbrales mínimos de calidad y seguridad.",
       en: "Block deployments that fail to meet minimum quality and security thresholds.",
+      pt: "Bloqueie implantações que não atendam aos limites mínimos de qualidade e segurança.",
     },
     priority: "alta",
     effort: "medio",
@@ -76,10 +84,12 @@ export const RECOMMENDATION_TEMPLATES: RecommendationTemplate[] = [
     title: {
       es: "Revisar controles de acceso y autorización",
       en: "Review access control and authorization",
+      pt: "Revisar controles de acesso e autorização",
     },
     description: {
       es: "Valide que los controles de acceso implementen el principio de mínimo privilegio.",
       en: "Validate that access controls implement the principle of least privilege.",
+      pt: "Valide se os controles de acesso implementam o princípio do menor privilégio.",
     },
     priority: "critica",
     effort: "medio",
@@ -93,10 +103,12 @@ export const RECOMMENDATION_TEMPLATES: RecommendationTemplate[] = [
     title: {
       es: "Implementar análisis de composición de software (SCA)",
       en: "Implement software composition analysis (SCA)",
+      pt: "Implementar análise de composição de software (SCA)",
     },
     description: {
       es: "Escanee dependencias de terceros y librerías de código abierto para identificar componentes con vulnerabilidades conocidas antes de que lleguen a producción.",
       en: "Scan third-party dependencies and open-source libraries to identify components with known vulnerabilities before they reach production.",
+      pt: "Escaneie dependências de terceiros e bibliotecas de código aberto para identificar componentes com vulnerabilidades conhecidas antes que cheguem à produção.",
     },
     priority: "alta",
     effort: "medio",
@@ -110,10 +122,12 @@ export const RECOMMENDATION_TEMPLATES: RecommendationTemplate[] = [
     title: {
       es: "Generar y mantener un SBOM completo",
       en: "Generate and maintain a complete SBOM",
+      pt: "Gerar e manter um SBOM completo",
     },
     description: {
       es: "Construya y mantenga actualizado un inventario de materiales de software (SBOM) para saber exactamente qué componentes y versiones corren en cada aplicación, y reaccionar rápido ante una vulnerabilidad nueva en la cadena de suministro.",
       en: "Build and keep an up-to-date software bill of materials (SBOM) to know exactly which components and versions run in each application, and react quickly to a new vulnerability in the supply chain.",
+      pt: "Construa e mantenha atualizado um inventário de materiais de software (SBOM) para saber exatamente quais componentes e versões rodam em cada aplicação e reagir rapidamente a uma nova vulnerabilidade na cadeia de suprimentos.",
     },
     priority: "alta",
     effort: "medio",
@@ -127,10 +141,12 @@ export const RECOMMENDATION_TEMPLATES: RecommendationTemplate[] = [
     title: {
       es: "Implementar pruebas dinámicas de seguridad (DAST)",
       en: "Implement dynamic application security testing (DAST)",
+      pt: "Implementar testes dinâmicos de segurança (DAST)",
     },
     description: {
       es: "Pruebe la aplicación en ejecución para detectar vulnerabilidades explotables en tiempo real (inyección, autenticación, configuración) que el análisis estático no puede ver.",
       en: "Test the running application to detect exploitable vulnerabilities in real time (injection, authentication, configuration) that static analysis cannot see.",
+      pt: "Teste a aplicação em execução para detectar vulnerabilidades exploráveis em tempo real (injeção, autenticação, configuração) que a análise estática não consegue identificar.",
     },
     priority: "alta",
     effort: "medio",
@@ -144,10 +160,12 @@ export const RECOMMENDATION_TEMPLATES: RecommendationTemplate[] = [
     title: {
       es: "Adoptar pruebas interactivas de seguridad (IAST)",
       en: "Adopt interactive application security testing (IAST)",
+      pt: "Adotar testes interativos de segurança (IAST)",
     },
     description: {
       es: "Combine instrumentación en tiempo de ejecución con pruebas funcionales para detectar vulnerabilidades con mayor precisión y menos falsos positivos, directamente en el pipeline de CI/CD.",
       en: "Combine runtime instrumentation with functional testing to detect vulnerabilities with greater precision and fewer false positives, directly in the CI/CD pipeline.",
+      pt: "Combine instrumentação em tempo de execução com testes funcionais para detectar vulnerabilidades com maior precisão e menos falsos positivos, diretamente no pipeline de CI/CD.",
     },
     priority: "media",
     effort: "medio",
@@ -161,10 +179,12 @@ export const RECOMMENDATION_TEMPLATES: RecommendationTemplate[] = [
     title: {
       es: "Fortalecer monitoreo y logging de seguridad",
       en: "Strengthen security monitoring and logging",
+      pt: "Fortalecer monitoramento e logging de segurança",
     },
     description: {
       es: "Implemente detección, alertas y respuesta ante incidentes de seguridad.",
       en: "Implement detection, alerting, and incident response for security events.",
+      pt: "Implemente detecção, alertas e resposta a incidentes de segurança.",
     },
     priority: "alta",
     effort: "alto",
@@ -178,10 +198,12 @@ export const RECOMMENDATION_TEMPLATES: RecommendationTemplate[] = [
     title: {
       es: "Validar configuración segura",
       en: "Validate secure configuration",
+      pt: "Validar configuração segura",
     },
     description: {
       es: "Revise configuraciones de servidores, cloud y aplicaciones contra benchmarks de seguridad.",
       en: "Review server, cloud, and application configurations against security benchmarks.",
+      pt: "Revise configurações de servidores, nuvem e aplicações com base em benchmarks de segurança.",
     },
     priority: "media",
     effort: "bajo",
@@ -195,10 +217,12 @@ export const RECOMMENDATION_TEMPLATES: RecommendationTemplate[] = [
     title: {
       es: "Plan de remediación ejecutivo (30 días)",
       en: "Executive remediation plan (30 days)",
+      pt: "Plano executivo de remediação (30 dias)",
     },
     description: {
       es: "Defina un plan de acción con responsables, plazos y métricas de reducción de riesgo.",
       en: "Define an action plan with owners, deadlines, and risk-reduction metrics.",
+      pt: "Defina um plano de ação com responsáveis, prazos e métricas de redução de risco.",
     },
     priority: "critica",
     effort: "medio",
@@ -212,10 +236,12 @@ export const RECOMMENDATION_TEMPLATES: RecommendationTemplate[] = [
     title: {
       es: "Roadmap de reducción de riesgo (60 días)",
       en: "Risk-reduction roadmap (60 days)",
+      pt: "Roadmap de redução de risco (60 dias)",
     },
     description: {
       es: "Establezca un programa estructurado de mejora de seguridad y calidad.",
       en: "Establish a structured program for security and quality improvement.",
+      pt: "Estabeleça um programa estruturado de melhoria de segurança e qualidade.",
     },
     priority: "alta",
     effort: "alto",
@@ -229,10 +255,12 @@ export const RECOMMENDATION_TEMPLATES: RecommendationTemplate[] = [
     title: {
       es: "Monitoreo preventivo y baseline de calidad",
       en: "Preventive monitoring and quality baseline",
+      pt: "Monitoramento preventivo e baseline de qualidade",
     },
     description: {
       es: "Establezca métricas base y monitoreo continuo para detectar degradación temprana.",
       en: "Establish baseline metrics and continuous monitoring to detect early degradation.",
+      pt: "Estabeleça métricas de referência e monitoramento contínuo para detectar degradação precoce.",
     },
     priority: "media",
     effort: "bajo",
@@ -246,10 +274,12 @@ export const RECOMMENDATION_TEMPLATES: RecommendationTemplate[] = [
     title: {
       es: "Evaluación de madurez de seguridad",
       en: "Security maturity assessment",
+      pt: "Avaliação de maturidade de segurança",
     },
     description: {
       es: "Realice un assessment para identificar brechas en controles y procesos de seguridad.",
       en: "Conduct an assessment to identify gaps in security controls and processes.",
+      pt: "Realize uma avaliação para identificar lacunas em controles e processos de segurança.",
     },
     priority: "alta",
     effort: "medio",
@@ -263,10 +293,12 @@ export const RECOMMENDATION_TEMPLATES: RecommendationTemplate[] = [
     title: {
       es: "Evidencia técnica para auditorías",
       en: "Technical evidence for audits",
+      pt: "Evidências técnicas para auditorias",
     },
     description: {
       es: "Documente controles, pruebas y hallazgos para cumplimiento regulatorio.",
       en: "Document controls, tests, and findings for regulatory compliance.",
+      pt: "Documente controles, testes e achados para conformidade regulatória.",
     },
     priority: "alta",
     effort: "alto",
@@ -280,10 +312,12 @@ export const RECOMMENDATION_TEMPLATES: RecommendationTemplate[] = [
     title: {
       es: "Revisar almacenamiento local en apps móviles",
       en: "Review local storage in mobile apps",
+      pt: "Revisar armazenamento local em apps móveis",
     },
     description: {
       es: "Asegure que datos sensibles en dispositivos estén cifrados y protegidos.",
       en: "Ensure sensitive data on devices is encrypted and protected.",
+      pt: "Garanta que dados sensíveis nos dispositivos estejam criptografados e protegidos.",
     },
     priority: "alta",
     effort: "medio",
@@ -297,10 +331,12 @@ export const RECOMMENDATION_TEMPLATES: RecommendationTemplate[] = [
     title: {
       es: "Análisis de supply chain móvil",
       en: "Mobile supply chain analysis",
+      pt: "Análise da cadeia de suprimentos móvel",
     },
     description: {
       es: "Audite SDKs, dependencias y componentes de terceros en aplicaciones móviles.",
       en: "Audit SDKs, dependencies, and third-party components in mobile applications.",
+      pt: "Audite SDKs, dependências e componentes de terceiros em aplicações móveis.",
     },
     priority: "alta",
     effort: "medio",
@@ -314,10 +350,12 @@ export const RECOMMENDATION_TEMPLATES: RecommendationTemplate[] = [
     title: {
       es: "Protección contra ingeniería inversa",
       en: "Protection against reverse engineering",
+      pt: "Proteção contra engenharia reversa",
     },
     description: {
       es: "Implemente ofuscación, anti-tampering y detección de jailbreak/root.",
       en: "Implement obfuscation, anti-tampering, and jailbreak/root detection.",
+      pt: "Implemente ofuscação, anti-tampering e detecção de jailbreak/root.",
     },
     priority: "media",
     effort: "alto",
@@ -331,10 +369,12 @@ export const RECOMMENDATION_TEMPLATES: RecommendationTemplate[] = [
     title: {
       es: "Mapear hallazgos contra ISO/IEC 25010",
       en: "Map findings against ISO/IEC 25010",
+      pt: "Mapear achados com base na ISO/IEC 25010",
     },
     description: {
       es: "Alinee métricas de calidad con el modelo internacional para reportes ejecutivos.",
       en: "Align quality metrics with the international model for executive reporting.",
+      pt: "Alinhe métricas de qualidade ao modelo internacional para relatórios executivos.",
     },
     priority: "media",
     effort: "bajo",
@@ -348,10 +388,12 @@ export const RECOMMENDATION_TEMPLATES: RecommendationTemplate[] = [
     title: {
       es: "Definir KPIs ejecutivos de calidad",
       en: "Define executive quality KPIs",
+      pt: "Definir KPIs executivos de qualidade",
     },
     description: {
       es: "Traduzca métricas técnicas en indicadores comprensibles para la dirección.",
       en: "Translate technical metrics into indicators that leadership can understand.",
+      pt: "Traduza métricas técnicas em indicadores compreensíveis para a diretoria.",
     },
     priority: "media",
     effort: "bajo",
@@ -365,10 +407,12 @@ export const RECOMMENDATION_TEMPLATES: RecommendationTemplate[] = [
     title: {
       es: "Pruebas de seguridad recurrentes",
       en: "Recurring security testing",
+      pt: "Testes de segurança recorrentes",
     },
     description: {
       es: "Establezca un programa de pentesting y DAST periódico.",
       en: "Establish a program of periodic pentesting and DAST.",
+      pt: "Estabeleça um programa de pentest e DAST periódicos.",
     },
     priority: "alta",
     effort: "alto",
@@ -382,10 +426,12 @@ export const RECOMMENDATION_TEMPLATES: RecommendationTemplate[] = [
     title: {
       es: "Gobierno de calidad de código",
       en: "Code quality governance",
+      pt: "Governança de qualidade de código",
     },
     description: {
       es: "Defina estándares, revisiones y responsables para mantener calidad sostenible.",
       en: "Define standards, reviews, and owners to maintain sustainable quality.",
+      pt: "Defina padrões, revisões e responsáveis para manter qualidade sustentável.",
     },
     priority: "media",
     effort: "medio",
@@ -399,10 +445,12 @@ export const RECOMMENDATION_TEMPLATES: RecommendationTemplate[] = [
     title: {
       es: "Consolidar hallazgos en una plataforma ASPM",
       en: "Consolidate findings in an ASPM platform",
+      pt: "Consolidar achados em uma plataforma ASPM",
     },
     description: {
       es: "Centralice alertas de SAST, DAST, SCA, cloud y contenedores en un solo lugar para eliminar duplicados y correlacionar hallazgos por aplicación.",
       en: "Centralize SAST, DAST, SCA, cloud, and container alerts in one place to eliminate duplicates and correlate findings by application.",
+      pt: "Centralize alertas de SAST, DAST, SCA, nuvem e contêineres em um único lugar para eliminar duplicatas e correlacionar achados por aplicação.",
     },
     priority: "alta",
     effort: "medio",
@@ -416,10 +464,12 @@ export const RECOMMENDATION_TEMPLATES: RecommendationTemplate[] = [
     title: {
       es: "Priorizar por explotabilidad y contexto de negocio",
       en: "Prioritize by exploitability and business context",
+      pt: "Priorizar por explorabilidade e contexto de negócio",
     },
     description: {
       es: "Ordene los hallazgos por explotabilidad real, exposición y criticidad del activo en vez de tratarlos todos igual.",
       en: "Rank findings by real exploitability, exposure, and asset criticality instead of treating them all the same.",
+      pt: "Ordene os achados por explorabilidade real, exposição e criticidade do ativo, em vez de tratá-los todos da mesma forma.",
     },
     priority: "alta",
     effort: "bajo",
@@ -433,10 +483,12 @@ export const RECOMMENDATION_TEMPLATES: RecommendationTemplate[] = [
     title: {
       es: "Eliminar herramientas de seguridad redundantes",
       en: "Eliminate redundant security tools",
+      pt: "Eliminar ferramentas de segurança redundantes",
     },
     description: {
       es: "Audite el solapamiento entre sus herramientas actuales y consolide las que generan el mismo tipo de hallazgo.",
       en: "Audit the overlap between your current tools and consolidate those that generate the same type of finding.",
+      pt: "Audite a sobreposição entre suas ferramentas atuais e consolide aquelas que geram o mesmo tipo de achado.",
     },
     priority: "media",
     effort: "bajo",
@@ -450,10 +502,12 @@ export const RECOMMENDATION_TEMPLATES: RecommendationTemplate[] = [
     title: {
       es: "Establecer un programa de gestión de vulnerabilidades",
       en: "Establish a vulnerability management program",
+      pt: "Estabelecer um programa de gestão de vulnerabilidades",
     },
     description: {
       es: "Defina un proceso formal de identificación, clasificación, remediación y verificación de vulnerabilidades con responsables y SLAs por severidad.",
       en: "Define a formal process for identifying, classifying, remediating, and verifying vulnerabilities with owners and severity-based SLAs.",
+      pt: "Defina um processo formal de identificação, classificação, remediação e verificação de vulnerabilidades com responsáveis e SLAs por severidade.",
     },
     priority: "alta",
     effort: "medio",
@@ -467,10 +521,12 @@ export const RECOMMENDATION_TEMPLATES: RecommendationTemplate[] = [
     title: {
       es: "Capacitar al equipo en prácticas de desarrollo seguro",
       en: "Train the team on secure development practices",
+      pt: "Capacitar a equipe em práticas de desenvolvimento seguro",
     },
     description: {
       es: "Entrene a desarrolladores en secure coding y en la interpretación de hallazgos de SAST/DAST/SCA para reducir la reintroducción de los mismos defectos.",
       en: "Train developers in secure coding and in interpreting SAST/DAST/SCA findings to reduce the reintroduction of the same defects.",
+      pt: "Treine desenvolvedores em secure coding e na interpretação de achados de SAST/DAST/SCA para reduzir a reintrodução dos mesmos defeitos.",
     },
     priority: "media",
     effort: "medio",
@@ -484,10 +540,12 @@ export const RECOMMENDATION_TEMPLATES: RecommendationTemplate[] = [
     title: {
       es: "Documentar evaluación de conformidad y expediente técnico",
       en: "Document conformity assessment and technical file",
+      pt: "Documentar avaliação de conformidade e dossiê técnico",
     },
     description: {
       es: "Prepare el expediente técnico (arquitectura, análisis de riesgos, pruebas, SBOM) requerido por el CRA y, si su producto es importante o crítico, inicie la evaluación de conformidad con un organismo notificado.",
       en: "Prepare the technical file (architecture, risk analysis, testing, SBOM) required by the CRA and, if your product is important or critical, initiate the conformity assessment with a notified body.",
+      pt: "Prepare o dossiê técnico (arquitetura, análise de riscos, testes, SBOM) exigido pelo CRA e, se seu produto for importante ou crítico, inicie a avaliação de conformidade com um organismo notificado.",
     },
     priority: "alta",
     effort: "alto",
@@ -501,10 +559,12 @@ export const RECOMMENDATION_TEMPLATES: RecommendationTemplate[] = [
     title: {
       es: "Definir proceso de reporte de incidentes en 24/72 horas",
       en: "Define a 24/72-hour incident reporting process",
+      pt: "Definir processo de reporte de incidentes em 24/72 horas",
     },
     description: {
       es: "Establezca un procedimiento operativo para notificar a ENISA/CSIRT una vulnerabilidad explotada activamente en menos de 24 horas y un reporte detallado en 72 horas, como exige el CRA.",
       en: "Establish an operational procedure to notify ENISA/CSIRT of an actively exploited vulnerability within 24 hours and provide a detailed report within 72 hours, as required by the CRA.",
+      pt: "Estabeleça um procedimento operacional para notificar a ENISA/CSIRT sobre uma vulnerabilidade ativamente explorada em menos de 24 horas e fornecer um relatório detalhado em 72 horas, conforme exigido pelo CRA.",
     },
     priority: "critica",
     effort: "medio",
@@ -518,10 +578,12 @@ export const RECOMMENDATION_TEMPLATES: RecommendationTemplate[] = [
     title: {
       es: "Definir y comunicar el período de soporte de seguridad",
       en: "Define and communicate the security support period",
+      pt: "Definir e comunicar o período de suporte de segurança",
     },
     description: {
       es: "Establezca y publique el período durante el cual el producto recibirá actualizaciones de seguridad, alineado con su vida útil esperada, como exige el CRA.",
       en: "Establish and publish the period during which the product will receive security updates, aligned with its expected lifespan, as required by the CRA.",
+      pt: "Estabeleça e publique o período durante o qual o produto receberá atualizações de segurança, alinhado à sua vida útil esperada, conforme exigido pelo CRA.",
     },
     priority: "media",
     effort: "bajo",

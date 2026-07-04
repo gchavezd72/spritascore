@@ -24,7 +24,7 @@ import {
 } from "@/data/commonOptions";
 import type { CalculationResult, CalculatorId, Currency, Locale, LocalizedText } from "@/types/calculator";
 import { generateId } from "@/lib/utils";
-import { tr } from "@/lib/translate";
+import { pickLocale, tr } from "@/lib/translate";
 import {
   buildImpactMatrix,
   calculateRiskScore,
@@ -48,10 +48,6 @@ function str(val: unknown, fallback = ""): string {
   return typeof val === "string" ? val : fallback;
 }
 
-function isEn(locale: Locale): boolean {
-  return locale === "en";
-}
-
 /** Resolve a raw enum value to its human-readable, localized label. */
 function labelOf(
   options: readonly { value: string; label: LocalizedText }[],
@@ -63,15 +59,15 @@ function labelOf(
 }
 
 const PLATFORM_LABELS: Record<string, LocalizedText> = {
-  ios: { es: "iOS", en: "iOS" },
-  android: { es: "Android", en: "Android" },
-  ambas: { es: "iOS y Android", en: "iOS and Android" },
+  ios: { es: "iOS", en: "iOS", pt: "iOS" },
+  android: { es: "Android", en: "Android", pt: "Android" },
+  ambas: { es: "iOS y Android", en: "iOS and Android", pt: "iOS e Android" },
 };
 
 const ENVIRONMENT_LABELS: Record<string, LocalizedText> = {
-  desarrollo: { es: "Desarrollo", en: "Development" },
-  testing: { es: "Testing", en: "Testing" },
-  produccion: { es: "Producción", en: "Production" },
+  desarrollo: { es: "Desarrollo", en: "Development", pt: "Desenvolvimento" },
+  testing: { es: "Testing", en: "Testing", pt: "Testes" },
+  produccion: { es: "Producción", en: "Production", pt: "Produção" },
 };
 
 export function calculateIsoQuality(
@@ -79,7 +75,6 @@ export function calculateIsoQuality(
   currency: Currency,
   locale: Locale = "es"
 ): CalculationResult {
-  const en = isEn(locale);
   const devCost = num(inputs.devMonthlyCost, 5000);
   const devCount = num(inputs.devCount, 5);
   const bugHours = num(inputs.bugHours, 8);
@@ -99,7 +94,7 @@ export function calculateIsoQuality(
     const rating = num(inputs[dim.id], 3);
     qualityRatings.push(rating);
     dimensionRisks.push({
-      name: en ? dim.name : dim.nameEs,
+      name: pickLocale(locale, { es: dim.nameEs, en: dim.name, pt: dim.name }),
       risk: dimensionRiskScore(rating, dim.weight),
     });
   }
@@ -131,19 +126,26 @@ export function calculateIsoQuality(
     .map((d) => d.name);
 
   const criticalityLabel = labelOf(DEPENDENCY_LEVELS, criticality, locale);
-  const riskFactors = en
-    ? [
-        `Technical debt concentrated in: ${topDimensions.join(", ")}`,
-        `${incidents} incidents per month on average`,
-        `${reworkHours + bugHours} hours/week spent on bug fixing and rework`,
-        `Business dependency on software: ${criticalityLabel}`,
-      ]
-    : [
-        `Deuda técnica concentrada en: ${topDimensions.join(", ")}`,
-        `${incidents} incidentes al mes en promedio`,
-        `${reworkHours + bugHours} horas/semana en corrección de errores y retrabajo`,
-        `Dependencia del negocio del software: ${criticalityLabel}`,
-      ];
+  const riskFactors = pickLocale(locale, {
+    es: [
+      `Deuda técnica concentrada en: ${topDimensions.join(", ")}`,
+      `${incidents} incidentes al mes en promedio`,
+      `${reworkHours + bugHours} horas/semana en corrección de errores y retrabajo`,
+      `Dependencia del negocio del software: ${criticalityLabel}`,
+    ],
+    en: [
+      `Technical debt concentrated in: ${topDimensions.join(", ")}`,
+      `${incidents} incidents per month on average`,
+      `${reworkHours + bugHours} hours/week spent on bug fixing and rework`,
+      `Business dependency on software: ${criticalityLabel}`,
+    ],
+    pt: [
+      `Dívida técnica concentrada em: ${topDimensions.join(", ")}`,
+      `${incidents} incidentes por mês em média`,
+      `${reworkHours + bugHours} horas/semana em correção de bugs e retrabalho`,
+      `Dependência do negócio no software: ${criticalityLabel}`,
+    ],
+  });
 
   const impactMatrix = buildImpactMatrix({
     financial: score * 0.9,
@@ -176,19 +178,26 @@ export function calculateIsoQuality(
       min: annualCost * 0.7,
       probable: annualCost,
       max: annualCost * 1.5,
-      items: en
-        ? [
-            { label: "Bug fixing", value: bugHours * 4.33 * hourlyRate * 12 },
-            { label: "Defect support", value: supportHours * 4.33 * hourlyRate * 12 },
-            { label: "Rework", value: reworkHours * 4.33 * hourlyRate * 12 },
-            { label: "Criticality factor", value: annualCost - monthlyHours * hourlyRate * 12 },
-          ]
-        : [
-            { label: "Corrección de bugs", value: bugHours * 4.33 * hourlyRate * 12 },
-            { label: "Soporte por defectos", value: supportHours * 4.33 * hourlyRate * 12 },
-            { label: "Retrabajo", value: reworkHours * 4.33 * hourlyRate * 12 },
-            { label: "Factor de criticidad", value: annualCost - monthlyHours * hourlyRate * 12 },
-          ],
+      items: pickLocale(locale, {
+        es: [
+          { label: "Corrección de bugs", value: bugHours * 4.33 * hourlyRate * 12 },
+          { label: "Soporte por defectos", value: supportHours * 4.33 * hourlyRate * 12 },
+          { label: "Retrabajo", value: reworkHours * 4.33 * hourlyRate * 12 },
+          { label: "Factor de criticidad", value: annualCost - monthlyHours * hourlyRate * 12 },
+        ],
+        en: [
+          { label: "Bug fixing", value: bugHours * 4.33 * hourlyRate * 12 },
+          { label: "Defect support", value: supportHours * 4.33 * hourlyRate * 12 },
+          { label: "Rework", value: reworkHours * 4.33 * hourlyRate * 12 },
+          { label: "Criticality factor", value: annualCost - monthlyHours * hourlyRate * 12 },
+        ],
+        pt: [
+          { label: "Correção de bugs", value: bugHours * 4.33 * hourlyRate * 12 },
+          { label: "Suporte por defeitos", value: supportHours * 4.33 * hourlyRate * 12 },
+          { label: "Retrabalho", value: reworkHours * 4.33 * hourlyRate * 12 },
+          { label: "Fator de criticidade", value: annualCost - monthlyHours * hourlyRate * 12 },
+        ],
+      }),
     },
     impactMatrix,
     riskFactors,
@@ -196,12 +205,16 @@ export function calculateIsoQuality(
     immediateActions: recs.immediate,
     actions30Days: recs.days30,
     actions90Days: recs.days90,
-    executiveSummary: en
-      ? `Based on the information provided, your application shows a ${levelLabel} risk level. The estimated cost of poor quality ranges between ${formatCurrency(annualCost * 0.7, currency)} and ${formatCurrency(annualCost * 1.5, currency)}, with a probable scenario of ${formatCurrency(annualCost, currency)} per year. The main risk factors are: ${riskFactors.slice(0, 2).join("; ")}.`
-      : `Con base en los datos ingresados, su aplicación presenta un nivel de riesgo ${levelLabel}. El costo estimado de no calidad se encuentra entre ${formatCurrency(annualCost * 0.7, currency)} y ${formatCurrency(annualCost * 1.5, currency)}, con un escenario probable de ${formatCurrency(annualCost, currency)} anuales. Los principales factores de riesgo son: ${riskFactors.slice(0, 2).join("; ")}.`,
-    partialSummary: en
-      ? `${levelLabel} risk level (score: ${score}/100). Estimated annual cost: ${formatCurrency(annualCost, currency, true)}.`
-      : `Nivel de riesgo ${levelLabel} (score: ${score}/100). Costo anual estimado: ${formatCurrency(annualCost, currency, true)}.`,
+    executiveSummary: pickLocale(locale, {
+      es: `Con base en los datos ingresados, su aplicación presenta un nivel de riesgo ${levelLabel}. El costo estimado de no calidad se encuentra entre ${formatCurrency(annualCost * 0.7, currency)} y ${formatCurrency(annualCost * 1.5, currency)}, con un escenario probable de ${formatCurrency(annualCost, currency)} anuales. Los principales factores de riesgo son: ${riskFactors.slice(0, 2).join("; ")}.`,
+      en: `Based on the information provided, your application shows a ${levelLabel} risk level. The estimated cost of poor quality ranges between ${formatCurrency(annualCost * 0.7, currency)} and ${formatCurrency(annualCost * 1.5, currency)}, with a probable scenario of ${formatCurrency(annualCost, currency)} per year. The main risk factors are: ${riskFactors.slice(0, 2).join("; ")}.`,
+      pt: `Com base nos dados informados, sua aplicação apresenta um nível de risco ${levelLabel}. O custo estimado de má qualidade está entre ${formatCurrency(annualCost * 0.7, currency)} e ${formatCurrency(annualCost * 1.5, currency)}, com um cenário provável de ${formatCurrency(annualCost, currency)} por ano. Os principais fatores de risco são: ${riskFactors.slice(0, 2).join("; ")}.`,
+    }),
+    partialSummary: pickLocale(locale, {
+      es: `Nivel de riesgo ${levelLabel} (score: ${score}/100). Costo anual estimado: ${formatCurrency(annualCost, currency, true)}.`,
+      en: `${levelLabel} risk level (score: ${score}/100). Estimated annual cost: ${formatCurrency(annualCost, currency, true)}.`,
+      pt: `Nível de risco ${levelLabel} (score: ${score}/100). Custo anual estimado: ${formatCurrency(annualCost, currency, true)}.`,
+    }),
     inputs,
     createdAt: new Date().toISOString(),
     leadCaptured: false,
@@ -213,7 +226,6 @@ export function calculateOwaspWeb(
   currency: Currency,
   locale: Locale = "es"
 ): CalculationResult {
-  const en = isEn(locale);
   const category = getOwaspCategory(str(inputs.owaspCategory, "A01"));
   const hourlyRate = num(inputs.hourlyRate, 75);
   const remediationDays = num(inputs.remediationDays, 14);
@@ -274,23 +286,30 @@ export function calculateOwaspWeb(
     responseCapacity: remediationDays < 7 ? 70 : 40,
   });
 
-  const owaspName = en ? owasp.name : owasp.nameEs;
+  const owaspName = pickLocale(locale, { es: owasp.nameEs, en: owasp.name, pt: owasp.name });
   const exposureLabel = labelOf(EXPOSURE_LEVELS, exposure, locale);
   const exploitationLabel = labelOf(EXPLOITATION_LEVELS, exploitation, locale);
   const environmentLabel = labelOf(Object.entries(ENVIRONMENT_LABELS).map(([value, label]) => ({ value, label })), environment, locale);
-  const riskFactors = en
-    ? [
-        `OWASP vulnerability: ${owaspName}`,
-        `${exposureLabel} exposure in ${environmentLabel.toLowerCase()} for ${exposureDays} days`,
-        `Exploitation level: ${exploitationLabel}`,
-        `${sensitiveRecords.toLocaleString()} sensitive records at risk`,
-      ]
-    : [
-        `Vulnerabilidad OWASP: ${owaspName}`,
-        `Exposición ${exposureLabel.toLowerCase()} en ${environmentLabel.toLowerCase()} durante ${exposureDays} días`,
-        `Nivel de explotación: ${exploitationLabel}`,
-        `${sensitiveRecords.toLocaleString()} registros sensibles en riesgo`,
-      ];
+  const riskFactors = pickLocale(locale, {
+    es: [
+      `Vulnerabilidad OWASP: ${owaspName}`,
+      `Exposición ${exposureLabel.toLowerCase()} en ${environmentLabel.toLowerCase()} durante ${exposureDays} días`,
+      `Nivel de explotación: ${exploitationLabel}`,
+      `${sensitiveRecords.toLocaleString()} registros sensibles en riesgo`,
+    ],
+    en: [
+      `OWASP vulnerability: ${owaspName}`,
+      `${exposureLabel} exposure in ${environmentLabel.toLowerCase()} for ${exposureDays} days`,
+      `Exploitation level: ${exploitationLabel}`,
+      `${sensitiveRecords.toLocaleString()} sensitive records at risk`,
+    ],
+    pt: [
+      `Vulnerabilidade OWASP: ${owaspName}`,
+      `Exposição ${exposureLabel.toLowerCase()} em ${environmentLabel.toLowerCase()} por ${exposureDays} dias`,
+      `Nível de exploração: ${exploitationLabel}`,
+      `${sensitiveRecords.toLocaleString()} registros sensíveis em risco`,
+    ],
+  });
 
   const impactMatrix = buildImpactMatrix({
     financial: score * 0.85,
@@ -327,25 +346,35 @@ export function calculateOwaspWeb(
       reputational: reputationalCost,
       opportunity: opportunityCost,
       monitoring: monitoringCost,
-      items: en
-        ? [
-            { label: "Technical remediation", value: remediationCost },
-            { label: "Investigation", value: investigationCost },
-            { label: "Operational disruption", value: interruptionCost },
-            { label: "Regulatory risk", value: regulatoryCost },
-            { label: "Reputational impact", value: reputationalCost },
-            { label: "Opportunity cost", value: opportunityCost },
-            { label: "Post-incident monitoring", value: monitoringCost },
-          ]
-        : [
-            { label: "Remediación técnica", value: remediationCost },
-            { label: "Investigación", value: investigationCost },
-            { label: "Interrupción operativa", value: interruptionCost },
-            { label: "Riesgo regulatorio", value: regulatoryCost },
-            { label: "Impacto reputacional", value: reputationalCost },
-            { label: "Costo de oportunidad", value: opportunityCost },
-            { label: "Monitoreo posterior", value: monitoringCost },
-          ],
+      items: pickLocale(locale, {
+        es: [
+          { label: "Remediación técnica", value: remediationCost },
+          { label: "Investigación", value: investigationCost },
+          { label: "Interrupción operativa", value: interruptionCost },
+          { label: "Riesgo regulatorio", value: regulatoryCost },
+          { label: "Impacto reputacional", value: reputationalCost },
+          { label: "Costo de oportunidad", value: opportunityCost },
+          { label: "Monitoreo posterior", value: monitoringCost },
+        ],
+        en: [
+          { label: "Technical remediation", value: remediationCost },
+          { label: "Investigation", value: investigationCost },
+          { label: "Operational disruption", value: interruptionCost },
+          { label: "Regulatory risk", value: regulatoryCost },
+          { label: "Reputational impact", value: reputationalCost },
+          { label: "Opportunity cost", value: opportunityCost },
+          { label: "Post-incident monitoring", value: monitoringCost },
+        ],
+        pt: [
+          { label: "Remediação técnica", value: remediationCost },
+          { label: "Investigação", value: investigationCost },
+          { label: "Interrupção operacional", value: interruptionCost },
+          { label: "Risco regulatório", value: regulatoryCost },
+          { label: "Impacto reputacional", value: reputationalCost },
+          { label: "Custo de oportunidade", value: opportunityCost },
+          { label: "Monitoramento pós-incidente", value: monitoringCost },
+        ],
+      }),
     },
     impactMatrix,
     riskFactors,
@@ -353,12 +382,16 @@ export function calculateOwaspWeb(
     immediateActions: recs.immediate,
     actions30Days: recs.days30,
     actions90Days: recs.days90,
-    executiveSummary: en
-      ? `Based on the information provided, your application shows a ${levelLabel} risk level. The estimated exposure cost ranges between ${formatCurrency(totalCost * 0.6, currency)} and ${formatCurrency(totalCost * 2, currency)}, with a probable scenario of ${formatCurrency(totalCost, currency)}. The main risk factors are: ${riskFactors.slice(0, 2).join("; ")}.`
-      : `Con base en los datos ingresados, su aplicación presenta un nivel de riesgo ${levelLabel}. El costo estimado de exposición se encuentra entre ${formatCurrency(totalCost * 0.6, currency)} y ${formatCurrency(totalCost * 2, currency)}, con un escenario probable de ${formatCurrency(totalCost, currency)}. Los principales factores de riesgo son: ${riskFactors.slice(0, 2).join("; ")}.`,
-    partialSummary: en
-      ? `${levelLabel} risk level (score: ${score}/100). Estimated impact: ${formatCurrency(totalCost, currency, true)}.`
-      : `Nivel de riesgo ${levelLabel} (score: ${score}/100). Impacto estimado: ${formatCurrency(totalCost, currency, true)}.`,
+    executiveSummary: pickLocale(locale, {
+      es: `Con base en los datos ingresados, su aplicación presenta un nivel de riesgo ${levelLabel}. El costo estimado de exposición se encuentra entre ${formatCurrency(totalCost * 0.6, currency)} y ${formatCurrency(totalCost * 2, currency)}, con un escenario probable de ${formatCurrency(totalCost, currency)}. Los principales factores de riesgo son: ${riskFactors.slice(0, 2).join("; ")}.`,
+      en: `Based on the information provided, your application shows a ${levelLabel} risk level. The estimated exposure cost ranges between ${formatCurrency(totalCost * 0.6, currency)} and ${formatCurrency(totalCost * 2, currency)}, with a probable scenario of ${formatCurrency(totalCost, currency)}. The main risk factors are: ${riskFactors.slice(0, 2).join("; ")}.`,
+      pt: `Com base nos dados informados, sua aplicação apresenta um nível de risco ${levelLabel}. O custo estimado de exposição está entre ${formatCurrency(totalCost * 0.6, currency)} e ${formatCurrency(totalCost * 2, currency)}, com um cenário provável de ${formatCurrency(totalCost, currency)}. Os principais fatores de risco são: ${riskFactors.slice(0, 2).join("; ")}.`,
+    }),
+    partialSummary: pickLocale(locale, {
+      es: `Nivel de riesgo ${levelLabel} (score: ${score}/100). Impacto estimado: ${formatCurrency(totalCost, currency, true)}.`,
+      en: `${levelLabel} risk level (score: ${score}/100). Estimated impact: ${formatCurrency(totalCost, currency, true)}.`,
+      pt: `Nível de risco ${levelLabel} (score: ${score}/100). Impacto estimado: ${formatCurrency(totalCost, currency, true)}.`,
+    }),
     inputs,
     createdAt: new Date().toISOString(),
     leadCaptured: false,
@@ -370,7 +403,6 @@ export function calculateOwaspMobile(
   currency: Currency,
   locale: Locale = "es"
 ): CalculationResult {
-  const en = isEn(locale);
   const category = getMobileCategory(str(inputs.mobileCategory, "M1"));
   const hourlyRate = num(inputs.hourlyRate, 75);
   const activeUsers = num(inputs.activeUsers, 50000);
@@ -419,21 +451,28 @@ export function calculateOwaspMobile(
     responseCapacity: num(inputs.updateFrequency, 30) < 14 ? 60 : 35,
   });
 
-  const mobileName = en ? mobile.name : mobile.nameEs;
+  const mobileName = pickLocale(locale, { es: mobile.nameEs, en: mobile.name, pt: mobile.name });
   const platformLabel = PLATFORM_LABELS[platform] ? tr(PLATFORM_LABELS[platform], locale) : platform;
-  const riskFactors = en
-    ? [
-        `Mobile vulnerability: ${mobileName}`,
-        `${activeUsers.toLocaleString()} active users exposed`,
-        `Platform: ${platformLabel}`,
-        hasPayments ? "Processes in-app payments" : "No in-app payments",
-      ]
-    : [
-        `Vulnerabilidad móvil: ${mobileName}`,
-        `${activeUsers.toLocaleString()} usuarios activos expuestos`,
-        `Plataforma: ${platformLabel}`,
-        hasPayments ? "Procesa pagos in-app" : "Sin pagos in-app",
-      ];
+  const riskFactors = pickLocale(locale, {
+    es: [
+      `Vulnerabilidad móvil: ${mobileName}`,
+      `${activeUsers.toLocaleString()} usuarios activos expuestos`,
+      `Plataforma: ${platformLabel}`,
+      hasPayments ? "Procesa pagos in-app" : "Sin pagos in-app",
+    ],
+    en: [
+      `Mobile vulnerability: ${mobileName}`,
+      `${activeUsers.toLocaleString()} active users exposed`,
+      `Platform: ${platformLabel}`,
+      hasPayments ? "Processes in-app payments" : "No in-app payments",
+    ],
+    pt: [
+      `Vulnerabilidade móvel: ${mobileName}`,
+      `${activeUsers.toLocaleString()} usuários ativos expostos`,
+      `Plataforma: ${platformLabel}`,
+      hasPayments ? "Processa pagamentos in-app" : "Sem pagamentos in-app",
+    ],
+  });
 
   const impactMatrix = buildImpactMatrix({
     financial: score * 0.8,
@@ -464,25 +503,35 @@ export function calculateOwaspMobile(
       probable: totalCost,
       max: totalCost * 2.5,
       perDeveloper: totalCost / Math.max(num(inputs.devCount, 1), 1),
-      items: en
-        ? [
-            { label: "Technical remediation", value: remediationCost },
-            { label: "App store re-publishing", value: publishCost },
-            { label: "User support", value: supportCost },
-            { label: "Data exposure", value: dataExposureCost },
-            { label: "Fraud risk", value: fraudRisk },
-            { label: "User churn", value: userLossCost },
-            { label: "Reputational impact", value: reputationalCost },
-          ]
-        : [
-            { label: "Remediación técnica", value: remediationCost },
-            { label: "Republicación en stores", value: publishCost },
-            { label: "Soporte a usuarios", value: supportCost },
-            { label: "Exposición de datos", value: dataExposureCost },
-            { label: "Riesgo de fraude", value: fraudRisk },
-            { label: "Pérdida de usuarios", value: userLossCost },
-            { label: "Impacto reputacional", value: reputationalCost },
-          ],
+      items: pickLocale(locale, {
+        es: [
+          { label: "Remediación técnica", value: remediationCost },
+          { label: "Republicación en stores", value: publishCost },
+          { label: "Soporte a usuarios", value: supportCost },
+          { label: "Exposición de datos", value: dataExposureCost },
+          { label: "Riesgo de fraude", value: fraudRisk },
+          { label: "Pérdida de usuarios", value: userLossCost },
+          { label: "Impacto reputacional", value: reputationalCost },
+        ],
+        en: [
+          { label: "Technical remediation", value: remediationCost },
+          { label: "App store re-publishing", value: publishCost },
+          { label: "User support", value: supportCost },
+          { label: "Data exposure", value: dataExposureCost },
+          { label: "Fraud risk", value: fraudRisk },
+          { label: "User churn", value: userLossCost },
+          { label: "Reputational impact", value: reputationalCost },
+        ],
+        pt: [
+          { label: "Remediação técnica", value: remediationCost },
+          { label: "Republicação nas lojas", value: publishCost },
+          { label: "Suporte ao usuário", value: supportCost },
+          { label: "Exposição de dados", value: dataExposureCost },
+          { label: "Risco de fraude", value: fraudRisk },
+          { label: "Perda de usuários", value: userLossCost },
+          { label: "Impacto reputacional", value: reputationalCost },
+        ],
+      }),
     },
     impactMatrix,
     riskFactors,
@@ -490,12 +539,16 @@ export function calculateOwaspMobile(
     immediateActions: recs.immediate,
     actions30Days: recs.days30,
     actions90Days: recs.days90,
-    executiveSummary: en
-      ? `Based on the information provided, your mobile application shows a ${levelLabel} risk level. The estimated cost ranges between ${formatCurrency(totalCost * 0.5, currency)} and ${formatCurrency(totalCost * 2.5, currency)}, with a probable scenario of ${formatCurrency(totalCost, currency)}. Impact per user: ${formatCurrency(totalCost / Math.max(activeUsers, 1), currency)}.`
-      : `Con base en los datos ingresados, su aplicación móvil presenta un nivel de riesgo ${levelLabel}. El costo estimado se encuentra entre ${formatCurrency(totalCost * 0.5, currency)} y ${formatCurrency(totalCost * 2.5, currency)}, con un escenario probable de ${formatCurrency(totalCost, currency)}. Impacto por usuario: ${formatCurrency(totalCost / Math.max(activeUsers, 1), currency)}.`,
-    partialSummary: en
-      ? `${levelLabel} risk level (score: ${score}/100). Estimated cost: ${formatCurrency(totalCost, currency, true)}.`
-      : `Nivel de riesgo ${levelLabel} (score: ${score}/100). Costo estimado: ${formatCurrency(totalCost, currency, true)}.`,
+    executiveSummary: pickLocale(locale, {
+      es: `Con base en los datos ingresados, su aplicación móvil presenta un nivel de riesgo ${levelLabel}. El costo estimado se encuentra entre ${formatCurrency(totalCost * 0.5, currency)} y ${formatCurrency(totalCost * 2.5, currency)}, con un escenario probable de ${formatCurrency(totalCost, currency)}. Impacto por usuario: ${formatCurrency(totalCost / Math.max(activeUsers, 1), currency)}.`,
+      en: `Based on the information provided, your mobile application shows a ${levelLabel} risk level. The estimated cost ranges between ${formatCurrency(totalCost * 0.5, currency)} and ${formatCurrency(totalCost * 2.5, currency)}, with a probable scenario of ${formatCurrency(totalCost, currency)}. Impact per user: ${formatCurrency(totalCost / Math.max(activeUsers, 1), currency)}.`,
+      pt: `Com base nos dados informados, seu aplicativo móvel apresenta um nível de risco ${levelLabel}. O custo estimado está entre ${formatCurrency(totalCost * 0.5, currency)} e ${formatCurrency(totalCost * 2.5, currency)}, com um cenário provável de ${formatCurrency(totalCost, currency)}. Impacto por usuário: ${formatCurrency(totalCost / Math.max(activeUsers, 1), currency)}.`,
+    }),
+    partialSummary: pickLocale(locale, {
+      es: `Nivel de riesgo ${levelLabel} (score: ${score}/100). Costo estimado: ${formatCurrency(totalCost, currency, true)}.`,
+      en: `${levelLabel} risk level (score: ${score}/100). Estimated cost: ${formatCurrency(totalCost, currency, true)}.`,
+      pt: `Nível de risco ${levelLabel} (score: ${score}/100). Custo estimado: ${formatCurrency(totalCost, currency, true)}.`,
+    }),
     inputs,
     createdAt: new Date().toISOString(),
     leadCaptured: false,
@@ -507,7 +560,6 @@ export function calculateSector(
   currency: Currency,
   locale: Locale = "es"
 ): CalculationResult {
-  const en = isEn(locale);
   const sectorId = str(inputs.sector, "retail");
   const sector = getSector(sectorId)!;
   const sectorName = tr(sector.name, locale);
@@ -555,19 +607,26 @@ export function calculateSector(
 
   const regulationLabel = labelOf(REGULATIONS, regulation, locale);
   const maturityLabel = labelOf(MATURITY_LEVELS, maturity, locale);
-  const riskFactors = en
-    ? [
-        `Sector: ${sectorName} (${sector.multiplier}x risk multiplier)`,
-        `Applicable regulation: ${regulationLabel}`,
-        `Security maturity: ${maturityLabel}`,
-        `${records.toLocaleString()} sensitive records handled`,
-      ]
-    : [
-        `Sector: ${sectorName} (multiplicador de riesgo ${sector.multiplier}x)`,
-        `Regulación aplicable: ${regulationLabel}`,
-        `Madurez de seguridad: ${maturityLabel}`,
-        `${records.toLocaleString()} registros sensibles gestionados`,
-      ];
+  const riskFactors = pickLocale(locale, {
+    es: [
+      `Sector: ${sectorName} (multiplicador de riesgo ${sector.multiplier}x)`,
+      `Regulación aplicable: ${regulationLabel}`,
+      `Madurez de seguridad: ${maturityLabel}`,
+      `${records.toLocaleString()} registros sensibles gestionados`,
+    ],
+    en: [
+      `Sector: ${sectorName} (${sector.multiplier}x risk multiplier)`,
+      `Applicable regulation: ${regulationLabel}`,
+      `Security maturity: ${maturityLabel}`,
+      `${records.toLocaleString()} sensitive records handled`,
+    ],
+    pt: [
+      `Setor: ${sectorName} (multiplicador de risco ${sector.multiplier}x)`,
+      `Regulamentação aplicável: ${regulationLabel}`,
+      `Maturidade de segurança: ${maturityLabel}`,
+      `${records.toLocaleString()} registros sensíveis gerenciados`,
+    ],
+  });
 
   const impactMatrix = buildImpactMatrix({
     financial: score * 0.9,
@@ -613,21 +672,29 @@ export function calculateSector(
       min: finalCost * 0.5,
       probable: finalCost,
       max: finalCost * 3,
-      items: en
-        ? [
-            { label: "Base vulnerability cost", value: baseCost },
-            { label: "Sector factor", value: baseCost * (sector.multiplier - 1) },
-            { label: "Regulatory factor", value: baseCost * sector.multiplier * (regulationMult - 1) },
-            { label: "Maturity factor", value: baseCost * sector.multiplier * regulationMult * (maturityMult - 1) },
-            { label: "Data volume adjustment", value: adjustedCost - totalCost },
-          ]
-        : [
-            { label: "Costo base de vulnerabilidad", value: baseCost },
-            { label: "Factor sectorial", value: baseCost * (sector.multiplier - 1) },
-            { label: "Factor regulatorio", value: baseCost * sector.multiplier * (regulationMult - 1) },
-            { label: "Factor de madurez", value: baseCost * sector.multiplier * regulationMult * (maturityMult - 1) },
-            { label: "Ajuste por volumen de datos", value: adjustedCost - totalCost },
-          ],
+      items: pickLocale(locale, {
+        es: [
+          { label: "Costo base de vulnerabilidad", value: baseCost },
+          { label: "Factor sectorial", value: baseCost * (sector.multiplier - 1) },
+          { label: "Factor regulatorio", value: baseCost * sector.multiplier * (regulationMult - 1) },
+          { label: "Factor de madurez", value: baseCost * sector.multiplier * regulationMult * (maturityMult - 1) },
+          { label: "Ajuste por volumen de datos", value: adjustedCost - totalCost },
+        ],
+        en: [
+          { label: "Base vulnerability cost", value: baseCost },
+          { label: "Sector factor", value: baseCost * (sector.multiplier - 1) },
+          { label: "Regulatory factor", value: baseCost * sector.multiplier * (regulationMult - 1) },
+          { label: "Maturity factor", value: baseCost * sector.multiplier * regulationMult * (maturityMult - 1) },
+          { label: "Data volume adjustment", value: adjustedCost - totalCost },
+        ],
+        pt: [
+          { label: "Custo base de vulnerabilidade", value: baseCost },
+          { label: "Fator setorial", value: baseCost * (sector.multiplier - 1) },
+          { label: "Fator regulatório", value: baseCost * sector.multiplier * (regulationMult - 1) },
+          { label: "Fator de maturidade", value: baseCost * sector.multiplier * regulationMult * (maturityMult - 1) },
+          { label: "Ajuste por volume de dados", value: adjustedCost - totalCost },
+        ],
+      }),
     },
     impactMatrix,
     riskFactors,
@@ -635,12 +702,16 @@ export function calculateSector(
     immediateActions: recs.immediate,
     actions30Days: [...sectorRecs.filter(() => true), ...recs.days30].slice(0, 4),
     actions90Days: recs.days90,
-    executiveSummary: en
-      ? `Based on the information provided, your organization in the ${sectorName} sector shows a ${levelLabel} risk level. The estimated cost ranges between ${formatCurrency(finalCost * 0.5, currency)} and ${formatCurrency(finalCost * 3, currency)}, with a probable scenario of ${formatCurrency(finalCost, currency)}.`
-      : `Con base en los datos ingresados, su organización en el sector ${sectorName} presenta un nivel de riesgo ${levelLabel}. El costo estimado se encuentra entre ${formatCurrency(finalCost * 0.5, currency)} y ${formatCurrency(finalCost * 3, currency)}, con un escenario probable de ${formatCurrency(finalCost, currency)}.`,
-    partialSummary: en
-      ? `${levelLabel} risk level (score: ${score}/100). Probable cost: ${formatCurrency(finalCost, currency, true)}.`
-      : `Nivel de riesgo ${levelLabel} (score: ${score}/100). Costo probable: ${formatCurrency(finalCost, currency, true)}.`,
+    executiveSummary: pickLocale(locale, {
+      es: `Con base en los datos ingresados, su organización en el sector ${sectorName} presenta un nivel de riesgo ${levelLabel}. El costo estimado se encuentra entre ${formatCurrency(finalCost * 0.5, currency)} y ${formatCurrency(finalCost * 3, currency)}, con un escenario probable de ${formatCurrency(finalCost, currency)}.`,
+      en: `Based on the information provided, your organization in the ${sectorName} sector shows a ${levelLabel} risk level. The estimated cost ranges between ${formatCurrency(finalCost * 0.5, currency)} and ${formatCurrency(finalCost * 3, currency)}, with a probable scenario of ${formatCurrency(finalCost, currency)}.`,
+      pt: `Com base nos dados informados, sua organização no setor ${sectorName} apresenta um nível de risco ${levelLabel}. O custo estimado está entre ${formatCurrency(finalCost * 0.5, currency)} e ${formatCurrency(finalCost * 3, currency)}, com um cenário provável de ${formatCurrency(finalCost, currency)}.`,
+    }),
+    partialSummary: pickLocale(locale, {
+      es: `Nivel de riesgo ${levelLabel} (score: ${score}/100). Costo probable: ${formatCurrency(finalCost, currency, true)}.`,
+      en: `${levelLabel} risk level (score: ${score}/100). Probable cost: ${formatCurrency(finalCost, currency, true)}.`,
+      pt: `Nível de risco ${levelLabel} (score: ${score}/100). Custo provável: ${formatCurrency(finalCost, currency, true)}.`,
+    }),
     inputs,
     createdAt: new Date().toISOString(),
     leadCaptured: false,
@@ -658,7 +729,6 @@ export function calculateAspmCost(
   currency: Currency,
   locale: Locale = "es"
 ): CalculationResult {
-  const en = isEn(locale);
   const appCount = num(inputs.appCount, 20);
   const tools = (inputs.securityTools as string[]) ?? ["sast", "sca"];
   const toolCount = Math.max(tools.length, 1);
@@ -694,22 +764,29 @@ export function calculateAspmCost(
   });
 
   const noiseWord = tr(
-    ({ bajo: { es: "bajo", en: "low" }, medio: { es: "medio", en: "medium" }, alto: { es: "alto", en: "high" } } as Record<string, LocalizedText>)[noiseLevel] ?? { es: noiseLevel, en: noiseLevel },
+    ({ bajo: { es: "bajo", en: "low", pt: "baixo" }, medio: { es: "medio", en: "medium", pt: "médio" }, alto: { es: "alto", en: "high", pt: "alto" } } as Record<string, LocalizedText>)[noiseLevel] ?? { es: noiseLevel, en: noiseLevel },
     locale
   );
-  const riskFactors = en
-    ? [
-        `${Math.round(totalHoursYear).toLocaleString()} hours per year lost to manual triage and context switching (≈${fte.toFixed(1)} full-time employees)`,
-        `${toolCount} disconnected security tools with no shared prioritization`,
-        `Estimated noise level: ${noiseWord} — about ${Math.round(noisePct * 100)}% of findings are duplicates or false positives`,
-        `${remediationDelayDays} extra days of exposure per critical finding due to unclear prioritization`,
-      ]
-    : [
-        `${Math.round(totalHoursYear).toLocaleString()} horas al año perdidas en triage manual y cambio de contexto (≈${fte.toFixed(1)} personas de tiempo completo)`,
-        `${toolCount} herramientas de seguridad desconectadas y sin priorización compartida`,
-        `Nivel de ruido estimado: ${noiseWord} — cerca del ${Math.round(noisePct * 100)}% de los hallazgos son duplicados o falsos positivos`,
-        `${remediationDelayDays} días extra de exposición por hallazgo crítico debido a la falta de priorización clara`,
-      ];
+  const riskFactors = pickLocale(locale, {
+    es: [
+      `${Math.round(totalHoursYear).toLocaleString()} horas al año perdidas en triage manual y cambio de contexto (≈${fte.toFixed(1)} personas de tiempo completo)`,
+      `${toolCount} herramientas de seguridad desconectadas y sin priorización compartida`,
+      `Nivel de ruido estimado: ${noiseWord} — cerca del ${Math.round(noisePct * 100)}% de los hallazgos son duplicados o falsos positivos`,
+      `${remediationDelayDays} días extra de exposición por hallazgo crítico debido a la falta de priorización clara`,
+    ],
+    en: [
+      `${Math.round(totalHoursYear).toLocaleString()} hours per year lost to manual triage and context switching (≈${fte.toFixed(1)} full-time employees)`,
+      `${toolCount} disconnected security tools with no shared prioritization`,
+      `Estimated noise level: ${noiseWord} — about ${Math.round(noisePct * 100)}% of findings are duplicates or false positives`,
+      `${remediationDelayDays} extra days of exposure per critical finding due to unclear prioritization`,
+    ],
+    pt: [
+      `${Math.round(totalHoursYear).toLocaleString()} horas por ano perdidas em triagem manual e troca de contexto (≈${fte.toFixed(1)} funcionários em tempo integral)`,
+      `${toolCount} ferramentas de segurança desconectadas sem priorização compartilhada`,
+      `Nível de ruído estimado: ${noiseWord} — cerca de ${Math.round(noisePct * 100)}% dos achados são duplicados ou falsos positivos`,
+      `${remediationDelayDays} dias extras de exposição por achado crítico devido à falta de priorização clara`,
+    ],
+  });
 
   const impactMatrix = buildImpactMatrix({
     financial: score * 0.75,
@@ -739,19 +816,26 @@ export function calculateAspmCost(
       min: totalCost * 0.6,
       probable: totalCost,
       max: totalCost * 1.6,
-      items: en
-        ? [
-            { label: "Manual finding triage", value: triageCost },
-            { label: "Noise: false positives and duplicates", value: noiseCost },
-            { label: "Context switching between tools", value: contextSwitchCost },
-            { label: "Delayed remediation from lack of prioritization", value: delayedRemediationCost },
-          ]
-        : [
-            { label: "Triage manual de hallazgos", value: triageCost },
-            { label: "Ruido: falsos positivos y duplicados", value: noiseCost },
-            { label: "Cambio de contexto entre herramientas", value: contextSwitchCost },
-            { label: "Remediación retrasada por falta de priorización", value: delayedRemediationCost },
-          ],
+      items: pickLocale(locale, {
+        es: [
+          { label: "Triage manual de hallazgos", value: triageCost },
+          { label: "Ruido: falsos positivos y duplicados", value: noiseCost },
+          { label: "Cambio de contexto entre herramientas", value: contextSwitchCost },
+          { label: "Remediación retrasada por falta de priorización", value: delayedRemediationCost },
+        ],
+        en: [
+          { label: "Manual finding triage", value: triageCost },
+          { label: "Noise: false positives and duplicates", value: noiseCost },
+          { label: "Context switching between tools", value: contextSwitchCost },
+          { label: "Delayed remediation from lack of prioritization", value: delayedRemediationCost },
+        ],
+        pt: [
+          { label: "Triagem manual de achados", value: triageCost },
+          { label: "Ruído: falsos positivos e duplicados", value: noiseCost },
+          { label: "Troca de contexto entre ferramentas", value: contextSwitchCost },
+          { label: "Remediação atrasada por falta de priorização", value: delayedRemediationCost },
+        ],
+      }),
     },
     impactMatrix,
     riskFactors,
@@ -759,12 +843,16 @@ export function calculateAspmCost(
     immediateActions: recs.immediate,
     actions30Days: recs.days30,
     actions90Days: recs.days90,
-    executiveSummary: en
-      ? `Without an Application Security Posture Management (ASPM) platform to correlate and prioritize findings, your team loses approximately ${Math.round(totalHoursYear).toLocaleString()} hours per year (equivalent to ${fte.toFixed(1)} full-time employees) manually triaging ${toolCount} disconnected tools. The estimated annual cost of that inefficiency is ${formatCurrency(totalCost, currency)}, with a scenario that could reach ${formatCurrency(totalCost * 1.6, currency)} if finding volume grows.`
-      : `Sin una plataforma de gestión de postura de seguridad de aplicaciones (ASPM) que correlacione y priorice hallazgos, su equipo pierde aproximadamente ${Math.round(totalHoursYear).toLocaleString()} horas al año (equivalente a ${fte.toFixed(1)} personas de tiempo completo) triando manualmente ${toolCount} herramientas desconectadas. El costo anual estimado de esa ineficiencia es de ${formatCurrency(totalCost, currency)}, con un escenario que puede llegar a ${formatCurrency(totalCost * 1.6, currency)} si el volumen de hallazgos crece.`,
-    partialSummary: en
-      ? `${levelLabel} risk level (score: ${score}/100). You lose ≈${Math.round(totalHoursYear).toLocaleString()} hours/year and ${formatCurrency(totalCost, currency, true)}/year without automated prioritization.`
-      : `Nivel de riesgo ${levelLabel} (score: ${score}/100). Pierde ≈${Math.round(totalHoursYear).toLocaleString()} horas/año y ${formatCurrency(totalCost, currency, true)}/año sin priorización automática.`,
+    executiveSummary: pickLocale(locale, {
+      es: `Sin una plataforma de gestión de postura de seguridad de aplicaciones (ASPM) que correlacione y priorice hallazgos, su equipo pierde aproximadamente ${Math.round(totalHoursYear).toLocaleString()} horas al año (equivalente a ${fte.toFixed(1)} personas de tiempo completo) triando manualmente ${toolCount} herramientas desconectadas. El costo anual estimado de esa ineficiencia es de ${formatCurrency(totalCost, currency)}, con un escenario que puede llegar a ${formatCurrency(totalCost * 1.6, currency)} si el volumen de hallazgos crece.`,
+      en: `Without an Application Security Posture Management (ASPM) platform to correlate and prioritize findings, your team loses approximately ${Math.round(totalHoursYear).toLocaleString()} hours per year (equivalent to ${fte.toFixed(1)} full-time employees) manually triaging ${toolCount} disconnected tools. The estimated annual cost of that inefficiency is ${formatCurrency(totalCost, currency)}, with a scenario that could reach ${formatCurrency(totalCost * 1.6, currency)} if finding volume grows.`,
+      pt: `Sem uma plataforma de gestão de postura de segurança de aplicações (ASPM) que correlacione e priorize achados, sua equipe perde aproximadamente ${Math.round(totalHoursYear).toLocaleString()} horas por ano (equivalente a ${fte.toFixed(1)} funcionários em tempo integral) triando manualmente ${toolCount} ferramentas desconectadas. O custo anual estimado dessa ineficiência é de ${formatCurrency(totalCost, currency)}, com um cenário que pode chegar a ${formatCurrency(totalCost * 1.6, currency)} se o volume de achados crescer.`,
+    }),
+    partialSummary: pickLocale(locale, {
+      es: `Nivel de riesgo ${levelLabel} (score: ${score}/100). Pierde ≈${Math.round(totalHoursYear).toLocaleString()} horas/año y ${formatCurrency(totalCost, currency, true)}/año sin priorización automática.`,
+      en: `${levelLabel} risk level (score: ${score}/100). You lose ≈${Math.round(totalHoursYear).toLocaleString()} hours/year and ${formatCurrency(totalCost, currency, true)}/year without automated prioritization.`,
+      pt: `Nível de risco ${levelLabel} (score: ${score}/100). Você perde ≈${Math.round(totalHoursYear).toLocaleString()} horas/ano e ${formatCurrency(totalCost, currency, true)}/ano sem priorização automatizada.`,
+    }),
     inputs,
     createdAt: new Date().toISOString(),
     leadCaptured: false,
@@ -800,7 +888,6 @@ export function calculateCraCompliance(
   currency: Currency,
   locale: Locale = "es"
 ): CalculationResult {
-  const en = isEn(locale);
   const annualRevenue = num(inputs.annualRevenue, 5000000);
   const productCategory = str(inputs.productCategory, "default");
   const hourlyRate = num(inputs.hourlyRate, 85);
@@ -850,35 +937,47 @@ export function calculateCraCompliance(
 
   const categoryShort = tr(
     ({
-      default: { es: "por defecto", en: "default" },
-      importante: { es: "importante (Anexo III)", en: "important (Annex III)" },
-      critico: { es: "crítico (Anexo IV)", en: "critical (Annex IV)" },
+      default: { es: "por defecto", en: "default", pt: "padrão" },
+      importante: { es: "importante (Anexo III)", en: "important (Annex III)", pt: "importante (Anexo III)" },
+      critico: { es: "crítico (Anexo IV)", en: "critical (Annex IV)", pt: "crítico (Anexo IV)" },
     } as Record<string, LocalizedText>)[productCategory] ?? { es: productCategory, en: productCategory },
     locale
   );
-  const riskFactors = en
-    ? [
-        reportingDaysLeft > 0
-          ? `${reportingDaysLeft.toLocaleString()} days left before the CRA's vulnerability reporting obligations take effect (Sept. 11, 2026)`
-          : `The CRA's vulnerability reporting obligations have been in effect since September 11, 2026`,
-        fullComplianceDaysLeft > 0
-          ? `${fullComplianceDaysLeft.toLocaleString()} days left until full CRA compliance is required (Dec. 11, 2027)`
-          : `The full CRA compliance deadline (Dec. 11, 2027) has already passed`,
-        `Essential security requirements gap: ${Math.round(essentialGapPct * 100)}% still unmet`,
-        `Vulnerability management gap (SBOM, patching, disclosure): ${Math.round(vulnGapPct * 100)}% still unmet`,
-        `Product classified as ${categoryShort}${productCategory !== "default" ? " — requires third-party conformity assessment" : ""}`,
-      ]
-    : [
-        reportingDaysLeft > 0
-          ? `Quedan ${reportingDaysLeft.toLocaleString()} días para que entren en vigor las obligaciones de reporte de vulnerabilidades del CRA (11 sept. 2026)`
-          : `Las obligaciones de reporte de vulnerabilidades del CRA ya están vigentes desde el 11 de septiembre de 2026`,
-        fullComplianceDaysLeft > 0
-          ? `Quedan ${fullComplianceDaysLeft.toLocaleString()} días para el cumplimiento total del CRA (11 dic. 2027)`
-          : `El plazo de cumplimiento total del CRA (11 dic. 2027) ya se cumplió`,
-        `Brecha en requisitos esenciales de seguridad: ${Math.round(essentialGapPct * 100)}% aún sin cubrir`,
-        `Brecha en gestión de vulnerabilidades (SBOM, parches, divulgación): ${Math.round(vulnGapPct * 100)}% aún sin cubrir`,
-        `Producto clasificado como ${categoryShort}${productCategory !== "default" ? " — requiere evaluación de conformidad por terceros" : ""}`,
-      ];
+  const riskFactors = pickLocale(locale, {
+    es: [
+      reportingDaysLeft > 0
+        ? `Quedan ${reportingDaysLeft.toLocaleString()} días para que entren en vigor las obligaciones de reporte de vulnerabilidades del CRA (11 sept. 2026)`
+        : `Las obligaciones de reporte de vulnerabilidades del CRA ya están vigentes desde el 11 de septiembre de 2026`,
+      fullComplianceDaysLeft > 0
+        ? `Quedan ${fullComplianceDaysLeft.toLocaleString()} días para el cumplimiento total del CRA (11 dic. 2027)`
+        : `El plazo de cumplimiento total del CRA (11 dic. 2027) ya se cumplió`,
+      `Brecha en requisitos esenciales de seguridad: ${Math.round(essentialGapPct * 100)}% aún sin cubrir`,
+      `Brecha en gestión de vulnerabilidades (SBOM, parches, divulgación): ${Math.round(vulnGapPct * 100)}% aún sin cubrir`,
+      `Producto clasificado como ${categoryShort}${productCategory !== "default" ? " — requiere evaluación de conformidad por terceros" : ""}`,
+    ],
+    en: [
+      reportingDaysLeft > 0
+        ? `${reportingDaysLeft.toLocaleString()} days left before the CRA's vulnerability reporting obligations take effect (Sept. 11, 2026)`
+        : `The CRA's vulnerability reporting obligations have been in effect since September 11, 2026`,
+      fullComplianceDaysLeft > 0
+        ? `${fullComplianceDaysLeft.toLocaleString()} days left until full CRA compliance is required (Dec. 11, 2027)`
+        : `The full CRA compliance deadline (Dec. 11, 2027) has already passed`,
+      `Essential security requirements gap: ${Math.round(essentialGapPct * 100)}% still unmet`,
+      `Vulnerability management gap (SBOM, patching, disclosure): ${Math.round(vulnGapPct * 100)}% still unmet`,
+      `Product classified as ${categoryShort}${productCategory !== "default" ? " — requires third-party conformity assessment" : ""}`,
+    ],
+    pt: [
+      reportingDaysLeft > 0
+        ? `Restam ${reportingDaysLeft.toLocaleString()} dias para que entrem em vigor as obrigações de reporte de vulnerabilidades do CRA (11 set. 2026)`
+        : `As obrigações de reporte de vulnerabilidades do CRA já estão em vigor desde 11 de setembro de 2026`,
+      fullComplianceDaysLeft > 0
+        ? `Restam ${fullComplianceDaysLeft.toLocaleString()} dias para o cumprimento total do CRA (11 dez. 2027)`
+        : `O prazo de cumprimento total do CRA (11 dez. 2027) já se encerrou`,
+      `Lacuna em requisitos essenciais de segurança: ${Math.round(essentialGapPct * 100)}% ainda não cobertos`,
+      `Lacuna em gestão de vulnerabilidades (SBOM, patches, divulgação): ${Math.round(vulnGapPct * 100)}% ainda não cobertos`,
+      `Produto classificado como ${categoryShort}${productCategory !== "default" ? " — requer avaliação de conformidade por terceiros" : ""}`,
+    ],
+  });
 
   const impactMatrix = buildImpactMatrix({
     financial: score * 0.85,
@@ -908,21 +1007,29 @@ export function calculateCraCompliance(
       max: totalCost * 1.5,
       regulatory: regulatoryExposure,
       remediation: remediationCost,
-      items: en
-        ? [
-            { label: "Estimated exposure from essential requirements", value: essentialFineExposure * categoryMultiplier },
-            { label: "Estimated exposure from vulnerability management", value: vulnFineExposure * categoryMultiplier },
-            { label: "Estimated exposure from reporting obligations", value: reportingFineExposure * categoryMultiplier },
-            { label: "Technical and documentation remediation cost", value: remediationCost },
-            ...(conformityCost > 0 ? [{ label: "Third-party conformity assessment", value: conformityCost }] : []),
-          ]
-        : [
-            { label: "Exposición estimada por requisitos esenciales", value: essentialFineExposure * categoryMultiplier },
-            { label: "Exposición estimada por gestión de vulnerabilidades", value: vulnFineExposure * categoryMultiplier },
-            { label: "Exposición estimada por obligaciones de reporte", value: reportingFineExposure * categoryMultiplier },
-            { label: "Costo de remediación técnica y documental", value: remediationCost },
-            ...(conformityCost > 0 ? [{ label: "Evaluación de conformidad por terceros", value: conformityCost }] : []),
-          ],
+      items: pickLocale(locale, {
+        es: [
+          { label: "Exposición estimada por requisitos esenciales", value: essentialFineExposure * categoryMultiplier },
+          { label: "Exposición estimada por gestión de vulnerabilidades", value: vulnFineExposure * categoryMultiplier },
+          { label: "Exposición estimada por obligaciones de reporte", value: reportingFineExposure * categoryMultiplier },
+          { label: "Costo de remediación técnica y documental", value: remediationCost },
+          ...(conformityCost > 0 ? [{ label: "Evaluación de conformidad por terceros", value: conformityCost }] : []),
+        ],
+        en: [
+          { label: "Estimated exposure from essential requirements", value: essentialFineExposure * categoryMultiplier },
+          { label: "Estimated exposure from vulnerability management", value: vulnFineExposure * categoryMultiplier },
+          { label: "Estimated exposure from reporting obligations", value: reportingFineExposure * categoryMultiplier },
+          { label: "Technical and documentation remediation cost", value: remediationCost },
+          ...(conformityCost > 0 ? [{ label: "Third-party conformity assessment", value: conformityCost }] : []),
+        ],
+        pt: [
+          { label: "Exposição estimada por requisitos essenciais", value: essentialFineExposure * categoryMultiplier },
+          { label: "Exposição estimada por gestão de vulnerabilidades", value: vulnFineExposure * categoryMultiplier },
+          { label: "Exposição estimada por obrigações de reporte", value: reportingFineExposure * categoryMultiplier },
+          { label: "Custo de remediação técnica e documental", value: remediationCost },
+          ...(conformityCost > 0 ? [{ label: "Avaliação de conformidade por terceiros", value: conformityCost }] : []),
+        ],
+      }),
     },
     impactMatrix,
     riskFactors,
@@ -930,12 +1037,16 @@ export function calculateCraCompliance(
     immediateActions: recs.immediate,
     actions30Days: recs.days30,
     actions90Days: recs.days90,
-    executiveSummary: en
-      ? `Your compliance gap level with the EU Cyber Resilience Act is ${levelLabel} (score: ${score}/100). Based on your essential requirements, vulnerability management, and reporting obligations, the estimated regulatory and remediation exposure is ${formatCurrency(totalCost, currency)}, ranging between ${formatCurrency(totalCost * 0.6, currency)} and ${formatCurrency(totalCost * 1.5, currency)}. Vulnerability reporting obligations take effect on September 11, 2026, and full compliance is required from December 11, 2027.`
-      : `Su nivel de brecha de cumplimiento con el EU Cyber Resilience Act es ${levelLabel} (score: ${score}/100). Con base en sus requisitos esenciales, gestión de vulnerabilidades y obligaciones de reporte, la exposición regulatoria y de remediación estimada es de ${formatCurrency(totalCost, currency)}, en un rango entre ${formatCurrency(totalCost * 0.6, currency)} y ${formatCurrency(totalCost * 1.5, currency)}. Las obligaciones de reporte de vulnerabilidades entran en vigor el 11 de septiembre de 2026 y el cumplimiento total se exige desde el 11 de diciembre de 2027.`,
-    partialSummary: en
-      ? `CRA compliance gap level: ${levelLabel} (score: ${score}/100). Estimated exposure: ${formatCurrency(totalCost, currency, true)}.`
-      : `Nivel de brecha de cumplimiento CRA: ${levelLabel} (score: ${score}/100). Exposición estimada: ${formatCurrency(totalCost, currency, true)}.`,
+    executiveSummary: pickLocale(locale, {
+      es: `Su nivel de brecha de cumplimiento con el EU Cyber Resilience Act es ${levelLabel} (score: ${score}/100). Con base en sus requisitos esenciales, gestión de vulnerabilidades y obligaciones de reporte, la exposición regulatoria y de remediación estimada es de ${formatCurrency(totalCost, currency)}, en un rango entre ${formatCurrency(totalCost * 0.6, currency)} y ${formatCurrency(totalCost * 1.5, currency)}. Las obligaciones de reporte de vulnerabilidades entran en vigor el 11 de septiembre de 2026 y el cumplimiento total se exige desde el 11 de diciembre de 2027.`,
+      en: `Your compliance gap level with the EU Cyber Resilience Act is ${levelLabel} (score: ${score}/100). Based on your essential requirements, vulnerability management, and reporting obligations, the estimated regulatory and remediation exposure is ${formatCurrency(totalCost, currency)}, ranging between ${formatCurrency(totalCost * 0.6, currency)} and ${formatCurrency(totalCost * 1.5, currency)}. Vulnerability reporting obligations take effect on September 11, 2026, and full compliance is required from December 11, 2027.`,
+      pt: `Seu nível de lacuna de conformidade com o EU Cyber Resilience Act é ${levelLabel} (score: ${score}/100). Com base em seus requisitos essenciais, gestão de vulnerabilidades e obrigações de reporte, a exposição regulatória e de remediação estimada é de ${formatCurrency(totalCost, currency)}, em um intervalo entre ${formatCurrency(totalCost * 0.6, currency)} e ${formatCurrency(totalCost * 1.5, currency)}. As obrigações de reporte de vulnerabilidades entram em vigor em 11 de setembro de 2026 e o cumprimento total é exigido a partir de 11 de dezembro de 2027.`,
+    }),
+    partialSummary: pickLocale(locale, {
+      es: `Nivel de brecha de cumplimiento CRA: ${levelLabel} (score: ${score}/100). Exposición estimada: ${formatCurrency(totalCost, currency, true)}.`,
+      en: `CRA compliance gap level: ${levelLabel} (score: ${score}/100). Estimated exposure: ${formatCurrency(totalCost, currency, true)}.`,
+      pt: `Nível de lacuna de conformidade CRA: ${levelLabel} (score: ${score}/100). Exposição estimada: ${formatCurrency(totalCost, currency, true)}.`,
+    }),
     inputs,
     createdAt: new Date().toISOString(),
     leadCaptured: false,
