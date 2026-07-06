@@ -9,6 +9,7 @@ import { X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { isDisposableEmail } from "@/lib/email";
 import { sanitizeInput } from "@/lib/utils";
 import { trackEvent } from "@/lib/analytics";
 import { saveResult, saveLead } from "@/lib/storage";
@@ -47,6 +48,12 @@ export function ReportUnlockModal({ result, onUnlocked }: ReportUnlockModalProps
     setLoading(true);
     setError("");
 
+    if (isDisposableEmail(data.email)) {
+      setError(t.leadForm.disposableEmail);
+      setLoading(false);
+      return;
+    }
+
     const inputs = result.inputs;
     const lead: LeadData = {
       name: sanitizeInput(data.name),
@@ -61,7 +68,7 @@ export function ReportUnlockModal({ result, onUnlocked }: ReportUnlockModalProps
 
     try {
       const calc = getCalculatorById(result.calculatorId);
-      await fetch("/api/crm", {
+      const res = await fetch("/api/crm", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -75,6 +82,7 @@ export function ReportUnlockModal({ result, onUnlocked }: ReportUnlockModalProps
           topRecommendations: result.recommendations.slice(0, 3).map((r) => tr(r.title, locale)),
         }),
       });
+      if (!res.ok) throw new Error("submit failed");
       trackEvent("lead_submitted", { resultId: result.id, sector: lead.sector });
 
       const updated = { ...result, leadCaptured: true };

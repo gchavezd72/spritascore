@@ -80,11 +80,12 @@ export function ExecutiveLeadForm({ locale, result, utm, onSuccess }: ExecutiveL
     };
 
     try {
-      await fetch("/api/crm", {
-        method: "PUT",
+      const res = await fetch("/api/crm", {
+        method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
+      if (!res.ok) throw new Error("submit failed");
       trackExecutiveEvent("software_score_form_submit", payload);
       setDone(true);
       onSuccess?.();

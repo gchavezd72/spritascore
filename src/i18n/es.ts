@@ -91,6 +91,7 @@ export const es = {
     companyRequired: "Empresa requerida",
     email: "Email corporativo",
     emailInvalid: "Email corporativo inválido",
+    disposableEmail: "Use un correo corporativo válido.",
     role: "Cargo (opcional)",
     rolePlaceholder: "CTO, CISO, Director de TI...",
     wantsEmailReport: "Deseo recibir el reporte por email",

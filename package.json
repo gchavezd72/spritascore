@@ -1,6 +1,6 @@
 {
   "name": "spritascore",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,7 +9,8 @@
     "lint": "eslint",
     "verify:locale": "npx --yes tsx scripts/verify-report-locale.mjs",
     "verify:seo": "npx --yes tsx scripts/verify-seo.mjs",
-    "verify:executive": "npx --yes tsx scripts/verify-executive-score.mjs"
+    "verify:executive": "npx --yes tsx scripts/verify-executive-score.mjs",
+    "verify:security": "npx --yes tsx scripts/verify-security.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",

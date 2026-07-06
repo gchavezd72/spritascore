@@ -93,6 +93,7 @@ export const pt: TranslationKeys = {
     companyRequired: "Empresa obrigatória",
     email: "E-mail corporativo",
     emailInvalid: "E-mail corporativo inválido",
+    disposableEmail: "Use um e-mail corporativo válido.",
     role: "Cargo (opcional)",
     rolePlaceholder: "CTO, CISO, Diretor de TI...",
     wantsEmailReport: "Desejo receber o relatório por e-mail",

@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { isDisposableEmail } from "@/lib/email";
 import { sanitizeInput } from "@/lib/utils";
 import { trackEvent } from "@/lib/analytics";
 import { tr } from "@/lib/translate";
@@ -48,6 +49,12 @@ export function LeadCaptureForm({ result, onSuccess }: LeadCaptureFormProps) {
     setLoading(true);
     setError("");
 
+    if (isDisposableEmail(data.email)) {
+      setError(t.leadForm.disposableEmail);
+      setLoading(false);
+      return;
+    }
+
     // Sector/país/nº de apps ya se capturaron en la calculadora: no se vuelven a preguntar.
     const inputs = result.inputs;
     const sanitized: LeadData = {
@@ -63,7 +70,7 @@ export function LeadCaptureForm({ result, onSuccess }: LeadCaptureFormProps) {
 
     try {
       const calc = getCalculatorById(result.calculatorId);
-      await fetch("/api/crm", {
+      const res = await fetch("/api/crm", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -77,6 +84,7 @@ export function LeadCaptureForm({ result, onSuccess }: LeadCaptureFormProps) {
           topRecommendations: result.recommendations.slice(0, 3).map((r) => tr(r.title, locale)),
         }),
       });
+      if (!res.ok) throw new Error("submit failed");
       trackEvent("lead_submitted", { resultId: result.id, sector: sanitized.sector });
       onSuccess(sanitized);
     } catch {

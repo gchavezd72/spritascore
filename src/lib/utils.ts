@@ -11,6 +11,7 @@ export function generateId(): string {
 
 export function sanitizeInput(value: string): string {
   return value
+    .replace(/[\x00-\x1F\x7F]/g, "")
     .replace(/[<>]/g, "")
     .trim()
     .slice(0, 500);

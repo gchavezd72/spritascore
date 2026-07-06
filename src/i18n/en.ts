@@ -93,6 +93,7 @@ export const en: TranslationKeys = {
     companyRequired: "Company required",
     email: "Corporate email",
     emailInvalid: "Invalid corporate email",
+    disposableEmail: "Please use a business email address.",
     role: "Role (optional)",
     rolePlaceholder: "CTO, CISO, IT Director...",
     wantsEmailReport: "I want to receive the report by email",
