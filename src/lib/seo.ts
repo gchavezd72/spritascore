@@ -14,7 +14,7 @@ export const ORGANIZATION = {
   url: "https://sprita-it.com",
   email: "info@spritascore.com",
   contactEmail: "info@sprita-it.com",
-  logo: `${SITE_URL}/globe.svg`,
+  logo: `${SITE_URL}/spritascore-icon.svg`,
   sameAs: ["https://sprita-it.com"],
 } as const;
 

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="SpritaScore">
+  <rect width="32" height="32" rx="7" fill="#12213b"/>
+  <text x="9" y="19" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#ffffff">S</text>
+  <text x="18" y="17" font-family="system-ui, -apple-system, sans-serif" font-size="8" font-weight="600" fill="#8b9bb8">i</text>
+  <rect x="9" y="22" width="14" height="3" rx="1.5" fill="#1fbf6c"/>
+</svg>
