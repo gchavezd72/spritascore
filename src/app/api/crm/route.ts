@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { forwardToCrmWebhook, isAllowedOrigin, isBodyTooLarge } from "@/lib/apiSecurity";
+import { isAllowedOrigin, isBodyTooLarge } from "@/lib/apiSecurity";
+import { notifyLead } from "@/lib/notifyLead";
 import { isDisposableEmail } from "@/lib/email";
 import { sanitizeInput } from "@/lib/utils";
 
@@ -89,12 +90,12 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: "Use un correo corporativo" }, { status: 400 });
       }
 
-      const forwarded = await forwardToCrmWebhook({
+      const delivered = await notifyLead({
         ...parsed.data,
         timestamp: new Date().toISOString(),
       });
 
-      if (!forwarded) {
+      if (!delivered) {
         return NextResponse.json({ error: "No se pudo registrar el lead" }, { status: 502 });
       }
 
@@ -116,7 +117,7 @@ export async function POST(request: NextRequest) {
 
     const { resultId, lead, ...metrics } = parsed.data;
 
-    const forwarded = await forwardToCrmWebhook({
+    const delivered = await notifyLead({
       event: "lead_submitted",
       lead,
       resultId,
@@ -124,7 +125,7 @@ export async function POST(request: NextRequest) {
       timestamp: new Date().toISOString(),
     });
 
-    if (!forwarded) {
+    if (!delivered) {
       return NextResponse.json({ error: "No se pudo registrar el lead" }, { status: 502 });
     }
 

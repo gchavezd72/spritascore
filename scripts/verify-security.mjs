@@ -23,7 +23,8 @@ async function main() {
   const crmRoute = fs.readFileSync(path.join(root, "src/app/api/crm/route.ts"), "utf8");
   assert(!crmRoute.includes("await request.json()") || crmRoute.includes("isBodyTooLarge"), "CRM route should guard body size");
   assert(crmRoute.includes("isAllowedOrigin"), "CRM route should validate origin");
-  assert(crmRoute.includes("forwardToCrmWebhook"), "CRM route should use webhook helper");
+  assert(crmRoute.includes("notifyLead"), "CRM route should deliver leads via notifyLead");
+  assert(fs.existsSync(path.join(root, "src/lib/sendLeadEmail.ts")), "Lead email sender missing");
   assert(crmRoute.includes('status: 405'), "PUT should be rejected");
   assert(crmRoute.includes("executiveLeadSchema"), "Executive leads should be schema-validated");
   assert(!/export async function PUT\(request/.test(crmRoute), "PUT must not forward arbitrary JSON");

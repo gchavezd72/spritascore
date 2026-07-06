@@ -40,13 +40,18 @@ Abra [http://localhost:3000](http://localhost:3000)
 
 | Variable | Descripción |
 |----------|-------------|
-| `CRM_WEBHOOK_URL` | Webhook para envío de leads (HubSpot, Zapier, Salesforce) |
+| `RESEND_API_KEY` | API key de Resend para enviar leads a `info@spritascore.com` |
+| `LEAD_EMAIL_TO` | Destino de leads (default: `info@spritascore.com`) |
+| `LEAD_EMAIL_FROM` | Remitente verificado en Resend (default: `notifications@spritascore.com`) |
+| `CRM_WEBHOOK_URL` | Opcional: webhook adicional (HubSpot, Zapier, Salesforce) |
 
 ## Despliegue en Vercel
 
 1. Conecte el repositorio en [vercel.com](https://vercel.com)
-2. Configure `CRM_WEBHOOK_URL` en Environment Variables
-3. Deploy automático en cada push a `main`
+2. Instale Resend: `vercel integration add resend/resend-email`
+3. Verifique el dominio `spritascore.com` en Resend y configure `LEAD_EMAIL_FROM`
+4. Opcional: configure `CRM_WEBHOOK_URL` para duplicar leads en un CRM
+5. Deploy automático en cada push a `main`
 
 ```bash
 npm run build   # Verificar build local
