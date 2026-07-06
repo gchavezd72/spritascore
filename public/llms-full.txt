@@ -1,0 +1,75 @@
+# SpritaScore — Full context for AI and search systems
+Version: 2026-07
+Canonical URL: https://spritascore.com
+
+## Entity summary
+SpritaScore is an Application Risk & Cost Calculator published by Sprita IT. It helps organizations quantify the financial impact of software vulnerabilities, technical debt, regulatory compliance gaps, and security operations inefficiencies.
+
+## What problem it solves
+Security and engineering teams struggle to communicate risk in financial terms to executives. SpritaScore converts technical findings (OWASP, ISO quality gaps, CRA/DORA compliance, ASPM tool sprawl) into risk scores, cost ranges, impact matrices, and prioritized actions.
+
+## Target users
+- CISO / security leaders
+- VP Engineering / CTO
+- Compliance and risk officers in regulated industries (finance, insurance, health, public sector)
+- DevSecOps and application security teams
+
+## Product flow
+1. User selects a specialized calculator
+2. Completes a guided wizard (2–5 minutes)
+3. Receives partial results immediately: risk score, economic estimate (min/probable/max), impact matrix, risk factors, top recommendations
+4. Optional lead capture unlocks full executive summary, detailed cost breakdown, all recommendations, and PDF report
+
+## Calculators detail
+
+### 1. Cost of poor code quality (ISO 25010)
+URL: https://spritascore.com/calculadora/no-calidad-codigo
+Estimates annual cost of defects, technical debt, and low maintainability using ISO/IEC 25010 dimensions.
+
+### 2. OWASP Top 10 web vulnerability cost
+URL: https://spritascore.com/calculadora/owasp-top10-web
+Models financial exposure from OWASP Top 10 2021 web application vulnerabilities.
+
+### 3. OWASP Mobile Top 10
+URL: https://spritascore.com/calculadora/owasp-mobile-top10
+Mobile application security risk and cost based on OWASP Mobile Top 10 2024.
+
+### 4. Sector industrial risk
+URL: https://spritascore.com/calculadora/riesgo-por-sector
+Sector-specific risk multipliers across 18 industries with regulatory context.
+
+### 5. Cost of not having ASPM
+URL: https://spritascore.com/calculadora/costo-de-no-usar-aspm
+Quantifies time and money lost triaging duplicate alerts across disconnected security tools.
+
+### 6. EU Cyber Resilience Act (CRA) compliance
+URL: https://spritascore.com/calculadora/compliance-eu-cra
+Assesses gap against CRA essential requirements, vulnerability management, and reporting obligations.
+
+### 7. DORA compliance assessment
+URL: https://spritascore.com/calculadora/compliance-dora
+15-question maturity assessment for EU Digital Operational Resilience Act: ICT risk governance, incident management, resilience testing, ICT third-party providers. Scale 1–5 per question, max score 75.
+
+## Sprita IT services alignment
+Sprita IT provides: SAST, DAST, SCA, Code Quality analysis, ASPM, Software Risk Assessment, and compliance evidence for CRA, DORA, NIS2, and sector regulations.
+
+## Languages
+UI and reports available in Spanish, English, and Portuguese. Language is user-selected in the browser (client-side i18n).
+
+## Geographic relevance
+- EU: CRA, DORA, NIS2
+- LATAM: sector calculators with MX, BR, CO, AR, CL, PE, UY, PA, CR support
+- US: OWASP and ASPM calculators
+
+## Contact & CTA
+- Email: info@spritascore.com
+- Technical diagnosis: mailto:info@spritascore.com?subject=Diagnóstico técnico Spritascore
+- Privacy policy: https://spritascore.com/privacidad
+
+## Crawling guidance
+- Index: /, /calculadora/*, /privacidad
+- Do not index personalized results: /resultados/*, /reporte/*
+- API: /api/crm (lead webhook only)
+
+## Disclaimer
+All outputs are indicative estimates based on user inputs and reference models. Not a formal audit, certification, legal opinion, or forensic analysis.

@@ -1,0 +1,34 @@
+# SpritaScore
+> Application Risk & Cost Calculator by Sprita IT
+
+SpritaScore (https://spritascore.com) is a B2B web platform that translates software security, quality, and compliance risks into executive financial impact. Built by Sprita IT for technology, security, and compliance teams.
+
+## Primary capabilities
+- Risk score (0–100) and economic exposure estimates
+- Prioritized remediation recommendations
+- Printable/PDF reports after lead capture
+- Languages: Spanish (ES), English (EN), Portuguese (PT)
+
+## Calculators (7)
+- ISO 25010 poor code quality cost: https://spritascore.com/calculadora/no-calidad-codigo
+- OWASP Top 10 web vulnerability cost: https://spritascore.com/calculadora/owasp-top10-web
+- OWASP Mobile Top 10: https://spritascore.com/calculadora/owasp-mobile-top10
+- Sector industrial risk: https://spritascore.com/calculadora/riesgo-por-sector
+- Cost of not having ASPM: https://spritascore.com/calculadora/costo-de-no-usar-aspm
+- EU Cyber Resilience Act (CRA) compliance: https://spritascore.com/calculadora/compliance-eu-cra
+- DORA (Digital Operational Resilience Act) assessment: https://spritascore.com/calculadora/compliance-dora
+
+## Frameworks & standards referenced
+ISO/IEC 25010, OWASP Top 10 (2021), OWASP Mobile Top 10 (2024), EU Cyber Resilience Act, DORA, ASPM best practices, sector risk models.
+
+## Organization
+- Product: SpritaScore — https://spritascore.com
+- Company: Sprita IT — https://sprita-it.com
+- Contact: info@spritascore.com
+
+## Important disclaimer
+Results are indicative estimates, not formal audits, certifications, or legal opinions.
+
+## Extended documentation
+Full product context for AI systems: https://spritascore.com/llms-full.txt
+Sitemap: https://spritascore.com/sitemap.xml
