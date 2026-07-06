@@ -1,4 +1,5 @@
 import { Geist, Geist_Mono, Space_Mono } from "next/font/google";
+import { BrandBar } from "@/components/BrandBar";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { CookieConsent } from "@/components/CookieConsent";
@@ -50,6 +51,7 @@ export default function RootLayout({
           data={[organizationJsonLd(), webSiteJsonLd(), webApplicationJsonLd(), faqJsonLd()]}
         />
         <LanguageProvider>
+          <BrandBar />
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />

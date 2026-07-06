@@ -147,15 +147,19 @@ export function buildPageMetadata({
   path = "",
   keywords = [],
   type = "website",
-}: PageMetadataInput): Metadata {
+  hreflangAlternates,
+}: PageMetadataInput & { hreflangAlternates?: Record<string, string> }): Metadata {
   const url = absoluteUrl(path);
   const allKeywords = [...new Set([...DEFAULT_KEYWORDS, ...keywords])];
+  const languages = hreflangAlternates
+    ? { ...hreflangAlternates, "x-default": hreflangAlternates["es-es"] ?? url }
+    : siteAlternates(path).languages;
 
   return {
     title,
     description,
     keywords: allKeywords,
-    alternates: siteAlternates(path),
+    alternates: { canonical: url, languages },
     openGraph: {
       title,
       description,

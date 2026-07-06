@@ -22,9 +22,15 @@ SpritaScore (https://spritascore.com) is a B2B web platform that translates soft
 ISO/IEC 25010, OWASP Top 10 (2021), OWASP Mobile Top 10 (2024), EU Cyber Resilience Act, DORA, ASPM best practices, sector risk models.
 
 ## Organization
-- Product: SpritaScore — https://spritascore.com
-- Company: Sprita IT — https://sprita-it.com
+- Product: SpritaScore — https://spritascore.com (a brand of Sprita iT)
+- Company: Sprita iT — https://sprita-it.com
 - Contact: info@spritascore.com
+
+## Regional SEO URLs
+- Spain/LATAM (es-es): https://spritascore.com/es-es
+- United States (en-us): https://spritascore.com/en-us
+- European Union (en-eu): https://spritascore.com/en-eu
+- Portugal/Brazil (pt-pt): https://spritascore.com/pt-pt
 
 ## Important disclaimer
 Results are indicative estimates, not formal audits, certifications, or legal opinions.

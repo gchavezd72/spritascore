@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { BrandFooterLine } from "@/components/BrandBar";
 import { Logo } from "@/components/Logo";
 import { useTranslations } from "@/components/LanguageProvider";
 import { CALCULATOR_CONFIGS } from "@/data/calculatorConfigs";
@@ -55,9 +56,15 @@ export function Footer() {
             </ul>
           </div>
         </div>
+        <BrandFooterLine />
         <div className="ft-disc">{f.disclaimer}</div>
         <div className="ft-bot">
-          <span className="mono">© {new Date().getFullYear()} Spritascore · Sprita iT</span>
+          <span className="mono">
+            © {new Date().getFullYear()} SpritaScore ·{" "}
+            <a href="https://sprita-it.com" target="_blank" rel="noopener noreferrer">
+              Sprita iT
+            </a>
+          </span>
           <Link href="/privacidad">{f.privacyPolicy}</Link>
         </div>
       </div>
