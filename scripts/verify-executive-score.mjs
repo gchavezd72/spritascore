@@ -13,6 +13,7 @@ async function main() {
   const { EXECUTIVE_QUESTION_META } = await import(
     pathToFileURL(path.join(root, "src/data/executiveSoftwareRiskScore.ts")).href
   );
+  const { pdfText } = await import(pathToFileURL(path.join(root, "src/lib/pdfText.ts")).href);
 
   let failed = 0;
   let passed = 0;
@@ -54,6 +55,17 @@ async function main() {
 
   if (EXECUTIVE_QUESTION_META.length !== 15) {
     console.error("FAIL: expected 15 questions");
+    failed++;
+  } else {
+    passed++;
+  }
+
+  const sanitized = pdfText("→ Deploy SBOM · 0–30 days — Prioridades");
+  if (sanitized.includes("\u2192") || sanitized.includes("\u00B7") || sanitized.includes("\u2014")) {
+    console.error("FAIL: pdfText should strip Unicode punctuation", sanitized);
+    failed++;
+  } else if (!sanitized.startsWith("> Deploy SBOM")) {
+    console.error("FAIL: pdfText arrow replacement", sanitized);
     failed++;
   } else {
     passed++;
