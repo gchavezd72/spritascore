@@ -21,6 +21,11 @@ import {
   YES_NO,
   YES_NO_PARCIAL,
 } from "@/data/commonOptions";
+import {
+  DORA_ENTITY_TYPES,
+  DORA_QUESTIONS,
+  doraFieldFromQuestion,
+} from "@/data/doraQuestions";
 import type { CalculatorConfig } from "@/types/calculator";
 
 const CURRENCY_FIELD = {
@@ -374,6 +379,115 @@ export const CALCULATOR_CONFIGS: CalculatorConfig[] = [
           { name: "hasIncidentProcess", label: { es: "¿Tiene un proceso para reportar una vulnerabilidad activamente explotada en menos de 24 horas a ENISA/CSIRT?", en: "Do you have a process to report an actively exploited vulnerability to ENISA/CSIRT within 24 hours?", pt: "Possui um processo para reportar uma vulnerabilidade ativamente explorada à ENISA/CSIRT em menos de 24 horas?" }, type: "select", options: YES_NO_PARCIAL, required: true },
           { name: "conformityDone", label: { es: "¿Completó su evaluación de conformidad y expediente técnico?", en: "Have you completed your conformity assessment and technical documentation?", pt: "Concluiu sua avaliação de conformidade e dossiê técnico?" }, type: "select", options: CONFORMITY_STATUS, required: true },
           { name: "hourlyRate", label: { es: "Costo promedio por hora de su equipo de seguridad/ingeniería", en: "Average hourly cost of your security/engineering team", pt: "Custo médio por hora da sua equipe de segurança/engenharia" }, type: "number", placeholder: "85", required: true },
+          CURRENCY_FIELD,
+          CONFIRM_FIELD,
+        ],
+      },
+    ],
+  },
+  {
+    id: "dora-compliance",
+    slug: "compliance-dora",
+    category: "compliance",
+    title: {
+      es: "Evaluación de cumplimiento con DORA",
+      en: "DORA compliance assessment",
+      pt: "Avaliação de conformidade com o DORA",
+    },
+    shortDescription: {
+      es: "Evalúe su madurez de resiliencia operativa digital frente al Reglamento DORA de la UE: gobernanza de riesgos TIC, gestión de incidentes, pruebas de resiliencia y proveedores críticos.",
+      en: "Assess your digital operational resilience maturity against the EU DORA Regulation: ICT risk governance, incident management, resilience testing, and critical providers.",
+      pt: "Avalie sua maturidade de resiliência operacional digital frente ao Regulamento DORA da UE: governança de riscos de TIC, gestão de incidentes, testes de resiliência e provedores críticos.",
+    },
+    complexity: "alta",
+    estimatedTime: { es: "4 a 5 minutos", en: "4 to 5 minutes", pt: "4 a 5 minutos" },
+    steps: [
+      {
+        id: "context",
+        title: { es: "Su entidad", en: "Your entity", pt: "Sua entidade" },
+        description: {
+          es: "Contexto regulatorio para calibrar la exposición bajo el Reglamento de Resiliencia Operativa Digital (DORA).",
+          en: "Regulatory context to calibrate exposure under the Digital Operational Resilience Act (DORA).",
+          pt: "Contexto regulatório para calibrar a exposição sob o Regulamento de Resiliência Operacional Digital (DORA).",
+        },
+        fields: [
+          { name: "sector", label: { es: "Sector", en: "Sector", pt: "Setor" }, type: "select", options: SECTOR_OPTIONS, required: true },
+          { name: "country", label: { es: "País", en: "Country", pt: "País" }, type: "select", options: COUNTRIES, required: true },
+          {
+            name: "entityType",
+            label: { es: "Tipo de entidad financiera", en: "Financial entity type", pt: "Tipo de entidade financeira" },
+            type: "select",
+            options: [...DORA_ENTITY_TYPES],
+            tooltip: {
+              es: "DORA aplica a entidades financieras de la UE y a proveedores críticos de servicios TIC que les prestan servicios.",
+              en: "DORA applies to EU financial entities and critical ICT third-party service providers that serve them.",
+              pt: "O DORA aplica-se a entidades financeiras da UE e a provedores críticos de serviços TIC que as atendem.",
+            },
+            required: true,
+          },
+          { name: "annualRevenue", label: { es: "Ingreso anual aproximado (USD)", en: "Approximate annual revenue (USD)", pt: "Receita anual aproximada (USD)" }, type: "number", placeholder: "50000000", required: true },
+        ],
+      },
+      {
+        id: "governance",
+        title: { es: "Marco de gestión de riesgos TIC", en: "ICT risk management framework", pt: "Framework de gestão de riscos de TIC" },
+        description: {
+          es: "Preguntas 1 a 4 — gobernanza, inventario de activos y controles de protección.",
+          en: "Questions 1 to 4 — governance, asset inventory, and protection controls.",
+          pt: "Perguntas 1 a 4 — governança, inventário de ativos e controles de proteção.",
+        },
+        fields: DORA_QUESTIONS.filter((q) => q.pillar === "governance").map(doraFieldFromQuestion),
+      },
+      {
+        id: "incidents",
+        title: { es: "Gestión de incidentes", en: "Incident management", pt: "Gestão de incidentes" },
+        description: {
+          es: "Preguntas 5 a 7 — detección, reporte y lecciones aprendidas.",
+          en: "Questions 5 to 7 — detection, reporting, and lessons learned.",
+          pt: "Perguntas 5 a 7 — detecção, reporte e lições aprendidas.",
+        },
+        fields: DORA_QUESTIONS.filter((q) => q.pillar === "incidents").map(doraFieldFromQuestion),
+      },
+      {
+        id: "resilience",
+        title: { es: "Pruebas de resiliencia", en: "Resilience testing", pt: "Testes de resiliência" },
+        description: {
+          es: "Preguntas 8 a 9 — escaneos, pruebas de penetración y remediación.",
+          en: "Questions 8 to 9 — scans, penetration tests, and remediation.",
+          pt: "Perguntas 8 a 9 — varreduras, testes de penetração e remediação.",
+        },
+        fields: DORA_QUESTIONS.filter((q) => q.pillar === "resilience").map(doraFieldFromQuestion),
+      },
+      {
+        id: "third-party",
+        title: { es: "Gestión de proveedores TIC", en: "ICT provider management", pt: "Gestão de provedores de TIC" },
+        description: {
+          es: "Preguntas 10 a 12 — contratos, concentración de riesgo e integración al marco de riesgos.",
+          en: "Questions 10 to 12 — contracts, concentration risk, and integration into the risk framework.",
+          pt: "Perguntas 10 a 12 — contratos, risco de concentração e integração ao framework de riscos.",
+        },
+        fields: DORA_QUESTIONS.filter((q) => q.pillar === "third-party").map(doraFieldFromQuestion),
+      },
+      {
+        id: "culture",
+        title: { es: "Gobernanza y cultura", en: "Governance and culture", pt: "Governança e cultura" },
+        description: {
+          es: "Preguntas 13 a 15 — inteligencia de amenazas, alineación estratégica y capacitación.",
+          en: "Questions 13 to 15 — threat intelligence, strategic alignment, and training.",
+          pt: "Perguntas 13 a 15 — inteligência de ameaças, alinhamento estratégico e capacitação.",
+        },
+        fields: DORA_QUESTIONS.filter((q) => q.pillar === "culture").map(doraFieldFromQuestion),
+      },
+      {
+        id: "finalize",
+        title: { es: "Finalizar evaluación", en: "Complete assessment", pt: "Finalizar avaliação" },
+        description: {
+          es: "Escala: 1 = no implementado; 5 = totalmente implementado, documentado, probado y revisado regularmente.",
+          en: "Scale: 1 = not implemented; 5 = fully implemented, documented, tested, and reviewed regularly.",
+          pt: "Escala: 1 = não implementado; 5 = totalmente implementado, documentado, testado e revisado regularmente.",
+        },
+        fields: [
+          { name: "hourlyRate", label: { es: "Costo promedio por hora de su equipo de riesgo/seguridad", en: "Average hourly cost of your risk/security team", pt: "Custo médio por hora da sua equipe de risco/segurança" }, type: "number", placeholder: "95", required: true },
           CURRENCY_FIELD,
           CONFIRM_FIELD,
         ],

@@ -141,6 +141,21 @@ export function generateRecommendations(
     keys.push("aspm-consolidar");
   }
 
+  if (context.calculatorId === "dora-compliance") {
+    keys.push("dora-marco-riesgos");
+    keys.push("dora-inventario-activos");
+    keys.push("dora-pruebas-resiliencia");
+    keys.push("dora-proveedores-tic");
+    keys.push("dora-reporte-incidentes");
+    keys.push("dora-analisis-codigo");
+    keys.push("dora-cultura-resiliencia");
+    keys.push("sast-implementar");
+    keys.push("dast-implementar");
+    keys.push("sca-implementar");
+    keys.push("vuln-management-programa");
+    keys.push("quality-gates-cicd");
+  }
+
   const all = pickUnique(keys.map(getRecommendationByKey), 10);
 
   return {

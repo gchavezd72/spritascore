@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/Reveal";
 import { CalculatorIcon } from "@/components/CalculatorIcon";
-import { tr } from "@/lib/translate";
+import { formatTemplate, tr } from "@/lib/translate";
 import { useTranslations } from "@/components/LanguageProvider";
 import type { CalculatorCategory } from "@/types/calculator";
 import { cn } from "@/lib/utils";
@@ -49,7 +49,9 @@ export function CalculatorSelector() {
               {t.calculatorSelector.title}
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              {t.calculatorSelector.subtitle}
+              {formatTemplate(t.calculatorSelector.subtitle, {
+                count: CALCULATOR_CONFIGS.length,
+              })}
             </p>
           </div>
         </Reveal>

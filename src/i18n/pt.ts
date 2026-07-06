@@ -18,7 +18,7 @@ export const pt: TranslationKeys = {
       },
       compliance: {
         label: "Compliance",
-        description: "Normas e regulamentação (EU Cyber Resilience Act)",
+        description: "Normas e regulamentação (EU CRA, DORA)",
       },
       ahorros: {
         label: "Economia",
@@ -30,10 +30,10 @@ export const pt: TranslationKeys = {
     badge: "Spritascore — Application Risk & Cost Calculator",
     title: "Calcule quanto uma vulnerabilidade ou a má qualidade do código pode custar à sua empresa",
     subtitle:
-      "Converta riscos técnicos em impacto financeiro. Estime o custo de defeitos, vulnerabilidades OWASP, riscos mobile, exposição por setor, o tempo que sua equipe perde sem um ASPM e seu nível de compliance com o EU Cyber Resilience Act — em poucos minutos e com poucas perguntas.",
+      "Converta riscos técnicos em impacto financeiro. Estime o custo de defeitos, vulnerabilidades OWASP, riscos mobile, exposição por setor, o tempo que sua equipe perde sem um ASPM e seu nível de compliance com o EU Cyber Resilience Act e DORA — em poucos minutos e com poucas perguntas.",
     ctaPrimary: "Calcular meu risco",
     ctaSecondary: "Solicitar diagnóstico técnico",
-    trust: "Baseado em modelos de qualidade ISO/IEC 25010, OWASP Top 10, OWASP Mobile Top 10, critérios de risco por indústria, boas práticas de ASPM e o EU Cyber Resilience Act.",
+    trust: "Baseado em modelos de qualidade ISO/IEC 25010, OWASP Top 10, OWASP Mobile Top 10, critérios de risco por indústria, boas práticas de ASPM, o EU Cyber Resilience Act e DORA.",
   },
   howItWorks: {
     title: "Como funciona",
@@ -54,7 +54,7 @@ export const pt: TranslationKeys = {
   },
   calculatorSelector: {
     title: "Selecione sua calculadora de risco",
-    subtitle: "Seis modelos especializados para traduzir riscos técnicos e regulatórios em impacto financeiro executivo. Responda em poucos minutos, sem compromisso.",
+    subtitle: "{count} modelos especializados para traduzir riscos técnicos e regulatórios em impacto financeiro executivo. Responda em poucos minutos, sem compromisso.",
     filterAll: "Todas",
     categories: {
       seguridad: "Segurança",
@@ -121,7 +121,11 @@ export const pt: TranslationKeys = {
     requestDiagnostic: "Solicitar diagnóstico",
     downloadReport: "Baixar relatório",
     receiveByEmail: "Receber por e-mail",
-    lockedMessage: "Preencha o formulário para desbloquear o relatório completo com recomendações, matriz de risco e download.",
+    economicEstimate: "Estimativa econômica",
+    previewRecommendations: "Recomendações em destaque",
+    moreRecommendations: "+{count} recomendações a mais no relatório completo",
+    unlockForFullReport: "Desbloqueie o relatório completo",
+    lockedMessage: "Preencha o formulário para baixar o PDF, ver o resumo executivo completo e todas as recomendações priorizadas.",
   },
   costBreakdown: {
     minScenario: "Cenário mínimo",
@@ -169,6 +173,7 @@ export const pt: TranslationKeys = {
       "Risco por setor",
       "Custo de não ter um ASPM",
       "Compliance com EU CRA",
+      "Avaliação de conformidade DORA",
     ],
     contactTitle: "Contato",
     disclaimer: "Os resultados gerados por esta ferramenta são estimativas orientativas. Não constituem auditoria formal, certificação, opinião legal nem análise forense.",
@@ -239,7 +244,7 @@ export const pt: TranslationKeys = {
       scoreLabel: "Score de risco",
       scroll: "Role",
     },
-    marquee: ["ISO/IEC 25010", "OWASP Top 10", "OWASP Mobile Top 10", "EU Cyber Resilience Act", "ASPM"],
+    marquee: ["ISO/IEC 25010", "OWASP Top 10", "OWASP Mobile Top 10", "EU Cyber Resilience Act", "DORA", "ASPM"],
     statement: {
       eyebrow: "Segurança de aplicações · DevSecOps · ASPM",
       before: "",
@@ -255,7 +260,7 @@ export const pt: TranslationKeys = {
     ],
     calc: {
       eyebrow: "As calculadoras",
-      h2: "Seis modelos para dar preço ao risco.",
+      h2: "{count} modelos para dar preço ao risco.",
       lead: "Traduzem riscos técnicos e regulatórios em impacto financeiro executivo. Responda em poucos minutos, sem compromisso.",
     },
     score: {

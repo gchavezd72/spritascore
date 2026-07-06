@@ -13,6 +13,16 @@ export function pickLocale<T>(locale: Locale, texts: { es: T; en: T; pt: T }): T
   return texts.es;
 }
 
+export function formatTemplate(
+  text: string,
+  vars: Record<string, string | number>
+): string {
+  return Object.entries(vars).reduce(
+    (acc, [key, value]) => acc.replaceAll(`{${key}}`, String(value)),
+    text
+  );
+}
+
 export function localeDateTag(locale: Locale): string {
   if (locale === "en") return "en-US";
   if (locale === "pt") return "pt-BR";

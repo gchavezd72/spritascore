@@ -25,6 +25,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     "riesgo-por-sector": "Calculadora de riesgo y costo por sector industrial",
     "costo-de-no-usar-aspm": "Calculadora de costo de no tener un ASPM",
     "compliance-eu-cra": "Evaluación de compliance con el EU Cyber Resilience Act",
+    "compliance-dora": "Evaluación de cumplimiento con DORA",
   };
 
   return {

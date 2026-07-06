@@ -16,7 +16,7 @@ export const es = {
       },
       compliance: {
         label: "Compliance",
-        description: "Normativas y regulación (EU Cyber Resilience Act)",
+        description: "Normativas y regulación (EU CRA, DORA)",
       },
       ahorros: {
         label: "Ahorros",
@@ -28,10 +28,10 @@ export const es = {
     badge: "Spritascore — Application Risk & Cost Calculator",
     title: "Calcula cuánto le puede costar a tu empresa una vulnerabilidad o la mala calidad del código",
     subtitle:
-      "Convierte riesgos técnicos en impacto financiero. Estima el costo de defectos, vulnerabilidades OWASP, riesgos móviles, exposición por sector, el tiempo que pierde su equipo sin un ASPM y su nivel de compliance con el EU Cyber Resilience Act — en solo unos minutos y con muy pocas preguntas.",
+      "Convierte riesgos técnicos en impacto financiero. Estima el costo de defectos, vulnerabilidades OWASP, riesgos móviles, exposición por sector, el tiempo que pierde su equipo sin un ASPM y su nivel de compliance con el EU Cyber Resilience Act y DORA — en solo unos minutos y con muy pocas preguntas.",
     ctaPrimary: "Calcular mi riesgo",
     ctaSecondary: "Solicitar diagnóstico técnico",
-    trust: "Basado en modelos de calidad ISO/IEC 25010, OWASP Top 10, OWASP Mobile Top 10, criterios de riesgo por industria, buenas prácticas de ASPM y el EU Cyber Resilience Act.",
+    trust: "Basado en modelos de calidad ISO/IEC 25010, OWASP Top 10, OWASP Mobile Top 10, criterios de riesgo por industria, buenas prácticas de ASPM, el EU Cyber Resilience Act y DORA.",
   },
   howItWorks: {
     title: "Cómo funciona",
@@ -52,7 +52,7 @@ export const es = {
   },
   calculatorSelector: {
     title: "Seleccione su calculadora de riesgo",
-    subtitle: "Seis modelos especializados para traducir riesgos técnicos y regulatorios en impacto financiero ejecutivo. Responda en pocos minutos, sin compromiso.",
+    subtitle: "{count} modelos especializados para traducir riesgos técnicos y regulatorios en impacto financiero ejecutivo. Responda en pocos minutos, sin compromiso.",
     filterAll: "Todas",
     categories: {
       seguridad: "Seguridad",
@@ -119,7 +119,11 @@ export const es = {
     requestDiagnostic: "Solicitar diagnóstico",
     downloadReport: "Descargar reporte",
     receiveByEmail: "Recibir por email",
-    lockedMessage: "Complete el formulario para desbloquear el reporte completo con recomendaciones, matriz de riesgo y descarga.",
+    economicEstimate: "Estimación económica",
+    previewRecommendations: "Recomendaciones destacadas",
+    moreRecommendations: "+{count} recomendaciones más en el reporte completo",
+    unlockForFullReport: "Desbloquee el reporte completo",
+    lockedMessage: "Complete el formulario para descargar el PDF, ver el resumen ejecutivo completo y todas las recomendaciones priorizadas.",
   },
   costBreakdown: {
     minScenario: "Escenario mínimo",
@@ -167,6 +171,7 @@ export const es = {
       "Riesgo por sector",
       "Costo de no tener un ASPM",
       "Compliance con EU CRA",
+      "Evaluación de cumplimiento DORA",
     ],
     contactTitle: "Contacto",
     disclaimer: "Los resultados generados por esta herramienta son estimaciones orientativas. No constituyen una auditoría formal, certificación, opinión legal ni análisis forense.",
@@ -237,7 +242,7 @@ export const es = {
       scoreLabel: "Score de riesgo",
       scroll: "Desliza",
     },
-    marquee: ["ISO/IEC 25010", "OWASP Top 10", "OWASP Mobile Top 10", "EU Cyber Resilience Act", "ASPM"],
+    marquee: ["ISO/IEC 25010", "OWASP Top 10", "OWASP Mobile Top 10", "EU Cyber Resilience Act", "DORA", "ASPM"],
     statement: {
       eyebrow: "Seguridad de aplicaciones · DevSecOps · ASPM",
       before: "El ",
@@ -253,7 +258,7 @@ export const es = {
     ],
     calc: {
       eyebrow: "Las calculadoras",
-      h2: "Seis modelos para ponerle precio al riesgo.",
+      h2: "{count} modelos para ponerle precio al riesgo.",
       lead: "Traducen riesgos técnicos y regulatorios en impacto financiero ejecutivo. Responde en pocos minutos, sin compromiso.",
     },
     score: {

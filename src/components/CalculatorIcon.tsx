@@ -55,6 +55,7 @@ function IconPaths({ id, category }: { id?: CalculatorId; category?: CalculatorC
         </>
       );
     case "cra-compliance":
+    case "dora-compliance":
     case "compliance":
       return (
         <>

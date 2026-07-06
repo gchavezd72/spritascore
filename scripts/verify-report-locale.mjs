@@ -48,12 +48,18 @@ const FIXTURES = {
     conformityAssessment: "no", incidentReporting: "parcial", hourlyRate: 85, currency: "EUR",
     confirmEstimate: true,
   },
+  "dora-compliance": {
+    sector: "banca", country: "ES", entityType: "credit-institution", annualRevenue: 50000000,
+    q1: "3", q2: "2", q3: "3", q4: "2", q5: "3", q6: "2", q7: "3",
+    q8: "2", q9: "2", q10: "3", q11: "2", q12: "2", q13: "3", q14: "3", q15: "2",
+    hourlyRate: 95, currency: "EUR", confirmEstimate: true,
+  },
 };
 
 const SUMMARY_MARKERS = {
-  es: [/Con base en/i, /Sin una plataforma/i, /nivel de riesgo/i, /nivel de brecha/i, /Quedan \d+ días/i],
-  en: [/Based on the information/i, /Without an Application Security/i, /risk level/i, /compliance gap level/i, /\d+ days left before/i],
-  pt: [/Com base nos dados/i, /Sem uma plataforma/i, /nível de risco/i, /nível de lacuna/i, /Restam \d+ dias/i],
+  es: [/Con base en/i, /Sin una plataforma/i, /nivel de riesgo/i, /nivel de brecha/i, /Quedan \d+ días/i, /Obtuvo \d+\/75/i],
+  en: [/Based on the information/i, /Without an Application Security/i, /risk level/i, /compliance gap level/i, /\d+ days left before/i, /You scored \d+\/75/i],
+  pt: [/Com base nos dados/i, /Sem uma plataforma/i, /nível de risco/i, /nível de lacuna/i, /Restam \d+ dias/i, /obteve \d+\/75/i],
 };
 
 const UI_MARKERS = {

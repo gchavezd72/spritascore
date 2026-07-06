@@ -5,12 +5,16 @@ import { Reveal } from "@/components/Reveal";
 import { CountUp, ScoreRing, ScoreGauge, HeroBg } from "@/components/site/animated";
 import { useTranslations } from "@/components/LanguageProvider";
 import { CALCULATOR_CONFIGS } from "@/data/calculatorConfigs";
-import { tr } from "@/lib/translate";
+import { formatTemplate, tr } from "@/lib/translate";
 
 export default function HomePage() {
   const { t, locale } = useTranslations();
   const l = t.landing;
   const cs = t.calculatorSelector;
+  const calculatorCount = CALCULATOR_CONFIGS.length;
+  const stats = l.stats.map((stat, index) =>
+    index === 0 ? { ...stat, n: calculatorCount } : stat
+  );
 
   return (
     <div className="sc">
@@ -77,7 +81,7 @@ export default function HomePage() {
         <div className="wrap">
           <Reveal>
             <div className="stats">
-              {l.stats.map((s) => (
+              {stats.map((s) => (
                 <div className="stat" key={s.label}>
                   <div className="stat-n">
                     <CountUp target={s.n} locale={locale} />
@@ -98,7 +102,7 @@ export default function HomePage() {
               <div>
                 <span className="eyebrow">{l.calc.eyebrow}</span>
                 <h2 className="h2" style={{ marginTop: 20 }}>
-                  {l.calc.h2}
+                  {formatTemplate(l.calc.h2, { count: calculatorCount })}
                 </h2>
               </div>
               <p className="lead">{l.calc.lead}</p>

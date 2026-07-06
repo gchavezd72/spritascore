@@ -4,7 +4,8 @@ export type CalculatorId =
   | "owasp-mobile"
   | "sector"
   | "aspm-cost"
-  | "cra-compliance";
+  | "cra-compliance"
+  | "dora-compliance";
 
 export type RiskLevel = "bajo" | "moderado" | "alto" | "critico";
 

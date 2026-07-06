@@ -1053,6 +1053,215 @@ export function calculateCraCompliance(
   };
 }
 
+const DORA_ENTITY_MULTIPLIERS: Record<string, number> = {
+  "credit-institution": 1.3,
+  "payment-institution": 1.2,
+  "investment-firm": 1.15,
+  insurance: 1.1,
+  "ict-provider": 1.25,
+  "other-financial": 1.0,
+};
+
+const DORA_QUESTION_FIELDS = [
+  "q1", "q2", "q3", "q4", "q5", "q6", "q7", "q8", "q9", "q10", "q11", "q12", "q13", "q14", "q15",
+] as const;
+
+const DORA_PILLAR_FIELDS: Record<string, readonly string[]> = {
+  governance: ["q1", "q2", "q3", "q4"],
+  incidents: ["q5", "q6", "q7"],
+  resilience: ["q8", "q9"],
+  "third-party": ["q10", "q11", "q12"],
+  culture: ["q13", "q14", "q15"],
+};
+
+function doraQuestionScore(inputs: Record<string, unknown>, field: string): number {
+  return Math.min(5, Math.max(1, num(inputs[field], 1)));
+}
+
+function doraPillarGap(inputs: Record<string, unknown>, fields: readonly string[]): number {
+  const max = fields.length * 5;
+  const total = fields.reduce((sum, field) => sum + doraQuestionScore(inputs, field), 0);
+  return max > 0 ? (max - total) / max : 1;
+}
+
+function getDoraMaturityDiagnosis(total: number, locale: Locale): string {
+  if (total >= 67) {
+    return pickLocale(locale, {
+      es: "Cumplimiento alto / Excelente madurez. La organización demuestra una sólida resiliencia operativa digital.",
+      en: "High compliance / Excellent maturity. The organization demonstrates strong digital operational resilience.",
+      pt: "Conformidade alta / Excelente maturidade. A organização demonstra sólida resiliência operacional digital.",
+    });
+  }
+  if (total >= 52) {
+    return pickLocale(locale, {
+      es: "Cumplimiento moderado. Existen fundamentos, pero se identifican brechas que requieren atención.",
+      en: "Moderate compliance. Foundations exist, but gaps requiring attention have been identified.",
+      pt: "Conformidade moderada. Existem fundamentos, mas foram identificadas lacunas que exigem atenção.",
+    });
+  }
+  if (total >= 37) {
+    return pickLocale(locale, {
+      es: "Cumplimiento parcial. Se necesitan mejoras sustanciales para reducir riesgos regulatorios.",
+      en: "Partial compliance. Substantial improvements are needed to reduce regulatory risk.",
+      pt: "Conformidade parcial. São necessárias melhorias substanciais para reduzir riscos regulatórios.",
+    });
+  }
+  return pickLocale(locale, {
+    es: "Cumplimiento bajo. Se recomienda intervención inmediata.",
+    en: "Low compliance. Immediate intervention is recommended.",
+    pt: "Conformidade baixa. Recomenda-se intervenção imediata.",
+  });
+}
+
+export function calculateDoraCompliance(
+  inputs: Record<string, unknown>,
+  currency: Currency,
+  locale: Locale = "es"
+): CalculationResult {
+  const annualRevenue = num(inputs.annualRevenue, 50_000_000);
+  const hourlyRate = num(inputs.hourlyRate, 95);
+  const entityType = str(inputs.entityType, "other-financial");
+  const entityMultiplier = DORA_ENTITY_MULTIPLIERS[entityType] ?? 1;
+
+  const rawTotal = DORA_QUESTION_FIELDS.reduce(
+    (sum, field) => sum + doraQuestionScore(inputs, field),
+    0
+  );
+  const maturityPct = Math.round((rawTotal / 75) * 100);
+  const gapPct = (75 - rawTotal) / 75;
+  const score = clampScore(gapPct * 100);
+  const riskLevel = getRiskLevel(score);
+  const levelLabel = getRiskLevelLabel(riskLevel, locale);
+  const diagnosis = getDoraMaturityDiagnosis(rawTotal, locale);
+
+  const governanceGap = doraPillarGap(inputs, DORA_PILLAR_FIELDS.governance);
+  const incidentsGap = doraPillarGap(inputs, DORA_PILLAR_FIELDS.incidents);
+  const resilienceGap = doraPillarGap(inputs, DORA_PILLAR_FIELDS.resilience);
+  const thirdPartyGap = doraPillarGap(inputs, DORA_PILLAR_FIELDS["third-party"]);
+  const cultureGap = doraPillarGap(inputs, DORA_PILLAR_FIELDS.culture);
+
+  const regulatoryExposure =
+    Math.min(annualRevenue * 0.015, 20_000_000) * gapPct * entityMultiplier;
+  const remediationHours =
+    120 * governanceGap +
+    90 * incidentsGap +
+    110 * resilienceGap +
+    100 * thirdPartyGap +
+    60 * cultureGap;
+  const remediationCost = remediationHours * hourlyRate;
+  const auditReadinessCost = gapPct * 45_000 * entityMultiplier;
+  const totalCost = regulatoryExposure + remediationCost + auditReadinessCost;
+
+  const entityLabel = tr(
+    ({
+      "credit-institution": { es: "entidad de crédito", en: "credit institution", pt: "instituição de crédito" },
+      "payment-institution": { es: "entidad de pago", en: "payment institution", pt: "instituição de pagamento" },
+      "investment-firm": { es: "empresa de inversión", en: "investment firm", pt: "empresa de investimento" },
+      insurance: { es: "compañía de seguros", en: "insurance company", pt: "companhia de seguros" },
+      "ict-provider": { es: "proveedor crítico de TIC", en: "critical ICT provider", pt: "provedor crítico de TIC" },
+      "other-financial": { es: "entidad financiera", en: "financial entity", pt: "entidade financeira" },
+    } as Record<string, LocalizedText>)[entityType] ?? { es: entityType, en: entityType, pt: entityType },
+    locale
+  );
+
+  const riskFactors = pickLocale(locale, {
+    es: [
+      `Puntuación DORA: ${rawTotal}/75 (${maturityPct}% de madurez)`,
+      diagnosis,
+      `Brecha en marco de gestión de riesgos TIC: ${Math.round(governanceGap * 100)}%`,
+      `Brecha en gestión de incidentes y reporte: ${Math.round(incidentsGap * 100)}%`,
+      `Brecha en pruebas de resiliencia (DAST/pen testing): ${Math.round(resilienceGap * 100)}%`,
+      `Brecha en gestión de proveedores TIC: ${Math.round(thirdPartyGap * 100)}%`,
+      `Entidad evaluada como ${entityLabel} — DORA plenamente aplicable desde enero de 2025`,
+    ],
+    en: [
+      `DORA score: ${rawTotal}/75 (${maturityPct}% maturity)`,
+      diagnosis,
+      `ICT risk management framework gap: ${Math.round(governanceGap * 100)}%`,
+      `Incident management and reporting gap: ${Math.round(incidentsGap * 100)}%`,
+      `Resilience testing gap (DAST/pen testing): ${Math.round(resilienceGap * 100)}%`,
+      `ICT provider management gap: ${Math.round(thirdPartyGap * 100)}%`,
+      `Entity assessed as ${entityLabel} — DORA fully applicable since January 2025`,
+    ],
+    pt: [
+      `Pontuação DORA: ${rawTotal}/75 (${maturityPct}% de maturidade)`,
+      diagnosis,
+      `Lacuna no framework de gestão de riscos de TIC: ${Math.round(governanceGap * 100)}%`,
+      `Lacuna em gestão de incidentes e reporte: ${Math.round(incidentsGap * 100)}%`,
+      `Lacuna em testes de resiliência (DAST/pen testing): ${Math.round(resilienceGap * 100)}%`,
+      `Lacuna em gestão de provedores de TIC: ${Math.round(thirdPartyGap * 100)}%`,
+      `Entidade avaliada como ${entityLabel} — DORA plenamente aplicável desde janeiro de 2025`,
+    ],
+  });
+
+  const impactMatrix = buildImpactMatrix({
+    financial: score * 0.8,
+    technical: governanceGap * 100,
+    operational: incidentsGap * 100,
+    regulatory: gapPct * 100 * entityMultiplier,
+    reputational: score * 0.55,
+  });
+
+  const recs = generateRecommendations({
+    calculatorId: "dora-compliance",
+    score,
+    riskLevel,
+    inputs,
+    riskFactors,
+  });
+
+  return {
+    id: generateId(),
+    calculatorId: "dora-compliance",
+    score,
+    riskLevel,
+    currency,
+    cost: {
+      min: totalCost * 0.6,
+      probable: totalCost,
+      max: totalCost * 1.5,
+      regulatory: regulatoryExposure,
+      remediation: remediationCost,
+      items: pickLocale(locale, {
+        es: [
+          { label: "Exposición regulatoria estimada (sanciones y supervisión)", value: regulatoryExposure },
+          { label: "Costo de remediación de brechas DORA", value: remediationCost },
+          { label: "Preparación de evidencia y auditoría", value: auditReadinessCost },
+        ],
+        en: [
+          { label: "Estimated regulatory exposure (fines and supervision)", value: regulatoryExposure },
+          { label: "DORA gap remediation cost", value: remediationCost },
+          { label: "Evidence and audit readiness", value: auditReadinessCost },
+        ],
+        pt: [
+          { label: "Exposição regulatória estimada (sanções e supervisão)", value: regulatoryExposure },
+          { label: "Custo de remediação de lacunas DORA", value: remediationCost },
+          { label: "Preparação de evidências e auditoria", value: auditReadinessCost },
+        ],
+      }),
+    },
+    impactMatrix,
+    riskFactors,
+    recommendations: recs.all,
+    immediateActions: recs.immediate,
+    actions30Days: recs.days30,
+    actions90Days: recs.days90,
+    executiveSummary: pickLocale(locale, {
+      es: `Su nivel de brecha de cumplimiento con DORA es ${levelLabel} (score: ${score}/100). Obtuvo ${rawTotal}/75 puntos (${maturityPct}% de madurez). ${diagnosis} Con base en su marco de riesgos TIC, gestión de incidentes, pruebas de resiliencia y proveedores críticos, la exposición regulatoria y de remediación estimada es de ${formatCurrency(totalCost, currency)}, en un rango entre ${formatCurrency(totalCost * 0.6, currency)} y ${formatCurrency(totalCost * 1.5, currency)}. DORA es plenamente aplicable desde el 17 de enero de 2025.`,
+      en: `Your DORA compliance gap level is ${levelLabel} (score: ${score}/100). You scored ${rawTotal}/75 points (${maturityPct}% maturity). ${diagnosis} Based on your ICT risk framework, incident management, resilience testing, and critical providers, the estimated regulatory and remediation exposure is ${formatCurrency(totalCost, currency)}, ranging between ${formatCurrency(totalCost * 0.6, currency)} and ${formatCurrency(totalCost * 1.5, currency)}. DORA has been fully applicable since January 17, 2025.`,
+      pt: `Seu nível de lacuna de conformidade com o DORA é ${levelLabel} (score: ${score}/100). Você obteve ${rawTotal}/75 pontos (${maturityPct}% de maturidade). ${diagnosis} Com base no seu framework de riscos de TIC, gestão de incidentes, testes de resiliência e provedores críticos, a exposição regulatória e de remediação estimada é de ${formatCurrency(totalCost, currency)}, em um intervalo entre ${formatCurrency(totalCost * 0.6, currency)} e ${formatCurrency(totalCost * 1.5, currency)}. O DORA está plenamente aplicável desde 17 de janeiro de 2025.`,
+    }),
+    partialSummary: pickLocale(locale, {
+      es: `Nivel de brecha DORA: ${levelLabel} (score: ${score}/100, ${rawTotal}/75 pts). Exposición estimada: ${formatCurrency(totalCost, currency, true)}.`,
+      en: `DORA compliance gap level: ${levelLabel} (score: ${score}/100, ${rawTotal}/75 pts). Estimated exposure: ${formatCurrency(totalCost, currency, true)}.`,
+      pt: `Nível de lacuna DORA: ${levelLabel} (score: ${score}/100, ${rawTotal}/75 pts). Exposição estimada: ${formatCurrency(totalCost, currency, true)}.`,
+    }),
+    inputs,
+    createdAt: new Date().toISOString(),
+    leadCaptured: false,
+  };
+}
+
 export function calculate(
   calculatorId: CalculatorId,
   inputs: Record<string, unknown>,
@@ -1078,6 +1287,9 @@ export function calculate(
       break;
     case "cra-compliance":
       result = calculateCraCompliance(inputs, currency, locale);
+      break;
+    case "dora-compliance":
+      result = calculateDoraCompliance(inputs, currency, locale);
       break;
     default:
       throw new Error(`Unknown calculator: ${calculatorId}`);
