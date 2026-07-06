@@ -11,6 +11,14 @@ function IconPaths({ id, category }: { id?: CalculatorId; category?: CalculatorC
   const key = id ?? category;
 
   switch (key) {
+    case "executive-software-risk-score":
+      return (
+        <>
+          <rect x="4" y="5" width="16" height="14" rx="2" stroke="currentColor" strokeWidth="1.6" fill="none" />
+          <path d="M8 10h8M8 13.5h5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+          <circle cx="17" cy="8" r="2.5" fill="currentColor" opacity="0.35" />
+        </>
+      );
     case "owasp-web":
       return (
         <>

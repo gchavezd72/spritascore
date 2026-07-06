@@ -5,6 +5,15 @@ export type AnalyticsEvent =
   | "report_downloaded"
   | "cta_clicked";
 
+export type ExecutiveAnalyticsEvent =
+  | "software_score_view"
+  | "software_score_start"
+  | "software_score_question_answered"
+  | "software_score_completed"
+  | "software_score_pdf_download"
+  | "software_score_assessment_click"
+  | "software_score_form_submit";
+
 interface EventPayload {
   calculator?: string;
   score?: number;
@@ -14,7 +23,10 @@ interface EventPayload {
   [key: string]: unknown;
 }
 
-export function trackEvent(event: AnalyticsEvent, payload?: EventPayload) {
+export function trackEvent(
+  event: AnalyticsEvent | ExecutiveAnalyticsEvent,
+  payload?: EventPayload
+) {
   if (typeof window === "undefined") return;
 
   const data = { event, timestamp: new Date().toISOString(), ...payload };
@@ -27,4 +39,11 @@ export function trackEvent(event: AnalyticsEvent, payload?: EventPayload) {
 
   // Future: GTM, Segment, etc.
   // window.dataLayer?.push({ event, ...payload });
+}
+
+export function trackExecutiveEvent(
+  event: ExecutiveAnalyticsEvent,
+  payload?: EventPayload
+) {
+  trackEvent(event, payload);
 }

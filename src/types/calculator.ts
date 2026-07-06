@@ -1,4 +1,5 @@
 export type CalculatorId =
+  | "executive-software-risk-score"
   | "iso-quality"
   | "owasp-web"
   | "owasp-mobile"
@@ -146,4 +147,11 @@ export interface CalculatorConfig {
   complexity: "baja" | "media" | "alta";
   estimatedTime: LocalizedText;
   steps: WizardStep[];
+  /** Dedicated route (e.g. campaign landing) instead of /calculadora/[slug] */
+  customRoute?: string;
+  kicker?: LocalizedText;
+  badge?: LocalizedText;
+  audience?: LocalizedText;
+  ctaLabel?: LocalizedText;
+  featured?: boolean;
 }

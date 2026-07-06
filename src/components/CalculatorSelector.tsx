@@ -27,10 +27,14 @@ export function CalculatorSelector() {
   const { t, locale } = useTranslations();
   const [filter, setFilter] = useState<FilterValue>("all");
 
+  const sorted = [...CALCULATOR_CONFIGS].sort(
+    (a, b) => Number(Boolean(b.featured)) - Number(Boolean(a.featured))
+  );
+
   const filtered =
     filter === "all"
-      ? CALCULATOR_CONFIGS
-      : CALCULATOR_CONFIGS.filter((calc) => calc.category === filter);
+      ? sorted
+      : sorted.filter((calc) => calc.category === filter);
 
   const tabs: { id: FilterValue; label: string }[] = [
     { id: "all", label: t.calculatorSelector.filterAll },
@@ -114,13 +118,23 @@ export function CalculatorSelector() {
                           <CalculatorIcon id={calc.id} className="h-6 w-6" />
                         </div>
                         <div>
-                          <Badge
-                            variant="outline"
-                            className={cn("mb-2 text-[10px] uppercase tracking-wider", colors.text, colors.border)}
-                          >
-                            {t.calculatorSelector.categories[calc.category]}
-                          </Badge>
+                          <div className="flex flex-wrap gap-2 mb-2">
+                            <Badge
+                              variant="outline"
+                              className={cn("text-[10px] uppercase tracking-wider", colors.text, colors.border)}
+                            >
+                              {calc.badge ? tr(calc.badge, locale) : t.calculatorSelector.categories[calc.category]}
+                            </Badge>
+                            {calc.audience && (
+                              <Badge variant="outline" className="text-[10px]">
+                                {tr(calc.audience, locale)}
+                              </Badge>
+                            )}
+                          </div>
                           <CardTitle className="text-lg">{tr(calc.title, locale)}</CardTitle>
+                          {calc.kicker && (
+                            <p className="text-xs text-muted-foreground mt-1">{tr(calc.kicker, locale)}</p>
+                          )}
                           <div className="flex gap-2 mt-2">
                             <Badge variant={COMPLEXITY_COLORS[calc.complexity]}>
                               {t.calculatorSelector.complexity}{" "}
@@ -139,8 +153,10 @@ export function CalculatorSelector() {
                     <CardDescription className="text-base mb-6 leading-relaxed">
                       {tr(calc.shortDescription, locale)}
                     </CardDescription>
-                    <Link href={`/calculadora/${calc.slug}`}>
-                      <Button className="w-full">{t.calculatorSelector.start}</Button>
+                    <Link href={calc.customRoute ?? `/calculadora/${calc.slug}`}>
+                      <Button className="w-full">
+                        {calc.ctaLabel ? tr(calc.ctaLabel, locale) : t.calculatorSelector.start}
+                      </Button>
                     </Link>
                   </CardContent>
                 </Card>

@@ -26,6 +26,7 @@ import {
   DORA_QUESTIONS,
   doraFieldFromQuestion,
 } from "@/data/doraQuestions";
+import { EXECUTIVE_CARD } from "@/data/executiveSoftwareRiskScore";
 import type { CalculatorConfig } from "@/types/calculator";
 
 const CURRENCY_FIELD = {
@@ -46,6 +47,7 @@ const CONFIRM_FIELD = {
 };
 
 export const CALCULATOR_CONFIGS: CalculatorConfig[] = [
+  EXECUTIVE_CARD,
   {
     id: "iso-quality",
     slug: "no-calidad-codigo",

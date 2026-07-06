@@ -24,6 +24,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     { url: SITE_URL, lastModified: now, changeFrequency: "weekly", priority: 1 },
+    {
+      url: `${SITE_URL}/en/executive-software-risk-score`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.95,
+    },
     { url: `${SITE_URL}/privacidad`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
     ...regionalPages,
     ...legacyCalculators,

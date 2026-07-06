@@ -61,7 +61,7 @@ export function CalculatorsMegaMenu() {
                   {groups[cat].map((calc) => (
                     <li key={calc.id}>
                       <Link
-                        href={`/calculadora/${calc.slug}`}
+                        href={calc.customRoute ?? `/calculadora/${calc.slug}`}
                         className="block rounded-md px-2 py-1.5 text-xs text-muted-foreground hover:text-brand-navy hover:bg-surface-hover transition-colors"
                       >
                         {tr(calc.title, locale)}

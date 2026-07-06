@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "verify:locale": "npx --yes tsx scripts/verify-report-locale.mjs",
-    "verify:seo": "npx --yes tsx scripts/verify-seo.mjs"
+    "verify:seo": "npx --yes tsx scripts/verify-seo.mjs",
+    "verify:executive": "npx --yes tsx scripts/verify-executive-score.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",

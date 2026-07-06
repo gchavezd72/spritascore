@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { getCalculatorBySlug, CALCULATOR_CONFIGS } from "@/data/calculatorConfigs";
 import { CalculatorWizard } from "@/components/CalculatorWizard";
 import { CalculatorPageHeader } from "@/components/CalculatorPageHeader";
@@ -10,7 +10,7 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
-  return CALCULATOR_CONFIGS.map((c) => ({ slug: c.slug }));
+  return CALCULATOR_CONFIGS.filter((c) => !c.customRoute).map((c) => ({ slug: c.slug }));
 }
 
 export async function generateMetadata({ params }: PageProps) {
@@ -22,6 +22,7 @@ export default async function CalculatorPage({ params }: PageProps) {
   const { slug } = await params;
   const config = getCalculatorBySlug(slug);
   if (!config) notFound();
+  if (config.customRoute) redirect(config.customRoute);
 
   return (
     <div className="py-12 bg-background min-h-screen">

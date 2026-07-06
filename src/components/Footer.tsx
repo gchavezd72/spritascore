@@ -25,7 +25,7 @@ export function Footer() {
             <ul>
               {CALCULATOR_CONFIGS.map((calc) => (
                 <li key={calc.id}>
-                  <Link href={`/calculadora/${calc.slug}`}>{tr(calc.title, locale)}</Link>
+                  <Link href={calc.customRoute ?? `/calculadora/${calc.slug}`}>{tr(calc.title, locale)}</Link>
                 </li>
               ))}
             </ul>
