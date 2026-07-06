@@ -1,62 +1,127 @@
-import { EXECUTIVE_QUESTIONS } from "@/data/executiveSoftwareRiskScore";
-import type { ExecutiveScoreResult } from "@/lib/calculateExecutiveRiskScore";
+import { jsPDF } from "jspdf";
 import type { ExecutiveAnswerId } from "@/data/executiveSoftwareRiskScore";
+import type { ExecutiveScoreResult } from "@/lib/calculateExecutiveRiskScore";
+import { getExecutiveCopy, getExecutiveQuestions } from "@/i18n/executive";
+import type { Locale } from "@/types/calculator";
+
+const MARGIN = 14;
+const PAGE_WIDTH = 210;
+const CONTENT_WIDTH = PAGE_WIDTH - MARGIN * 2;
+
+function addWrappedText(
+  doc: jsPDF,
+  text: string,
+  x: number,
+  y: number,
+  maxWidth: number,
+  lineHeight: number
+): number {
+  const lines = doc.splitTextToSize(text, maxWidth) as string[];
+  for (const line of lines) {
+    if (y > 280) {
+      doc.addPage();
+      y = 20;
+    }
+    doc.text(line, x, y);
+    y += lineHeight;
+  }
+  return y;
+}
 
 export function downloadExecutiveScorePdf(
+  locale: Locale,
   answers: Record<string, ExecutiveAnswerId>,
   result: ExecutiveScoreResult
-) {
-  const answerLabel = (id?: ExecutiveAnswerId) =>
-    id ? id.replace("_", " ").replace(/\b\w/g, (c) => c.toUpperCase()) : "—";
+): boolean {
+  try {
+    const copy = getExecutiveCopy(locale);
+    const questions = getExecutiveQuestions(locale);
+    const doc = new jsPDF({ unit: "mm", format: "a4" });
+    let y = 20;
 
-  const rows = EXECUTIVE_QUESTIONS.map(
-    (q, i) =>
-      `<tr><td>${i + 1}</td><td>${q.categoryLabel}</td><td>${q.text}</td><td>${answerLabel(answers[q.id])}</td></tr>`
-  ).join("");
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(16);
+    y = addWrappedText(doc, copy.pdf.title, MARGIN, y, CONTENT_WIDTH, 8);
 
-  const recs = result.recommendations
-    .map((r) => `<li><strong>${r.category.replace(/-/g, " ")}</strong> — ${r.text}</li>`)
-    .join("");
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+    y = addWrappedText(
+      doc,
+      `SpritaScore · Sprita iT · ${new Date().toLocaleDateString(locale === "en" ? "en-US" : locale === "pt" ? "pt-BR" : "es-ES")}`,
+      MARGIN,
+      y + 2,
+      CONTENT_WIDTH,
+      5
+    );
 
-  const html = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <title>Executive Software Risk Score — SpritaScore</title>
-  <style>
-    body { font-family: system-ui, sans-serif; color: #12213b; margin: 40px; line-height: 1.5; }
-    h1 { font-size: 24px; margin-bottom: 4px; }
-    .sub { color: #5b6472; margin-bottom: 24px; }
-    .score { font-size: 32px; font-weight: 700; color: #1fbf6c; }
-    table { width: 100%; border-collapse: collapse; margin-top: 24px; font-size: 12px; }
-    th, td { border: 1px solid #e6e9ef; padding: 8px; text-align: left; vertical-align: top; }
-    th { background: #f7f8fa; }
-    .disclaimer { margin-top: 32px; font-size: 11px; color: #5b6472; }
-    .brand { margin-top: 16px; font-size: 12px; }
-  </style>
-</head>
-<body>
-  <h1>Executive Software Risk Score</h1>
-  <p class="sub">SpritaScore by Sprita iT · ${new Date().toLocaleDateString("en-US")}</p>
-  <p class="score">Risk Exposure Score: ${result.riskExposureScore} / 1000</p>
-  <p><strong>Executive Maturity:</strong> ${result.levelLabel} (${result.exposureLabel} exposure)</p>
-  <p><strong>Maturity points:</strong> ${result.rawMaturityPoints} / 15 (${result.maturityPercent}%)</p>
-  <p>${result.interpretation}</p>
-  <h2>Top gap areas</h2>
-  <ul>${recs || "<li>No critical gaps identified in this self-assessment.</li>"}</ul>
-  <h2>Questionnaire responses</h2>
-  <table>
-    <thead><tr><th>#</th><th>Category</th><th>Question</th><th>Answer</th></tr></thead>
-    <tbody>${rows}</tbody>
-  </table>
-  <p class="disclaimer">This score is an executive self-assessment and prioritization aid. It does not constitute legal advice, audit certification, or proof of compliance.</p>
-  <p class="brand">spritascore.com · sprita-it.com</p>
-  <script>window.onload = () => { window.print(); };</script>
-</body>
-</html>`;
+    y += 4;
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(13);
+    y = addWrappedText(
+      doc,
+      `${copy.pdf.riskScore}: ${result.riskExposureScore} / 1000`,
+      MARGIN,
+      y,
+      CONTENT_WIDTH,
+      7
+    );
 
-  const win = window.open("", "_blank", "noopener,noreferrer");
-  if (!win) return;
-  win.document.write(html);
-  win.document.close();
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(11);
+    y = addWrappedText(
+      doc,
+      `${copy.pdf.maturity}: ${result.levelLabel} (${result.exposureLabel})`,
+      MARGIN,
+      y,
+      CONTENT_WIDTH,
+      6
+    );
+    y = addWrappedText(
+      doc,
+      `${copy.pdf.points}: ${result.rawMaturityPoints} / 15 (${result.maturityPercent}%)`,
+      MARGIN,
+      y,
+      CONTENT_WIDTH,
+      6
+    );
+    y = addWrappedText(doc, result.interpretation, MARGIN, y + 2, CONTENT_WIDTH, 6);
+
+    y += 4;
+    doc.setFont("helvetica", "bold");
+    y = addWrappedText(doc, copy.pdf.topGaps, MARGIN, y, CONTENT_WIDTH, 6);
+    doc.setFont("helvetica", "normal");
+
+    if (result.recommendations.length === 0) {
+      y = addWrappedText(doc, copy.pdf.noGaps, MARGIN, y, CONTENT_WIDTH, 6);
+    } else {
+      for (const rec of result.recommendations) {
+        y = addWrappedText(doc, `• ${rec.label}: ${rec.text}`, MARGIN, y, CONTENT_WIDTH, 6);
+      }
+    }
+
+    y += 6;
+    doc.setFont("helvetica", "bold");
+    y = addWrappedText(doc, copy.pdf.responses, MARGIN, y, CONTENT_WIDTH, 6);
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(9);
+
+    questions.forEach((q, index) => {
+      const answerId = answers[q.id];
+      const answerLabel = answerId ? copy.answers[answerId] : "—";
+      const block = `${index + 1}. [${q.categoryLabel}] ${q.text}\n   → ${answerLabel}`;
+      y = addWrappedText(doc, block, MARGIN, y + 1, CONTENT_WIDTH, 5);
+    });
+
+    y += 4;
+    doc.setFontSize(8);
+    doc.setTextColor(90, 100, 114);
+    addWrappedText(doc, copy.pdf.disclaimer, MARGIN, y, CONTENT_WIDTH, 4);
+    doc.setTextColor(18, 33, 59);
+
+    const date = new Date().toISOString().slice(0, 10);
+    doc.save(`${copy.pdf.filename}-${date}.pdf`);
+    return true;
+  } catch {
+    return false;
+  }
 }

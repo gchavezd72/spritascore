@@ -30,6 +30,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.95,
     },
+    {
+      url: `${SITE_URL}/es/puntaje-ejecutivo-riesgo-software`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.95,
+    },
+    {
+      url: `${SITE_URL}/pt/pontuacao-executiva-risco-software`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.95,
+    },
     { url: `${SITE_URL}/privacidad`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
     ...regionalPages,
     ...legacyCalculators,

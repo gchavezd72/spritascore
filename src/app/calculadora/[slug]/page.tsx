@@ -10,7 +10,9 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
-  return CALCULATOR_CONFIGS.filter((c) => !c.customRoute).map((c) => ({ slug: c.slug }));
+  return CALCULATOR_CONFIGS.filter(
+    (c) => !c.customRoute && c.id !== "executive-software-risk-score"
+  ).map((c) => ({ slug: c.slug }));
 }
 
 export async function generateMetadata({ params }: PageProps) {
@@ -22,6 +24,9 @@ export default async function CalculatorPage({ params }: PageProps) {
   const { slug } = await params;
   const config = getCalculatorBySlug(slug);
   if (!config) notFound();
+  if (config.id === "executive-software-risk-score") {
+    redirect("/en/executive-software-risk-score");
+  }
   if (config.customRoute) redirect(config.customRoute);
 
   return (

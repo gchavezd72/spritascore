@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 import { CALCULATOR_CONFIGS } from "@/data/calculatorConfigs";
+import { getExecutiveRoute } from "@/data/executiveSoftwareRiskScore";
 import { CALCULATOR_CATEGORY_ORDER, CALCULATOR_CATEGORY_COLORS } from "@/data/calculatorCategories";
 import { CalculatorIcon } from "@/components/CalculatorIcon";
 import { tr } from "@/lib/translate";
@@ -61,7 +62,11 @@ export function CalculatorsMegaMenu() {
                   {groups[cat].map((calc) => (
                     <li key={calc.id}>
                       <Link
-                        href={calc.customRoute ?? `/calculadora/${calc.slug}`}
+                        href={
+                          calc.id === "executive-software-risk-score"
+                            ? getExecutiveRoute(locale)
+                            : (calc.customRoute ?? `/calculadora/${calc.slug}`)
+                        }
                         className="block rounded-md px-2 py-1.5 text-xs text-muted-foreground hover:text-brand-navy hover:bg-surface-hover transition-colors"
                       >
                         {tr(calc.title, locale)}

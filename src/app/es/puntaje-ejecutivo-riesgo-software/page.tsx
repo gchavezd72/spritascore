@@ -3,7 +3,7 @@ import { ExecutiveSoftwareRiskPage } from "@/components/executive/ExecutiveSoftw
 import { getExecutiveCopy, EXECUTIVE_ROUTES } from "@/i18n/executive";
 import { SITE_URL } from "@/lib/seo";
 
-const locale = "en" as const;
+const locale = "es" as const;
 const copy = getExecutiveCopy(locale);
 const route = EXECUTIVE_ROUTES[locale];
 

@@ -1,3 +1,11 @@
+import type { Locale } from "@/types/calculator";
+
+export const EXECUTIVE_ROUTES: Record<Locale, string> = {
+  en: "/en/executive-software-risk-score",
+  es: "/es/puntaje-ejecutivo-riesgo-software",
+  pt: "/pt/pontuacao-executiva-risco-software",
+};
+
 export type ExecutiveAnswerId = "yes" | "partially" | "no" | "not_sure";
 
 export type ExecutiveWeakCategory =
@@ -8,133 +16,33 @@ export type ExecutiveWeakCategory =
   | "audit-evidence"
   | "software-governance";
 
-export interface ExecutiveAnswerOption {
-  id: ExecutiveAnswerId;
-  label: string;
-  maturityPoints: number;
-}
+export const EXECUTIVE_ANSWER_POINTS: Record<ExecutiveAnswerId, number> = {
+  yes: 1,
+  partially: 0.5,
+  no: 0,
+  not_sure: 0,
+};
 
-export interface ExecutiveQuestion {
+export const EXECUTIVE_QUESTION_META: {
   id: string;
-  category: string;
-  categoryLabel: string;
-  text: string;
+  category: (typeof EXECUTIVE_SECTIONS)[number];
   weakCategory: ExecutiveWeakCategory;
-}
-
-export const EXECUTIVE_ANSWERS: ExecutiveAnswerOption[] = [
-  { id: "yes", label: "Yes", maturityPoints: 1 },
-  { id: "partially", label: "Partially", maturityPoints: 0.5 },
-  { id: "no", label: "No", maturityPoints: 0 },
-  { id: "not_sure", label: "Not sure", maturityPoints: 0 },
-];
-
-export const EXECUTIVE_QUESTIONS: ExecutiveQuestion[] = [
-  {
-    id: "q1",
-    category: "software-governance",
-    categoryLabel: "Software Governance",
-    text: "There is an up-to-date inventory of all business-critical applications.",
-    weakCategory: "software-governance",
-  },
-  {
-    id: "q2",
-    category: "software-governance",
-    categoryLabel: "Software Governance",
-    text: "Each critical application has a clearly identified business and technical owner.",
-    weakCategory: "software-governance",
-  },
-  {
-    id: "q3",
-    category: "software-governance",
-    categoryLabel: "Software Governance",
-    text: "Management receives periodic indicators of software risk, not only vulnerability counts.",
-    weakCategory: "software-governance",
-  },
-  {
-    id: "q4",
-    category: "secure-development",
-    categoryLabel: "Secure Development",
-    text: "Internally developed code is automatically analyzed before release.",
-    weakCategory: "software-governance",
-  },
-  {
-    id: "q5",
-    category: "secure-development",
-    categoryLabel: "Secure Development",
-    text: "Code delivered by vendors or external development partners is independently validated.",
-    weakCategory: "vendor-delivered-code",
-  },
-  {
-    id: "q6",
-    category: "secure-development",
-    categoryLabel: "Secure Development",
-    text: "AI-assisted or AI-generated code is reviewed before it reaches production.",
-    weakCategory: "ai-assisted-code",
-  },
-  {
-    id: "q7",
-    category: "dependencies-supply-chain",
-    categoryLabel: "Dependencies and Supply Chain",
-    text: "The organization knows which open-source libraries and third-party components are used by critical applications.",
-    weakCategory: "open-source-dependencies",
-  },
-  {
-    id: "q8",
-    category: "dependencies-supply-chain",
-    categoryLabel: "Dependencies and Supply Chain",
-    text: "The organization receives alerts when critical CVEs affect components used in production.",
-    weakCategory: "open-source-dependencies",
-  },
-  {
-    id: "q9",
-    category: "dependencies-supply-chain",
-    categoryLabel: "Dependencies and Supply Chain",
-    text: "Open-source license risk is reviewed before components are approved or released.",
-    weakCategory: "open-source-dependencies",
-  },
-  {
-    id: "q10",
-    category: "quality-continuity",
-    categoryLabel: "Quality and Continuity",
-    text: "Technical debt and maintainability are measured for critical applications.",
-    weakCategory: "software-governance",
-  },
-  {
-    id: "q11",
-    category: "quality-continuity",
-    categoryLabel: "Quality and Continuity",
-    text: "Critical vulnerabilities can automatically block or stop a production release.",
-    weakCategory: "release-controls",
-  },
-  {
-    id: "q12",
-    category: "quality-continuity",
-    categoryLabel: "Quality and Continuity",
-    text: "Critical applications already in operation are reviewed periodically, not only before release.",
-    weakCategory: "release-controls",
-  },
-  {
-    id: "q13",
-    category: "compliance-audit-evidence",
-    categoryLabel: "Compliance and Audit Evidence",
-    text: "The organization can produce objective evidence for internal audits, clients, examiners, or regulators.",
-    weakCategory: "audit-evidence",
-  },
-  {
-    id: "q14",
-    category: "compliance-audit-evidence",
-    categoryLabel: "Compliance and Audit Evidence",
-    text: "The organization can show software risk trends over time using metrics.",
-    weakCategory: "audit-evidence",
-  },
-  {
-    id: "q15",
-    category: "compliance-audit-evidence",
-    categoryLabel: "Compliance and Audit Evidence",
-    text: "Critical vulnerabilities have defined remediation timeframes and accountable owners.",
-    weakCategory: "audit-evidence",
-  },
+}[] = [
+  { id: "q1", category: "software-governance", weakCategory: "software-governance" },
+  { id: "q2", category: "software-governance", weakCategory: "software-governance" },
+  { id: "q3", category: "software-governance", weakCategory: "software-governance" },
+  { id: "q4", category: "secure-development", weakCategory: "software-governance" },
+  { id: "q5", category: "secure-development", weakCategory: "vendor-delivered-code" },
+  { id: "q6", category: "secure-development", weakCategory: "ai-assisted-code" },
+  { id: "q7", category: "dependencies-supply-chain", weakCategory: "open-source-dependencies" },
+  { id: "q8", category: "dependencies-supply-chain", weakCategory: "open-source-dependencies" },
+  { id: "q9", category: "dependencies-supply-chain", weakCategory: "open-source-dependencies" },
+  { id: "q10", category: "quality-continuity", weakCategory: "software-governance" },
+  { id: "q11", category: "quality-continuity", weakCategory: "release-controls" },
+  { id: "q12", category: "quality-continuity", weakCategory: "release-controls" },
+  { id: "q13", category: "compliance-audit-evidence", weakCategory: "audit-evidence" },
+  { id: "q14", category: "compliance-audit-evidence", weakCategory: "audit-evidence" },
+  { id: "q15", category: "compliance-audit-evidence", weakCategory: "audit-evidence" },
 ];
 
 export const WEAK_CATEGORY_PRIORITY: ExecutiveWeakCategory[] = [
@@ -146,19 +54,6 @@ export const WEAK_CATEGORY_PRIORITY: ExecutiveWeakCategory[] = [
   "software-governance",
 ];
 
-export const WEAK_CATEGORY_RECOMMENDATIONS: Record<ExecutiveWeakCategory, string> = {
-  "ai-assisted-code": "Define a review gate for AI-assisted code before it reaches production.",
-  "vendor-delivered-code": "Validate vendor-delivered code independently before accepting releases.",
-  "open-source-dependencies":
-    "Maintain dependency visibility and CVE alerting for critical applications.",
-  "release-controls":
-    "Define release-blocking rules for critical vulnerabilities and policy violations.",
-  "audit-evidence":
-    "Preserve objective evidence that shows risk evolution and remediation status over time.",
-  "software-governance":
-    "Establish ownership, inventory, and executive reporting for business-critical applications.",
-};
-
 export const EXECUTIVE_SECTIONS = [
   "software-governance",
   "secure-development",
@@ -167,41 +62,46 @@ export const EXECUTIVE_SECTIONS = [
   "compliance-audit-evidence",
 ] as const;
 
-export const EXECUTIVE_ROUTE = "/en/executive-software-risk-score";
+export function getExecutiveRoute(locale: Locale): string {
+  return EXECUTIVE_ROUTES[locale] ?? EXECUTIVE_ROUTES.en;
+}
 
 export const EXECUTIVE_CARD = {
   id: "executive-software-risk-score" as const,
   slug: "executive-software-risk-score",
   category: "seguridad" as const,
-  title: { es: "Executive Software Risk Score", en: "Executive Software Risk Score", pt: "Executive Software Risk Score" },
+  title: {
+    es: "Puntaje Ejecutivo de Riesgo de Software",
+    en: "Executive Software Risk Score",
+    pt: "Pontuação Executiva de Risco de Software",
+  },
   shortDescription: {
-    es: "Identify visibility gaps across AI-assisted code, vendor-delivered software, open-source dependencies, and release controls.",
+    es: "Identifique brechas de visibilidad en código asistido por IA, software de proveedores, dependencias open source y controles de release.",
     en: "Identify visibility gaps across AI-assisted code, vendor-delivered software, open-source dependencies, and release controls.",
-    pt: "Identify visibility gaps across AI-assisted code, vendor-delivered software, open-source dependencies, and release controls.",
+    pt: "Identifique lacunas de visibilidade em código assistido por IA, software de fornecedores, dependências open source e controles de release.",
   },
   kicker: {
-    es: "15 questions · 3 minutes · No code upload",
+    es: "15 preguntas · 3 minutos · Sin subir código",
     en: "15 questions · 3 minutes · No code upload",
-    pt: "15 questions · 3 minutes · No code upload",
+    pt: "15 perguntas · 3 minutos · Sem upload de código",
   },
   badge: {
-    es: "Executive diagnostic",
+    es: "Diagnóstico ejecutivo",
     en: "Executive diagnostic",
-    pt: "Executive diagnostic",
+    pt: "Diagnóstico executivo",
   },
   audience: {
-    es: "CIO · CISO · Risk · Technology",
+    es: "CIO · CISO · Riesgo · Tecnología",
     en: "CIO · CISO · Risk · Technology",
-    pt: "CIO · CISO · Risk · Technology",
+    pt: "CIO · CISO · Risco · Tecnologia",
   },
   ctaLabel: {
-    es: "Calculate my software risk score",
+    es: "Calcular mi puntaje de riesgo de software",
     en: "Calculate my software risk score",
-    pt: "Calculate my software risk score",
+    pt: "Calcular minha pontuação de risco de software",
   },
   complexity: "baja" as const,
-  estimatedTime: { es: "3 minutes", en: "3 minutes", pt: "3 minutes" },
+  estimatedTime: { es: "3 minutos", en: "3 minutes", pt: "3 minutos" },
   featured: true,
-  customRoute: EXECUTIVE_ROUTE,
   steps: [],
 };

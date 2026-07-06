@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Clock } from "lucide-react";
 import { CALCULATOR_CONFIGS } from "@/data/calculatorConfigs";
+import { getExecutiveRoute } from "@/data/executiveSoftwareRiskScore";
 import { CALCULATOR_CATEGORY_ORDER, CALCULATOR_CATEGORY_COLORS } from "@/data/calculatorCategories";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -153,7 +154,13 @@ export function CalculatorSelector() {
                     <CardDescription className="text-base mb-6 leading-relaxed">
                       {tr(calc.shortDescription, locale)}
                     </CardDescription>
-                    <Link href={calc.customRoute ?? `/calculadora/${calc.slug}`}>
+                    <Link
+                      href={
+                        calc.id === "executive-software-risk-score"
+                          ? getExecutiveRoute(locale)
+                          : (calc.customRoute ?? `/calculadora/${calc.slug}`)
+                      }
+                    >
                       <Button className="w-full">
                         {calc.ctaLabel ? tr(calc.ctaLabel, locale) : t.calculatorSelector.start}
                       </Button>

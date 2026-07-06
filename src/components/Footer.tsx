@@ -5,6 +5,7 @@ import { BrandFooterLine } from "@/components/BrandBar";
 import { Logo } from "@/components/Logo";
 import { useTranslations } from "@/components/LanguageProvider";
 import { CALCULATOR_CONFIGS } from "@/data/calculatorConfigs";
+import { getExecutiveRoute } from "@/data/executiveSoftwareRiskScore";
 import { tr } from "@/lib/translate";
 
 export function Footer() {
@@ -25,7 +26,15 @@ export function Footer() {
             <ul>
               {CALCULATOR_CONFIGS.map((calc) => (
                 <li key={calc.id}>
-                  <Link href={calc.customRoute ?? `/calculadora/${calc.slug}`}>{tr(calc.title, locale)}</Link>
+                  <Link
+                    href={
+                      calc.id === "executive-software-risk-score"
+                        ? getExecutiveRoute(locale)
+                        : (calc.customRoute ?? `/calculadora/${calc.slug}`)
+                    }
+                  >
+                    {tr(calc.title, locale)}
+                  </Link>
                 </li>
               ))}
             </ul>
