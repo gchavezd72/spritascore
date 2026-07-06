@@ -70,16 +70,36 @@ type ExecutiveCopy = {
   };
   pdf: {
     title: string;
+    subtitle: string;
+    preparedBy: string;
     riskScore: string;
     maturity: string;
     points: string;
+    executiveSummary: string;
     topGaps: string;
     noGaps: string;
+    recommendationsTitle: string;
+    actionPlanTitle: string;
+    phaseImmediate: string;
+    phaseShort: string;
+    phaseMedium: string;
+    categoryBreakdown: string;
+    colDomain: string;
+    colScore: string;
+    colStatus: string;
+    statusStrong: string;
+    statusPartial: string;
+    statusWeak: string;
     responses: string;
     colNum: string;
     colCategory: string;
     colQuestion: string;
     colAnswer: string;
+    nextStepsTitle: string;
+    nextStepsBody: string;
+    contactLine: string;
+    page: string;
+    priority: string;
     disclaimer: string;
     filename: string;
   };
@@ -193,17 +213,39 @@ const COPY: Record<Locale, ExecutiveCopy> = {
     },
     pdf: {
       title: "Executive Software Risk Score",
+      subtitle: "Executive self-assessment report",
+      preparedBy: "Prepared by SpritaScore · Sprita iT",
       riskScore: "Risk Exposure Score",
       maturity: "Executive Maturity",
       points: "Maturity points",
-      topGaps: "Top gap areas",
+      executiveSummary: "Executive summary",
+      topGaps: "Priority visibility gaps",
       noGaps: "No critical gaps identified in this self-assessment.",
-      responses: "Questionnaire responses",
+      recommendationsTitle: "Recommendations",
+      actionPlanTitle: "90-day action plan",
+      phaseImmediate: "0–30 days — Immediate priorities",
+      phaseShort: "30–60 days — Stabilize controls",
+      phaseMedium: "60–90 days — Institutionalize evidence",
+      categoryBreakdown: "Visibility by domain",
+      colDomain: "Domain",
+      colScore: "Score",
+      colStatus: "Status",
+      statusStrong: "Strong",
+      statusPartial: "Partial",
+      statusWeak: "Weak",
+      responses: "Detailed questionnaire responses",
       colNum: "#",
       colCategory: "Category",
       colQuestion: "Question",
       colAnswer: "Answer",
-      disclaimer: "This score is an executive self-assessment and prioritization aid. It does not constitute legal advice, audit certification, or proof of compliance.",
+      nextStepsTitle: "Recommended next step",
+      nextStepsBody:
+        "Request a no-cost Software Risk Assessment from Sprita iT to receive an executive report with the Top 10 critical vulnerabilities, Top 10 priority software quality defects, and a prioritized remediation plan.",
+      contactLine: "spritascore.com · sprita-it.com · info@spritascore.com",
+      page: "Page",
+      priority: "Priority",
+      disclaimer:
+        "This score is an executive self-assessment and prioritization aid. It does not constitute legal advice, audit certification, or proof of compliance.",
       filename: "spritascore-executive-risk-score",
     },
   },
@@ -314,17 +356,39 @@ const COPY: Record<Locale, ExecutiveCopy> = {
     },
     pdf: {
       title: "Puntaje Ejecutivo de Riesgo de Software",
+      subtitle: "Informe de autoevaluación ejecutiva",
+      preparedBy: "Preparado por SpritaScore · Sprita iT",
       riskScore: "Puntaje de exposición al riesgo",
       maturity: "Madurez ejecutiva",
       points: "Puntos de madurez",
-      topGaps: "Principales brechas",
+      executiveSummary: "Resumen ejecutivo",
+      topGaps: "Brechas de visibilidad prioritarias",
       noGaps: "No se identificaron brechas críticas en esta autoevaluación.",
-      responses: "Respuestas del cuestionario",
+      recommendationsTitle: "Recomendaciones",
+      actionPlanTitle: "Plan de acción a 90 días",
+      phaseImmediate: "0–30 días — Prioridades inmediatas",
+      phaseShort: "30–60 días — Estabilizar controles",
+      phaseMedium: "60–90 días — Institucionalizar evidencia",
+      categoryBreakdown: "Visibilidad por dominio",
+      colDomain: "Dominio",
+      colScore: "Puntaje",
+      colStatus: "Estado",
+      statusStrong: "Fuerte",
+      statusPartial: "Parcial",
+      statusWeak: "Débil",
+      responses: "Respuestas detalladas del cuestionario",
       colNum: "#",
       colCategory: "Categoría",
       colQuestion: "Pregunta",
       colAnswer: "Respuesta",
-      disclaimer: "Este puntaje es una autoevaluación ejecutiva. No constituye asesoría legal, certificación de auditoría ni prueba de cumplimiento.",
+      nextStepsTitle: "Siguiente paso recomendado",
+      nextStepsBody:
+        "Solicite una evaluación de riesgo de software sin costo de Sprita iT para recibir un informe ejecutivo con las 10 vulnerabilidades críticas, los 10 defectos de calidad prioritarios y un plan de remediación priorizado.",
+      contactLine: "spritascore.com · sprita-it.com · info@spritascore.com",
+      page: "Página",
+      priority: "Prioridad",
+      disclaimer:
+        "Este puntaje es una autoevaluación ejecutiva y una ayuda de priorización. No constituye asesoría legal, certificación de auditoría ni prueba de cumplimiento.",
       filename: "spritascore-puntaje-ejecutivo-riesgo",
     },
   },
@@ -435,17 +499,39 @@ const COPY: Record<Locale, ExecutiveCopy> = {
     },
     pdf: {
       title: "Pontuação Executiva de Risco de Software",
+      subtitle: "Relatório de autoavaliação executiva",
+      preparedBy: "Preparado por SpritaScore · Sprita iT",
       riskScore: "Pontuação de exposição ao risco",
       maturity: "Maturidade executiva",
       points: "Pontos de maturidade",
-      topGaps: "Principais lacunas",
+      executiveSummary: "Resumo executivo",
+      topGaps: "Lacunas de visibilidade prioritárias",
       noGaps: "Nenhuma lacuna crítica identificada nesta autoavaliação.",
-      responses: "Respostas do questionário",
+      recommendationsTitle: "Recomendações",
+      actionPlanTitle: "Plano de ação de 90 dias",
+      phaseImmediate: "0–30 dias — Prioridades imediatas",
+      phaseShort: "30–60 dias — Estabilizar controles",
+      phaseMedium: "60–90 dias — Institucionalizar evidência",
+      categoryBreakdown: "Visibilidade por domínio",
+      colDomain: "Domínio",
+      colScore: "Pontuação",
+      colStatus: "Status",
+      statusStrong: "Forte",
+      statusPartial: "Parcial",
+      statusWeak: "Fraco",
+      responses: "Respostas detalhadas do questionário",
       colNum: "#",
       colCategory: "Categoria",
       colQuestion: "Pergunta",
       colAnswer: "Resposta",
-      disclaimer: "Esta pontuação é uma autoavaliação executiva. Não constitui assessoria legal, certificação de auditoria nem prova de conformidade.",
+      nextStepsTitle: "Próximo passo recomendado",
+      nextStepsBody:
+        "Solicite uma avaliação de risco de software sem custo da Sprita iT para receber um relatório executivo com as 10 vulnerabilidades críticas, os 10 defeitos de qualidade prioritários e um plano de remediação priorizado.",
+      contactLine: "spritascore.com · sprita-it.com · info@spritascore.com",
+      page: "Página",
+      priority: "Prioridade",
+      disclaimer:
+        "Esta pontuação é uma autoavaliação executiva e um auxílio de priorização. Não constitui assessoria legal, certificação de auditoria nem prova de conformidade.",
       filename: "spritascore-pontuacao-executiva-risco",
     },
   },
