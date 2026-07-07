@@ -23,6 +23,12 @@ interface EventPayload {
   [key: string]: unknown;
 }
 
+declare global {
+  interface Window {
+    dataLayer?: Record<string, unknown>[];
+  }
+}
+
 export function trackEvent(
   event: AnalyticsEvent | ExecutiveAnalyticsEvent,
   payload?: EventPayload
@@ -32,13 +38,12 @@ export function trackEvent(
   const data = { event, timestamp: new Date().toISOString(), ...payload };
 
   window.dispatchEvent(new CustomEvent("spritascore_analytics", { detail: data }));
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push(data);
 
   if (process.env.NODE_ENV === "development") {
     console.info("[Analytics]", data);
   }
-
-  // Future: GTM, Segment, etc.
-  // window.dataLayer?.push({ event, ...payload });
 }
 
 export function trackExecutiveEvent(

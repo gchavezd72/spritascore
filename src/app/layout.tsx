@@ -4,6 +4,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { CookieConsent } from "@/components/CookieConsent";
 import { LanguageProvider } from "@/components/LanguageProvider";
+import { GoogleTagManagerBody, GoogleTagManagerHead } from "@/components/GoogleTagManager";
 import { JsonLd } from "@/components/JsonLd";
 import {
   faqJsonLd,
@@ -46,7 +47,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" className={`${geistSans.variable} ${geistMono.variable} ${spaceMono.variable} h-full antialiased`}>
+      <head>
+        <GoogleTagManagerHead />
+      </head>
       <body className="min-h-full flex flex-col">
+        <GoogleTagManagerBody />
         <JsonLd
           data={[organizationJsonLd(), webSiteJsonLd(), webApplicationJsonLd(), faqJsonLd()]}
         />
