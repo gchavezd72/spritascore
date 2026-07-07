@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "@/components/LanguageProvider";
+import { updateAnalyticsConsent } from "@/lib/gtm";
 
 const CONSENT_KEY = "spritascore_cookie_consent";
 
@@ -18,6 +19,7 @@ export function CookieConsent() {
 
   const respond = (value: "accepted" | "rejected") => {
     localStorage.setItem(CONSENT_KEY, value);
+    updateAnalyticsConsent(value === "accepted" ? "granted" : "denied");
     setVisible(false);
   };
 

@@ -14,6 +14,8 @@ export type ExecutiveAnalyticsEvent =
   | "software_score_assessment_click"
   | "software_score_form_submit";
 
+import { pushAnalyticsEvent } from "@/lib/gtm";
+
 interface EventPayload {
   calculator?: string;
   score?: number;
@@ -23,27 +25,11 @@ interface EventPayload {
   [key: string]: unknown;
 }
 
-declare global {
-  interface Window {
-    dataLayer?: Record<string, unknown>[];
-  }
-}
-
 export function trackEvent(
   event: AnalyticsEvent | ExecutiveAnalyticsEvent,
   payload?: EventPayload
 ) {
-  if (typeof window === "undefined") return;
-
-  const data = { event, timestamp: new Date().toISOString(), ...payload };
-
-  window.dispatchEvent(new CustomEvent("spritascore_analytics", { detail: data }));
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push(data);
-
-  if (process.env.NODE_ENV === "development") {
-    console.info("[Analytics]", data);
-  }
+  pushAnalyticsEvent(event, payload ?? {});
 }
 
 export function trackExecutiveEvent(

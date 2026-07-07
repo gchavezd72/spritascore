@@ -5,6 +5,7 @@ import { Footer } from "@/components/Footer";
 import { CookieConsent } from "@/components/CookieConsent";
 import { LanguageProvider } from "@/components/LanguageProvider";
 import { GoogleTagManagerBody, GoogleTagManagerHead } from "@/components/GoogleTagManager";
+import { GtmConsentInit } from "@/components/GtmConsentInit";
 import { JsonLd } from "@/components/JsonLd";
 import {
   faqJsonLd,
@@ -52,6 +53,7 @@ export default function RootLayout({
       </head>
       <body className="min-h-full flex flex-col">
         <GoogleTagManagerBody />
+        <GtmConsentInit />
         <JsonLd
           data={[organizationJsonLd(), webSiteJsonLd(), webApplicationJsonLd(), faqJsonLd()]}
         />

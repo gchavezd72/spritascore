@@ -1,0 +1,92 @@
+{
+  "container_id": "GTM-NDXVZKB3",
+  "site": "https://spritascore.com",
+  "notes": "Import manually in tagmanager.google.com. Replace G-XXXXXXXXXX with your GA4 Measurement ID.",
+  "variables": [
+    {
+      "name": "DLV - ga4_event_name",
+      "type": "Data Layer Variable",
+      "key": "ga4_event_name"
+    },
+    {
+      "name": "DLV - calculator_id",
+      "type": "Data Layer Variable",
+      "key": "calculator_id"
+    },
+    {
+      "name": "DLV - lead_source",
+      "type": "Data Layer Variable",
+      "key": "lead_source"
+    },
+    {
+      "name": "DLV - sector",
+      "type": "Data Layer Variable",
+      "key": "sector"
+    },
+    {
+      "name": "DLV - score",
+      "type": "Data Layer Variable",
+      "key": "score"
+    },
+    {
+      "name": "DLV - risk_level",
+      "type": "Data Layer Variable",
+      "key": "riskLevel"
+    }
+  ],
+  "triggers": [
+    { "name": "CE - All SpritaScore events", "type": "Custom Event", "event": ".*", "use_regex": true },
+    { "name": "CE - generate_lead", "type": "Custom Event", "events": ["lead_submitted", "software_score_form_submit"] },
+    { "name": "CE - calculator_started", "type": "Custom Event", "event": "calculator_started" },
+    { "name": "CE - calculator_completed", "type": "Custom Event", "event": "calculator_completed" },
+    { "name": "CE - file_download", "type": "Custom Event", "events": ["report_downloaded", "software_score_pdf_download"] },
+    { "name": "CE - cta_clicked", "type": "Custom Event", "event": "cta_clicked" },
+    { "name": "CE - software_score_completed", "type": "Custom Event", "event": "software_score_completed" }
+  ],
+  "tags": [
+    {
+      "name": "GA4 - Configuration",
+      "type": "Google Tag",
+      "measurement_id": "G-XXXXXXXXXX",
+      "trigger": "Initialization - All Pages",
+      "consent": "analytics_storage"
+    },
+    {
+      "name": "GA4 - Event (all custom)",
+      "type": "GA4 Event",
+      "measurement_id": "G-XXXXXXXXXX",
+      "event_name": "{{DLV - ga4_event_name}}",
+      "trigger": "CE - All SpritaScore events",
+      "parameters": {
+        "calculator_id": "{{DLV - calculator_id}}",
+        "lead_source": "{{DLV - lead_source}}",
+        "sector": "{{DLV - sector}}",
+        "score": "{{DLV - score}}",
+        "risk_level": "{{DLV - risk_level}}"
+      }
+    },
+    {
+      "name": "GA4 - Conversion generate_lead",
+      "type": "GA4 Event",
+      "measurement_id": "G-XXXXXXXXXX",
+      "event_name": "generate_lead",
+      "trigger": "CE - generate_lead",
+      "mark_as_conversion": true
+    }
+  ],
+  "dataLayer_events": [
+    "calculator_started",
+    "calculator_completed",
+    "lead_submitted",
+    "report_downloaded",
+    "cta_clicked",
+    "software_score_view",
+    "software_score_start",
+    "software_score_question_answered",
+    "software_score_completed",
+    "software_score_pdf_download",
+    "software_score_assessment_click",
+    "software_score_form_submit",
+    "consent_update"
+  ]
+}
