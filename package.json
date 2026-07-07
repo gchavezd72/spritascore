@@ -11,7 +11,8 @@
     "verify:seo": "npx --yes tsx scripts/verify-seo.mjs",
     "verify:executive": "npx --yes tsx scripts/verify-executive-score.mjs",
     "verify:security": "npx --yes tsx scripts/verify-security.mjs",
-    "verify:gtm": "npx --yes tsx scripts/verify-gtm-events.mjs"
+    "verify:gtm": "npx --yes tsx scripts/verify-gtm-events.mjs",
+    "gtm:import-guide": "node scripts/gtm-import-guide.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",
