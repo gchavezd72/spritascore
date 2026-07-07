@@ -32,8 +32,12 @@ Import the prepared configuration:
 3. Choose file:
    ${importFile}
 4. Workspace: Default Workspace
-5. Import option: Merge → Overwrite conflicting tags
-6. Submit → Publish
+5. Import option: Merge → Overwrite conflicting tags, triggers, and variables
+6. Edit variable "GA4 - Measurement ID" → your G-XXXXXXXXXX
+7. Submit → Publish
+
+If import fails with "formato no válido", re-download the latest file from the repo
+(scripts/gtm-spritascore-import.json) — it must include fingerprint and tagManagerUrl fields.
 
 Before import, set your GA4 Measurement ID (G-XXXXXXXXXX):
    npm run gtm:import-guide -- G-XXXXXXXXXX

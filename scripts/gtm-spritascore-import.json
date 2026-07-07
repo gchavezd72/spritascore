@@ -1,23 +1,47 @@
 {
   "exportFormatVersion": 2,
-  "exportTime": "2026-07-07 12:00:00",
+  "exportTime": "2026-07-07 23:52:45",
   "containerVersion": {
-    "path": "accounts/0/containers/6761/versions/0",
-    "accountId": "0",
+    "path": "accounts/6227957134/containers/6761/versions/0",
+    "accountId": "6227957134",
     "containerId": "6761",
     "containerVersionId": "0",
+    "fingerprint": "1783468365415",
+    "tagManagerUrl": "https://tagmanager.google.com/#/container/accounts/6227957134/containers/6761/versions/0?apiLink=version",
     "container": {
-      "path": "accounts/0/containers/6761",
-      "accountId": "0",
+      "path": "accounts/6227957134/containers/6761",
+      "accountId": "6227957134",
       "containerId": "6761",
       "name": "spritascore.com",
       "publicId": "GTM-NDXVZKB3",
-      "usageContext": ["WEB"],
-      "tagIds": ["GTM-NDXVZKB3"]
+      "usageContext": [
+        "WEB"
+      ],
+      "fingerprint": "1783468365633",
+      "tagManagerUrl": "https://tagmanager.google.com/#/container/accounts/6227957134/containers/6761/workspaces?apiLink=container",
+      "features": {
+        "supportUserPermissions": true,
+        "supportEnvironments": true,
+        "supportWorkspaces": true,
+        "supportGtagConfigs": true,
+        "supportBuiltInVariables": true,
+        "supportClients": false,
+        "supportFolders": true,
+        "supportTags": true,
+        "supportTemplates": true,
+        "supportTriggers": true,
+        "supportVariables": true,
+        "supportVersions": true,
+        "supportZones": true,
+        "supportTransformations": false
+      },
+      "tagIds": [
+        "GTM-NDXVZKB3"
+      ]
     },
     "variable": [
       {
-        "accountId": "0",
+        "accountId": "6227957134",
         "containerId": "6761",
         "variableId": "1",
         "name": "GA4 - Measurement ID",
@@ -29,10 +53,11 @@
             "value": "G-XXXXXXXXXX"
           }
         ],
-        "fingerprint": "1"
+        "fingerprint": "1783468365541",
+        "formatValue": {}
       },
       {
-        "accountId": "0",
+        "accountId": "6227957134",
         "containerId": "6761",
         "variableId": "2",
         "name": "DLV - ga4_event_name",
@@ -54,10 +79,11 @@
             "value": "ga4_event_name"
           }
         ],
-        "fingerprint": "2"
+        "fingerprint": "1783468366044",
+        "formatValue": {}
       },
       {
-        "accountId": "0",
+        "accountId": "6227957134",
         "containerId": "6761",
         "variableId": "3",
         "name": "DLV - calculator_id",
@@ -79,10 +105,11 @@
             "value": "calculator_id"
           }
         ],
-        "fingerprint": "3"
+        "fingerprint": "1783468365678",
+        "formatValue": {}
       },
       {
-        "accountId": "0",
+        "accountId": "6227957134",
         "containerId": "6761",
         "variableId": "4",
         "name": "DLV - lead_source",
@@ -104,10 +131,11 @@
             "value": "lead_source"
           }
         ],
-        "fingerprint": "4"
+        "fingerprint": "1783468365713",
+        "formatValue": {}
       },
       {
-        "accountId": "0",
+        "accountId": "6227957134",
         "containerId": "6761",
         "variableId": "5",
         "name": "DLV - sector",
@@ -129,10 +157,11 @@
             "value": "sector"
           }
         ],
-        "fingerprint": "5"
+        "fingerprint": "1783468365690",
+        "formatValue": {}
       },
       {
-        "accountId": "0",
+        "accountId": "6227957134",
         "containerId": "6761",
         "variableId": "6",
         "name": "DLV - score",
@@ -154,10 +183,11 @@
             "value": "score"
           }
         ],
-        "fingerprint": "6"
+        "fingerprint": "1783468365297",
+        "formatValue": {}
       },
       {
-        "accountId": "0",
+        "accountId": "6227957134",
         "containerId": "6761",
         "variableId": "7",
         "name": "DLV - risk_level",
@@ -179,40 +209,16 @@
             "value": "riskLevel"
           }
         ],
-        "fingerprint": "7"
+        "fingerprint": "1783468365745",
+        "formatValue": {}
       }
     ],
     "trigger": [
       {
-        "accountId": "0",
+        "accountId": "6227957134",
         "containerId": "6761",
         "triggerId": "10",
-        "name": "CE - SpritaScore custom events",
-        "type": "CUSTOM_EVENT",
-        "customEventFilter": [
-          {
-            "type": "MATCH_REGEX",
-            "parameter": [
-              {
-                "type": "TEMPLATE",
-                "key": "arg0",
-                "value": "{{_event}}"
-              },
-              {
-                "type": "TEMPLATE",
-                "key": "arg1",
-                "value": "^(calculator_|lead_submitted|report_|cta_clicked|software_score_)"
-              }
-            ]
-          }
-        ],
-        "fingerprint": "10"
-      },
-      {
-        "accountId": "0",
-        "containerId": "6761",
-        "triggerId": "11",
-        "name": "CE - generate_lead",
+        "name": "CE - lead_submitted",
         "type": "CUSTOM_EVENT",
         "customEventFilter": [
           {
@@ -231,13 +237,13 @@
             ]
           }
         ],
-        "fingerprint": "11"
+        "fingerprint": "1783468365997"
       },
       {
-        "accountId": "0",
+        "accountId": "6227957134",
         "containerId": "6761",
-        "triggerId": "12",
-        "name": "CE - executive lead",
+        "triggerId": "11",
+        "name": "CE - software_score_form_submit",
         "type": "CUSTOM_EVENT",
         "customEventFilter": [
           {
@@ -256,12 +262,87 @@
             ]
           }
         ],
-        "fingerprint": "12"
+        "fingerprint": "1783468365316"
+      },
+      {
+        "accountId": "6227957134",
+        "containerId": "6761",
+        "triggerId": "12",
+        "name": "CE - calculator_started",
+        "type": "CUSTOM_EVENT",
+        "customEventFilter": [
+          {
+            "type": "EQUALS",
+            "parameter": [
+              {
+                "type": "TEMPLATE",
+                "key": "arg0",
+                "value": "{{_event}}"
+              },
+              {
+                "type": "TEMPLATE",
+                "key": "arg1",
+                "value": "calculator_started"
+              }
+            ]
+          }
+        ],
+        "fingerprint": "1783468365667"
+      },
+      {
+        "accountId": "6227957134",
+        "containerId": "6761",
+        "triggerId": "13",
+        "name": "CE - calculator_completed",
+        "type": "CUSTOM_EVENT",
+        "customEventFilter": [
+          {
+            "type": "EQUALS",
+            "parameter": [
+              {
+                "type": "TEMPLATE",
+                "key": "arg0",
+                "value": "{{_event}}"
+              },
+              {
+                "type": "TEMPLATE",
+                "key": "arg1",
+                "value": "calculator_completed"
+              }
+            ]
+          }
+        ],
+        "fingerprint": "1783468365341"
+      },
+      {
+        "accountId": "6227957134",
+        "containerId": "6761",
+        "triggerId": "14",
+        "name": "CE - software_score_completed",
+        "type": "CUSTOM_EVENT",
+        "customEventFilter": [
+          {
+            "type": "EQUALS",
+            "parameter": [
+              {
+                "type": "TEMPLATE",
+                "key": "arg0",
+                "value": "{{_event}}"
+              },
+              {
+                "type": "TEMPLATE",
+                "key": "arg1",
+                "value": "software_score_completed"
+              }
+            ]
+          }
+        ],
+        "fingerprint": "1783468366092"
       }
     ],
     "tag": [
       {
-        "accountId": "0",
+        "accountId": "6227957134",
         "containerId": "6761",
         "tagId": "20",
         "name": "GA4 - Configuration",
@@ -273,95 +354,23 @@
             "value": "{{GA4 - Measurement ID}}"
           }
         ],
-        "fingerprint": "20",
-        "firingTriggerId": ["2147479573"],
+        "fingerprint": "1783468365913",
+        "firingTriggerId": [
+          "2147479573"
+        ],
         "tagFiringOption": "ONCE_PER_EVENT",
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
         "consentSettings": {
-          "consentStatus": "NEEDED",
-          "consentType": {
-            "analytics_storage": "NEEDED"
-          }
+          "consentStatus": "NOT_SET"
         }
       },
       {
-        "accountId": "0",
+        "accountId": "6227957134",
         "containerId": "6761",
         "tagId": "21",
-        "name": "GA4 - Event (dynamic)",
-        "type": "gaawe",
-        "parameter": [
-          {
-            "type": "BOOLEAN",
-            "key": "sendEcommerceData",
-            "value": "false"
-          },
-          {
-            "type": "TEMPLATE",
-            "key": "eventName",
-            "value": "{{DLV - ga4_event_name}}"
-          },
-          {
-            "type": "TEMPLATE",
-            "key": "measurementIdOverride",
-            "value": "{{GA4 - Measurement ID}}"
-          },
-          {
-            "type": "LIST",
-            "key": "eventSettingsTable",
-            "list": [
-              {
-                "type": "MAP",
-                "map": [
-                  { "type": "TEMPLATE", "key": "parameter", "value": "calculator_id" },
-                  { "type": "TEMPLATE", "key": "parameterValue", "value": "{{DLV - calculator_id}}" }
-                ]
-              },
-              {
-                "type": "MAP",
-                "map": [
-                  { "type": "TEMPLATE", "key": "parameter", "value": "lead_source" },
-                  { "type": "TEMPLATE", "key": "parameterValue", "value": "{{DLV - lead_source}}" }
-                ]
-              },
-              {
-                "type": "MAP",
-                "map": [
-                  { "type": "TEMPLATE", "key": "parameter", "value": "sector" },
-                  { "type": "TEMPLATE", "key": "parameterValue", "value": "{{DLV - sector}}" }
-                ]
-              },
-              {
-                "type": "MAP",
-                "map": [
-                  { "type": "TEMPLATE", "key": "parameter", "value": "score" },
-                  { "type": "TEMPLATE", "key": "parameterValue", "value": "{{DLV - score}}" }
-                ]
-              },
-              {
-                "type": "MAP",
-                "map": [
-                  { "type": "TEMPLATE", "key": "parameter", "value": "risk_level" },
-                  { "type": "TEMPLATE", "key": "parameterValue", "value": "{{DLV - risk_level}}" }
-                ]
-              }
-            ]
-          }
-        ],
-        "fingerprint": "21",
-        "firingTriggerId": ["10"],
-        "tagFiringOption": "ONCE_PER_EVENT",
-        "consentSettings": {
-          "consentStatus": "NEEDED",
-          "consentType": {
-            "analytics_storage": "NEEDED"
-          }
-        }
-      },
-      {
-        "accountId": "0",
-        "containerId": "6761",
-        "tagId": "22",
-        "name": "GA4 - Conversion generate_lead",
+        "name": "GA4 - Event generate_lead",
         "type": "gaawe",
         "parameter": [
           {
@@ -386,36 +395,288 @@
               {
                 "type": "MAP",
                 "map": [
-                  { "type": "TEMPLATE", "key": "parameter", "value": "lead_source" },
-                  { "type": "TEMPLATE", "key": "parameterValue", "value": "{{DLV - lead_source}}" }
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "lead_source"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{DLV - lead_source}}"
+                  }
                 ]
               },
               {
                 "type": "MAP",
                 "map": [
-                  { "type": "TEMPLATE", "key": "parameter", "value": "calculator_id" },
-                  { "type": "TEMPLATE", "key": "parameterValue", "value": "{{DLV - calculator_id}}" }
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "calculator_id"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{DLV - calculator_id}}"
+                  }
                 ]
               }
             ]
           }
         ],
-        "fingerprint": "22",
-        "firingTriggerId": ["11", "12"],
+        "fingerprint": "1783468365301",
+        "firingTriggerId": [
+          "10",
+          "11"
+        ],
         "tagFiringOption": "ONCE_PER_EVENT",
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
         "consentSettings": {
-          "consentStatus": "NEEDED",
-          "consentType": {
-            "analytics_storage": "NEEDED"
+          "consentStatus": "NOT_SET"
+        }
+      },
+      {
+        "accountId": "6227957134",
+        "containerId": "6761",
+        "tagId": "22",
+        "name": "GA4 - Event calculator_started",
+        "type": "gaawe",
+        "parameter": [
+          {
+            "type": "BOOLEAN",
+            "key": "sendEcommerceData",
+            "value": "false"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "eventName",
+            "value": "calculator_started"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "measurementIdOverride",
+            "value": "{{GA4 - Measurement ID}}"
+          },
+          {
+            "type": "LIST",
+            "key": "eventSettingsTable",
+            "list": [
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "calculator_id"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{DLV - calculator_id}}"
+                  }
+                ]
+              }
+            ]
           }
+        ],
+        "fingerprint": "1783468366133",
+        "firingTriggerId": [
+          "12"
+        ],
+        "tagFiringOption": "ONCE_PER_EVENT",
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
+        "consentSettings": {
+          "consentStatus": "NOT_SET"
+        }
+      },
+      {
+        "accountId": "6227957134",
+        "containerId": "6761",
+        "tagId": "23",
+        "name": "GA4 - Event calculator_completed",
+        "type": "gaawe",
+        "parameter": [
+          {
+            "type": "BOOLEAN",
+            "key": "sendEcommerceData",
+            "value": "false"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "eventName",
+            "value": "calculator_completed"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "measurementIdOverride",
+            "value": "{{GA4 - Measurement ID}}"
+          },
+          {
+            "type": "LIST",
+            "key": "eventSettingsTable",
+            "list": [
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "calculator_id"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{DLV - calculator_id}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "score"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{DLV - score}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "risk_level"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{DLV - risk_level}}"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "fingerprint": "1783468365327",
+        "firingTriggerId": [
+          "13"
+        ],
+        "tagFiringOption": "ONCE_PER_EVENT",
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
+        "consentSettings": {
+          "consentStatus": "NOT_SET"
+        }
+      },
+      {
+        "accountId": "6227957134",
+        "containerId": "6761",
+        "tagId": "24",
+        "name": "GA4 - Event software_score_completed",
+        "type": "gaawe",
+        "parameter": [
+          {
+            "type": "BOOLEAN",
+            "key": "sendEcommerceData",
+            "value": "false"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "eventName",
+            "value": "software_score_completed"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "measurementIdOverride",
+            "value": "{{GA4 - Measurement ID}}"
+          },
+          {
+            "type": "LIST",
+            "key": "eventSettingsTable",
+            "list": [
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "score"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{DLV - score}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "risk_level"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{DLV - risk_level}}"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "fingerprint": "1783468365744",
+        "firingTriggerId": [
+          "14"
+        ],
+        "tagFiringOption": "ONCE_PER_EVENT",
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
+        "consentSettings": {
+          "consentStatus": "NOT_SET"
         }
       }
     ],
     "builtInVariable": [
-      { "accountId": "0", "containerId": "6761", "type": "PAGE_URL", "name": "Page URL" },
-      { "accountId": "0", "containerId": "6761", "type": "PAGE_HOSTNAME", "name": "Page Hostname" },
-      { "accountId": "0", "containerId": "6761", "type": "PAGE_PATH", "name": "Page Path" },
-      { "accountId": "0", "containerId": "6761", "type": "EVENT", "name": "Event" }
+      {
+        "accountId": "6227957134",
+        "containerId": "6761",
+        "type": "PAGE_URL",
+        "name": "Page URL"
+      },
+      {
+        "accountId": "6227957134",
+        "containerId": "6761",
+        "type": "PAGE_HOSTNAME",
+        "name": "Page Hostname"
+      },
+      {
+        "accountId": "6227957134",
+        "containerId": "6761",
+        "type": "PAGE_PATH",
+        "name": "Page Path"
+      },
+      {
+        "accountId": "6227957134",
+        "containerId": "6761",
+        "type": "EVENT",
+        "name": "Event"
+      }
     ]
   }
 }
