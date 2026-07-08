@@ -189,11 +189,18 @@ export function buildPageMetadata({
   };
 }
 
-export const rootMetadata: Metadata = buildPageMetadata({
-  title: "SpritaScore — Calculadora de riesgo y costo de software | DevSecOps y ASPM",
-  description: DEFAULT_DESCRIPTION.es,
-  path: "",
-});
+const googleSiteVerification = process.env.GOOGLE_SITE_VERIFICATION?.trim();
+
+export const rootMetadata: Metadata = {
+  ...buildPageMetadata({
+    title: "SpritaScore — Calculadora de riesgo y costo de software | DevSecOps y ASPM",
+    description: DEFAULT_DESCRIPTION.es,
+    path: "",
+  }),
+  ...(googleSiteVerification
+    ? { verification: { google: googleSiteVerification } }
+    : {}),
+};
 
 export function calculatorMetadata(slug: string): Metadata {
   const config = CALCULATOR_CONFIGS.find((c) => c.slug === slug);

@@ -1,6 +1,6 @@
 {
   "name": "spritascore",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -12,7 +12,8 @@
     "verify:executive": "npx --yes tsx scripts/verify-executive-score.mjs",
     "verify:security": "npx --yes tsx scripts/verify-security.mjs",
     "verify:gtm": "npx --yes tsx scripts/verify-gtm-events.mjs",
-    "gtm:import-guide": "node scripts/gtm-import-guide.mjs"
+    "gtm:import-guide": "node scripts/gtm-import-guide.mjs",
+    "verify:search-console": "node scripts/verify-search-console.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",
