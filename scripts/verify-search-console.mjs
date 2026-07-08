@@ -23,6 +23,14 @@ async function main() {
   assert(home.includes('rel="canonical"') || home.includes("canonical"), "home has canonical");
   assert(!home.includes('noindex'), "home is not noindex");
 
+  const gscFile = await fetch(`${SITE}/google01d53e7814afd2ee.html`);
+  assert(gscFile.ok, "Search Console verification file is public");
+  const gscBody = (await gscFile.text()).trim();
+  assert(
+    gscBody === "google-site-verification: google01d53e7814afd2ee.html",
+    "Search Console verification file content"
+  );
+
   const verification = process.env.GOOGLE_SITE_VERIFICATION;
   if (verification) {
     assert(
