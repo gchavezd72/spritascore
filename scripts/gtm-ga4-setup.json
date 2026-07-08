@@ -1,7 +1,7 @@
 {
   "container_id": "GTM-NDXVZKB3",
   "site": "https://spritascore.com",
-  "notes": "Import manually in tagmanager.google.com. Replace G-XXXXXXXXXX with your GA4 Measurement ID.",
+  "notes": "Import manually in tagmanager.google.com. Replace G-PET5JPXKYG with your GA4 Measurement ID.",
   "variables": [
     {
       "name": "DLV - ga4_event_name",
@@ -47,14 +47,14 @@
     {
       "name": "GA4 - Configuration",
       "type": "Google Tag",
-      "measurement_id": "G-XXXXXXXXXX",
+      "measurement_id": "G-PET5JPXKYG",
       "trigger": "Initialization - All Pages",
       "consent": "analytics_storage"
     },
     {
       "name": "GA4 - Event (all custom)",
       "type": "GA4 Event",
-      "measurement_id": "G-XXXXXXXXXX",
+      "measurement_id": "G-PET5JPXKYG",
       "event_name": "{{DLV - ga4_event_name}}",
       "trigger": "CE - All SpritaScore events",
       "parameters": {
@@ -68,7 +68,7 @@
     {
       "name": "GA4 - Conversion generate_lead",
       "type": "GA4 Event",
-      "measurement_id": "G-XXXXXXXXXX",
+      "measurement_id": "G-PET5JPXKYG",
       "event_name": "generate_lead",
       "trigger": "CE - generate_lead",
       "mark_as_conversion": true
