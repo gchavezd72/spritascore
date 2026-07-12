@@ -49,7 +49,6 @@ const CONFIRM_FIELD = {
 
 export const CALCULATOR_CONFIGS: CalculatorConfig[] = [
   EXECUTIVE_CARD,
-  EU_AI_ACT_CARD,
   {
     id: "iso-quality",
     slug: "no-calidad-codigo",
@@ -498,6 +497,7 @@ export const CALCULATOR_CONFIGS: CalculatorConfig[] = [
       },
     ],
   },
+  EU_AI_ACT_CARD,
 ];
 
 export function getCalculatorBySlug(slug: string): CalculatorConfig | undefined {
