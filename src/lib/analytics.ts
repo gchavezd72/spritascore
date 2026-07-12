@@ -12,7 +12,12 @@ export type ExecutiveAnalyticsEvent =
   | "software_score_completed"
   | "software_score_pdf_download"
   | "software_score_assessment_click"
-  | "software_score_form_submit";
+  | "software_score_form_submit"
+  | "euaiact_view"
+  | "euaiact_start"
+  | "euaiact_completed"
+  | "euaiact_pdf_download"
+  | "euaiact_form_submit";
 
 import { pushAnalyticsEvent } from "@/lib/gtm";
 

@@ -19,6 +19,14 @@ function IconPaths({ id, category }: { id?: CalculatorId; category?: CalculatorC
           <circle cx="17" cy="8" r="2.5" fill="currentColor" opacity="0.35" />
         </>
       );
+    case "eu-ai-act-compliance":
+      return (
+        <>
+          <path d="M12 3.5L5 6.5v5c0 3.9 3 6.9 7 8 4-1.1 7-4.1 7-8v-5L12 3.5z" stroke="currentColor" strokeWidth="1.5" fill="none" />
+          <path d="M12 9.5v4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+          <circle cx="12" cy="7.4" r="0.95" fill="currentColor" />
+        </>
+      );
     case "owasp-web":
       return (
         <>

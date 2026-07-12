@@ -6,6 +6,7 @@ import { Logo } from "@/components/Logo";
 import { useTranslations } from "@/components/LanguageProvider";
 import { CALCULATOR_CONFIGS } from "@/data/calculatorConfigs";
 import { getExecutiveRoute } from "@/data/executiveSoftwareRiskScore";
+import { getEuAiActRoute } from "@/data/euAiAct";
 import { tr } from "@/lib/translate";
 
 export function Footer() {
@@ -30,7 +31,9 @@ export function Footer() {
                     href={
                       calc.id === "executive-software-risk-score"
                         ? getExecutiveRoute(locale)
-                        : (calc.customRoute ?? `/calculadora/${calc.slug}`)
+                        : calc.id === "eu-ai-act-compliance"
+                          ? getEuAiActRoute(locale)
+                          : (calc.customRoute ?? `/calculadora/${calc.slug}`)
                     }
                   >
                     {tr(calc.title, locale)}

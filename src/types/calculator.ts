@@ -1,5 +1,6 @@
 export type CalculatorId =
   | "executive-software-risk-score"
+  | "eu-ai-act-compliance"
   | "iso-quality"
   | "owasp-web"
   | "owasp-mobile"
