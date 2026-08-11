@@ -20,7 +20,8 @@ import type { TranslationKeys } from "@/i18n/es";
 
 function buildSchema(t: TranslationKeys) {
   return z.object({
-    name: z.string().min(2, t.leadForm.nameRequired),
+    firstName: z.string().min(2, t.leadForm.nameRequired),
+    lastName: z.string().min(2, t.leadForm.lastNameRequired),
     company: z.string().min(2, t.leadForm.companyRequired),
     role: z.string().optional(),
     email: z.string().email(t.leadForm.emailInvalid),
@@ -40,7 +41,13 @@ export function LeadCaptureForm({ result, onSuccess }: LeadCaptureFormProps) {
   const [error, setError] = useState("");
   const { t, locale } = useTranslations();
 
-  const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<FormValues>({
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<FormValues>({
     resolver: zodResolver(buildSchema(t)),
     defaultValues: { wantsEmailReport: true },
   });
@@ -55,10 +62,10 @@ export function LeadCaptureForm({ result, onSuccess }: LeadCaptureFormProps) {
       return;
     }
 
-    // Sector/país/nº de apps ya se capturaron en la calculadora: no se vuelven a preguntar.
     const inputs = result.inputs;
+    const fullName = `${sanitizeInput(data.firstName)} ${sanitizeInput(data.lastName)}`.trim();
     const sanitized: LeadData = {
-      name: sanitizeInput(data.name),
+      name: fullName,
       company: sanitizeInput(data.company),
       role: sanitizeInput(data.role || "No especificado"),
       email: sanitizeInput(data.email),
@@ -81,11 +88,21 @@ export function LeadCaptureForm({ result, onSuccess }: LeadCaptureFormProps) {
           score: result.score,
           riskLevel: result.riskLevel,
           estimatedCost: result.cost.probable ?? result.cost.annual,
-          topRecommendations: result.recommendations.slice(0, 3).map((r) => tr(r.title, locale)),
+          topRecommendations: result.recommendations
+            .slice(0, 3)
+            .map((r) => tr(r.title, locale)),
+          language: locale,
+          spritaScore: inputs.spritaScore,
+          impactFormatted: inputs.impactFormatted,
+          classification: inputs.classification,
         }),
       });
       if (!res.ok) throw new Error("submit failed");
-      trackEvent("lead_submitted", { resultId: result.id, sector: sanitized.sector });
+      trackEvent("lead_submitted", {
+        resultId: result.id,
+        sector: sanitized.sector,
+        calculator: result.calculatorId,
+      });
       onSuccess(sanitized);
     } catch {
       setError(t.leadForm.error);
@@ -104,23 +121,41 @@ export function LeadCaptureForm({ result, onSuccess }: LeadCaptureFormProps) {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="name">{t.leadForm.name} *</Label>
-              <Input id="name" autoFocus {...register("name")} />
-              {errors.name && <p className="text-sm text-risk-critical mt-1">{errors.name.message}</p>}
+              <Label htmlFor="firstName">{t.leadForm.firstName} *</Label>
+              <Input id="firstName" autoComplete="given-name" autoFocus {...register("firstName")} />
+              {errors.firstName && (
+                <p className="text-sm text-risk-critical mt-1">{errors.firstName.message}</p>
+              )}
+            </div>
+            <div>
+              <Label htmlFor="lastName">{t.leadForm.lastName} *</Label>
+              <Input id="lastName" autoComplete="family-name" {...register("lastName")} />
+              {errors.lastName && (
+                <p className="text-sm text-risk-critical mt-1">{errors.lastName.message}</p>
+              )}
             </div>
             <div>
               <Label htmlFor="company">{t.leadForm.company} *</Label>
-              <Input id="company" {...register("company")} />
-              {errors.company && <p className="text-sm text-risk-critical mt-1">{errors.company.message}</p>}
+              <Input id="company" autoComplete="organization" {...register("company")} />
+              {errors.company && (
+                <p className="text-sm text-risk-critical mt-1">{errors.company.message}</p>
+              )}
             </div>
             <div>
               <Label htmlFor="email">{t.leadForm.email} *</Label>
-              <Input id="email" type="email" {...register("email")} />
-              {errors.email && <p className="text-sm text-risk-critical mt-1">{errors.email.message}</p>}
+              <Input id="email" type="email" autoComplete="email" {...register("email")} />
+              {errors.email && (
+                <p className="text-sm text-risk-critical mt-1">{errors.email.message}</p>
+              )}
             </div>
-            <div>
+            <div className="sm:col-span-2">
               <Label htmlFor="role">{t.leadForm.role}</Label>
-              <Input id="role" placeholder={t.leadForm.rolePlaceholder} {...register("role")} />
+              <Input
+                id="role"
+                placeholder={t.leadForm.rolePlaceholder}
+                autoComplete="organization-title"
+                {...register("role")}
+              />
             </div>
           </div>
           <label className="flex items-center gap-2 cursor-pointer">

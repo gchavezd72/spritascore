@@ -84,9 +84,12 @@ export const es = {
   },
   leadForm: {
     title: "Desbloquee su reporte completo",
-    description: "Solo 3 datos para ver el reporte detallado, recomendaciones priorizadas y descarga en PDF.",
+    description: "Solo unos datos para ver el reporte detallado, recomendaciones priorizadas y descarga en PDF.",
     name: "Nombre",
+    firstName: "Nombre",
+    lastName: "Apellido",
     nameRequired: "Nombre requerido",
+    lastNameRequired: "Apellido requerido",
     company: "Empresa",
     companyRequired: "Empresa requerida",
     email: "Email corporativo",

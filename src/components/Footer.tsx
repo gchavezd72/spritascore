@@ -7,6 +7,7 @@ import { useTranslations } from "@/components/LanguageProvider";
 import { CALCULATOR_CONFIGS } from "@/data/calculatorConfigs";
 import { getExecutiveRoute } from "@/data/executiveSoftwareRiskScore";
 import { getEuAiActRoute } from "@/data/euAiAct";
+import { getCalc05Route } from "@/i18n/calc05";
 import { tr } from "@/lib/translate";
 
 export function Footer() {
@@ -33,7 +34,9 @@ export function Footer() {
                         ? getExecutiveRoute(locale)
                         : calc.id === "eu-ai-act-compliance"
                           ? getEuAiActRoute(locale)
-                          : (calc.customRoute ?? `/calculadora/${calc.slug}`)
+                          : calc.id === "sector"
+                            ? getCalc05Route(locale)
+                            : (calc.customRoute ?? `/calculadora/${calc.slug}`)
                     }
                   >
                     {tr(calc.title, locale)}

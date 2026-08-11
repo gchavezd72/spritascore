@@ -86,9 +86,12 @@ export const pt: TranslationKeys = {
   },
   leadForm: {
     title: "Desbloqueie seu relatório completo",
-    description: "Apenas 3 dados para ver o relatório detalhado, recomendações priorizadas e download em PDF.",
+    description: "Alguns dados para ver o relatório detalhado, recomendações priorizadas e download em PDF.",
     name: "Nome",
+    firstName: "Nome",
+    lastName: "Sobrenome",
     nameRequired: "Nome obrigatório",
+    lastNameRequired: "Sobrenome obrigatório",
     company: "Empresa",
     companyRequired: "Empresa obrigatória",
     email: "E-mail corporativo",

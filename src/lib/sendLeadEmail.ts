@@ -1,4 +1,9 @@
-const LEAD_EMAIL_TO = process.env.LEAD_EMAIL_TO ?? "info@spritascore.com";
+/** Comma-separated list supported. Defaults to both SpritaScore + Sprita iT inboxes. */
+const LEAD_EMAIL_TO_RAW =
+  process.env.LEAD_EMAIL_TO ?? "info@spritascore.com,info@sprita-it.com";
+const LEAD_EMAIL_TO = LEAD_EMAIL_TO_RAW.split(",")
+  .map((s) => s.trim())
+  .filter(Boolean);
 const LEAD_EMAIL_FROM =
   process.env.LEAD_EMAIL_FROM ?? "SpritaScore <notifications@spritascore.com>";
 
@@ -47,6 +52,9 @@ function buildLeadEmail(payload: Record<string, unknown>) {
     row("Score", payload.score),
     row("Nivel de riesgo", payload.riskLevel),
     row("Costo estimado", payload.estimatedCost),
+    row("Impacto formateado", payload.impactFormatted),
+    row("SpritaScore (0-1000)", payload.spritaScore),
+    row("Clasificación", payload.classification),
     row("Madurez", payload.maturityPercent != null ? `${payload.maturityPercent}%` : ""),
     row("Puntos madurez", payload.rawMaturityPoints),
     row("Etiqueta nivel", payload.levelLabel),
@@ -132,7 +140,7 @@ export async function sendLeadEmail(payload: unknown): Promise<boolean> {
       },
       body: JSON.stringify({
         from: LEAD_EMAIL_FROM,
-        to: [LEAD_EMAIL_TO],
+        to: LEAD_EMAIL_TO,
         reply_to: replyTo || undefined,
         subject,
         html,

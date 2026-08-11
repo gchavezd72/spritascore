@@ -48,11 +48,19 @@ export function ReportPreview({ result }: ReportPreviewProps) {
       <h2 className="text-xl font-bold text-brand-navy mb-2">{t.resultsView.executiveSummary}</h2>
       <p className="text-slate-700 mb-6 leading-relaxed">{localizedResult.executiveSummary}</p>
 
-      <div className="grid grid-cols-3 gap-4 mb-8 p-4 bg-slate-50 rounded-lg">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8 p-4 bg-slate-50 rounded-lg">
         <div>
           <p className="text-xs text-slate-500 uppercase">{rp.riskScore}</p>
           <p className="text-2xl font-bold text-brand-navy">{localizedResult.score}/100</p>
         </div>
+        {typeof localizedResult.inputs?.spritaScore === "number" && (
+          <div>
+            <p className="text-xs text-slate-500 uppercase">SpritaScore</p>
+            <p className="text-2xl font-bold text-brand-navy">
+              {localizedResult.inputs.spritaScore as number}/1000
+            </p>
+          </div>
+        )}
         <div>
           <p className="text-xs text-slate-500 uppercase">{rp.level}</p>
           <p className="text-2xl font-bold text-slate-900">

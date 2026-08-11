@@ -22,6 +22,9 @@ import {
   type Region,
 } from "@/lib/regions";
 import { ORGANIZATION } from "@/lib/seo";
+import { getCalc05Route } from "@/i18n/calc05";
+import { getEuAiActRoute } from "@/data/euAiAct";
+import { getExecutiveRoute } from "@/data/executiveSoftwareRiskScore";
 
 interface CalculatorSeoLandingProps {
   region: Region;
@@ -67,6 +70,15 @@ export function CalculatorSeoLanding({ region, internalSlug }: CalculatorSeoLand
   const seoSlug = route.slugs[region];
   const st = (key: keyof typeof SECTION_TITLE) => SECTION_TITLE[key][locale];
 
+  const customCalculatorHref =
+    config.id === "sector"
+      ? getCalc05Route(locale)
+      : config.id === "eu-ai-act-compliance"
+        ? getEuAiActRoute(locale)
+        : config.id === "executive-software-risk-score"
+          ? getExecutiveRoute(locale)
+          : config.customRoute;
+
   return (
     <>
       <JsonLd data={calculatorJsonLd(config)} />
@@ -81,9 +93,15 @@ export function CalculatorSeoLanding({ region, internalSlug }: CalculatorSeoLand
           <h1 className="seo-h1">{content.h1}</h1>
           <p className="seo-lead">{content.shortAnswer}</p>
           <div className="seo-cta-row">
-            <a href="#calculadora" className="btn btn-solid">
-              {st("run")}
-            </a>
+            {customCalculatorHref ? (
+              <Link href={customCalculatorHref} className="btn btn-solid">
+                {st("run")}
+              </Link>
+            ) : (
+              <a href="#calculadora" className="btn btn-solid">
+                {st("run")}
+              </a>
+            )}
             <Link href={regionPath(region, methodologySection(region), seoSlug)} className="btn btn-ghost">
               {st("methodology")}
             </Link>
@@ -153,8 +171,19 @@ export function CalculatorSeoLanding({ region, internalSlug }: CalculatorSeoLand
 
         <section id="calculadora" className="py-12 bg-background border-t border-border-hairline">
           <div className="container mx-auto px-4">
-            <CalculatorPageHeader config={config} />
-            <CalculatorWizard config={config} />
+            {customCalculatorHref ? (
+              <div className="max-w-xl mx-auto text-center space-y-4 py-8">
+                <CalculatorPageHeader config={config} />
+                <Link href={customCalculatorHref} className="btn btn-solid inline-flex">
+                  {st("run")}
+                </Link>
+              </div>
+            ) : (
+              <>
+                <CalculatorPageHeader config={config} />
+                <CalculatorWizard config={config} />
+              </>
+            )}
           </div>
         </section>
 

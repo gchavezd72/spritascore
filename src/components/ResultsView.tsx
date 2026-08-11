@@ -194,27 +194,35 @@ export function ResultsView({ result: initialResult }: ResultsViewProps) {
               <p className="text-lg mb-2 text-foreground">{rv.ctaBody1}</p>
               <p className="text-muted-foreground mb-6">{rv.ctaBody2}</p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link href="/#contacto">
-                  <Button size="lg" onClick={() => trackEvent("cta_clicked", { cta: "diagnostico" })}>
+                <a href="mailto:info@spritascore.com?subject=Diagn%C3%B3stico%20t%C3%A9cnico%20SpritaScore">
+                  <Button
+                    size="lg"
+                    onClick={() => trackEvent("cta_clicked", { cta: "diagnostico" })}
+                  >
                     <Calendar className="h-5 w-5" />
                     {rv.requestDiagnostic}
                   </Button>
-                </Link>
+                </a>
                 <Link href={`/reporte/${result.id}`}>
                   <Button variant="outline" size="lg">
                     <Download className="h-5 w-5" />
                     {rv.downloadReport}
                   </Button>
                 </Link>
-                <Button
-                  variant="ghost"
-                  size="lg"
-                  onClick={() => trackEvent("cta_clicked", { cta: "email" })}
-                >
-                  <Mail className="h-5 w-5" />
-                  {rv.receiveByEmail}
-                </Button>
+                <a href="mailto:info@spritascore.com?subject=Reporte%20SpritaScore">
+                  <Button
+                    variant="ghost"
+                    size="lg"
+                    onClick={() => trackEvent("cta_clicked", { cta: "email" })}
+                  >
+                    <Mail className="h-5 w-5" />
+                    {rv.receiveByEmail}
+                  </Button>
+                </a>
               </div>
+              <p className="text-xs text-muted-foreground mt-6">
+                info@spritascore.com · spritascore.com
+              </p>
             </CardContent>
           </Card>
         </>

@@ -6,6 +6,7 @@ import { Clock } from "lucide-react";
 import { CALCULATOR_CONFIGS } from "@/data/calculatorConfigs";
 import { getExecutiveRoute } from "@/data/executiveSoftwareRiskScore";
 import { getEuAiActRoute } from "@/data/euAiAct";
+import { getCalc05Route } from "@/i18n/calc05";
 import { CALCULATOR_CATEGORY_ORDER, CALCULATOR_CATEGORY_COLORS } from "@/data/calculatorCategories";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -161,7 +162,9 @@ export function CalculatorSelector() {
                           ? getExecutiveRoute(locale)
                           : calc.id === "eu-ai-act-compliance"
                             ? getEuAiActRoute(locale)
-                            : (calc.customRoute ?? `/calculadora/${calc.slug}`)
+                            : calc.id === "sector"
+                              ? getCalc05Route(locale)
+                              : (calc.customRoute ?? `/calculadora/${calc.slug}`)
                       }
                     >
                       <Button className="w-full">

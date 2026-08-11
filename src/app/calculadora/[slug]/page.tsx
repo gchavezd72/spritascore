@@ -11,7 +11,10 @@ interface PageProps {
 
 export async function generateStaticParams() {
   return CALCULATOR_CONFIGS.filter(
-    (c) => !c.customRoute && c.id !== "executive-software-risk-score"
+    (c) =>
+      !c.customRoute &&
+      c.id !== "executive-software-risk-score" &&
+      c.id !== "sector"
   ).map((c) => ({ slug: c.slug }));
 }
 
@@ -26,6 +29,9 @@ export default async function CalculatorPage({ params }: PageProps) {
   if (!config) notFound();
   if (config.id === "executive-software-risk-score") {
     redirect("/en/executive-software-risk-score");
+  }
+  if (config.id === "sector") {
+    redirect("/es/calculadora/05");
   }
   if (config.customRoute) redirect(config.customRoute);
 

@@ -21,7 +21,8 @@ import type { TranslationKeys } from "@/i18n/es";
 
 function buildSchema(t: TranslationKeys) {
   return z.object({
-    name: z.string().min(2, t.leadForm.nameRequired),
+    firstName: z.string().min(2, t.leadForm.nameRequired),
+    lastName: z.string().min(2, t.leadForm.lastNameRequired),
     company: z.string().min(2, t.leadForm.companyRequired),
     email: z.string().email(t.leadForm.emailInvalid),
   });
@@ -40,7 +41,11 @@ export function ReportUnlockModal({ result, onUnlocked }: ReportUnlockModalProps
   const [error, setError] = useState("");
   const { t, locale } = useTranslations();
 
-  const { register, handleSubmit, formState: { errors } } = useForm<FormValues>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValues>({
     resolver: zodResolver(buildSchema(t)),
   });
 
@@ -56,7 +61,7 @@ export function ReportUnlockModal({ result, onUnlocked }: ReportUnlockModalProps
 
     const inputs = result.inputs;
     const lead: LeadData = {
-      name: sanitizeInput(data.name),
+      name: `${sanitizeInput(data.firstName)} ${sanitizeInput(data.lastName)}`.trim(),
       company: sanitizeInput(data.company),
       role: "No especificado",
       email: sanitizeInput(data.email),
@@ -79,7 +84,10 @@ export function ReportUnlockModal({ result, onUnlocked }: ReportUnlockModalProps
           score: result.score,
           riskLevel: result.riskLevel,
           estimatedCost: result.cost.probable ?? result.cost.annual,
-          topRecommendations: result.recommendations.slice(0, 3).map((r) => tr(r.title, locale)),
+          topRecommendations: result.recommendations
+            .slice(0, 3)
+            .map((r) => tr(r.title, locale)),
+          language: locale,
         }),
       });
       if (!res.ok) throw new Error("submit failed");
@@ -100,6 +108,7 @@ export function ReportUnlockModal({ result, onUnlocked }: ReportUnlockModalProps
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-brand-navy/40 backdrop-blur-sm p-4 animate-in fade-in-0 duration-200">
       <div className="relative w-full max-w-md rounded-xl bg-surface border border-border-hairline p-8 shadow-2xl animate-in fade-in-0 zoom-in-95 duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]">
         <button
+          type="button"
           onClick={() => router.push(`/resultados/${result.id}`)}
           aria-label={t.unlockModal.close}
           className="absolute right-4 top-4 text-muted-foreground hover:text-brand-navy"
@@ -111,20 +120,35 @@ export function ReportUnlockModal({ result, onUnlocked }: ReportUnlockModalProps
         <p className="text-sm text-muted-foreground text-center mb-6">{t.unlockModal.description}</p>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <div>
-            <Label htmlFor="unlock-name">{t.leadForm.name} *</Label>
-            <Input id="unlock-name" autoFocus {...register("name")} />
-            {errors.name && <p className="text-sm text-risk-critical mt-1">{errors.name.message}</p>}
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <Label htmlFor="unlock-firstName">{t.leadForm.firstName} *</Label>
+              <Input id="unlock-firstName" autoFocus {...register("firstName")} />
+              {errors.firstName && (
+                <p className="text-sm text-risk-critical mt-1">{errors.firstName.message}</p>
+              )}
+            </div>
+            <div>
+              <Label htmlFor="unlock-lastName">{t.leadForm.lastName} *</Label>
+              <Input id="unlock-lastName" {...register("lastName")} />
+              {errors.lastName && (
+                <p className="text-sm text-risk-critical mt-1">{errors.lastName.message}</p>
+              )}
+            </div>
           </div>
           <div>
             <Label htmlFor="unlock-company">{t.leadForm.company} *</Label>
             <Input id="unlock-company" {...register("company")} />
-            {errors.company && <p className="text-sm text-risk-critical mt-1">{errors.company.message}</p>}
+            {errors.company && (
+              <p className="text-sm text-risk-critical mt-1">{errors.company.message}</p>
+            )}
           </div>
           <div>
             <Label htmlFor="unlock-email">{t.leadForm.email} *</Label>
             <Input id="unlock-email" type="email" {...register("email")} />
-            {errors.email && <p className="text-sm text-risk-critical mt-1">{errors.email.message}</p>}
+            {errors.email && (
+              <p className="text-sm text-risk-critical mt-1">{errors.email.message}</p>
+            )}
           </div>
           {error && <p className="text-sm text-risk-critical">{error}</p>}
           <Button type="submit" className="w-full" disabled={loading}>

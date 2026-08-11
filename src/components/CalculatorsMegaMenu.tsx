@@ -4,6 +4,8 @@ import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 import { CALCULATOR_CONFIGS } from "@/data/calculatorConfigs";
 import { getExecutiveRoute } from "@/data/executiveSoftwareRiskScore";
+import { getEuAiActRoute } from "@/data/euAiAct";
+import { getCalc05Route } from "@/i18n/calc05";
 import { CALCULATOR_CATEGORY_ORDER, CALCULATOR_CATEGORY_COLORS } from "@/data/calculatorCategories";
 import { CalculatorIcon } from "@/components/CalculatorIcon";
 import { tr } from "@/lib/translate";
@@ -65,7 +67,11 @@ export function CalculatorsMegaMenu() {
                         href={
                           calc.id === "executive-software-risk-score"
                             ? getExecutiveRoute(locale)
-                            : (calc.customRoute ?? `/calculadora/${calc.slug}`)
+                            : calc.id === "eu-ai-act-compliance"
+                              ? getEuAiActRoute(locale)
+                              : calc.id === "sector"
+                                ? getCalc05Route(locale)
+                                : (calc.customRoute ?? `/calculadora/${calc.slug}`)
                         }
                         className="block rounded-md px-2 py-1.5 text-xs text-muted-foreground hover:text-brand-navy hover:bg-surface-hover transition-colors"
                       >
