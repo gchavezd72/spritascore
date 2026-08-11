@@ -32,8 +32,6 @@ export type Calc05Copy = {
     factors_title: string;
     classification: Record<"low" | "medium" | "high" | "critical", string>;
     cta_primary: string;
-    cta_secondary: string;
-    cta_secondary_url: string;
     disclaimer: string;
   };
   bullets: Record<string, string>;
@@ -141,8 +139,6 @@ const ES: Calc05Copy = {
       critical: "Riesgo crítico",
     },
     cta_primary: "Solicitar diagnóstico técnico gratuito",
-    cta_secondary: "Hacer la autoevaluación completa de gobernanza IA & LGPD →",
-    cta_secondary_url: "https://brasil.cliente.sprita.io",
     disclaimer:
       "Estimación basada en benchmarks públicos del sector. No constituye auditoría técnica. © Sprita iT",
   },
@@ -267,8 +263,6 @@ const EN: Calc05Copy = {
       critical: "Critical risk",
     },
     cta_primary: "Request a free technical diagnosis",
-    cta_secondary: "Take the full AI & LGPD governance self-assessment →",
-    cta_secondary_url: "https://brasil.cliente.sprita.io",
     disclaimer:
       "Estimate based on public industry benchmarks. Not a technical audit. © Sprita iT",
   },
@@ -390,8 +384,6 @@ const PT: Calc05Copy = {
       critical: "Risco crítico",
     },
     cta_primary: "Solicitar diagnóstico técnico gratuito",
-    cta_secondary: "Fazer a autoavaliação completa de governança de IA & LGPD →",
-    cta_secondary_url: "https://brasil.cliente.sprita.io",
     disclaimer:
       "Estimativa baseada em benchmarks públicos do setor. Não constitui auditoria técnica. © Sprita iT",
   },
