@@ -220,8 +220,7 @@ export async function downloadAnalyticsBriefingPdf(input: AnalyticsPdfInput): Pr
     const logo = input.logoDataUrl ?? (await loadLogoDataUrl());
     const doc = buildAnalyticsPdf(input, logo);
     const app = pdfText(input.model.application.name || "analisis");
-    const date = new Date().toISOString().slice(0, 10);
-    const filename = `Sprita-iT-top10-hallazgos-${app}-${date}.pdf`.replace(/[^\w.\-]+/g, "_");
+    const filename = `Sprita-iT-top10-hallazgos-${app}-${uniqueStamp()}.pdf`.replace(/[^\w.\-]+/g, "_");
     doc.save(filename);
     return true;
   } catch {
@@ -413,8 +412,14 @@ function emptyState(doc: Doc, y: number, message: string, logo: string | null): 
   return y + 10;
 }
 
+export function uniqueStamp(now = new Date()): string {
+  const pad = (value: number, width = 2) => String(value).padStart(width, "0");
+  const tenths = Math.floor(now.getMilliseconds() / 100);
+  return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}_${pad(now.getHours())}-${pad(now.getMinutes())}-${pad(now.getSeconds())}.${tenths}`;
+}
+
 function drawFindingRow(doc: Doc, y: number, logo: string | null, item: RankedVulnerability): number {
-  const rem = remediateFinding(item);
+  const rem = remediateFinding({ ...item, language: item.languages[0] });
   const leftLines = [
     `${priorityLabel(item.priority)}  ·  ${plural(item.count, "hallazgo")}  ·  ${plural(item.files, "archivo")}  ·  ${formatEffort(item.effortMinutes)}`,
     item.cwe.length ? item.cwe.join(", ") : "Sin CWE",
@@ -422,7 +427,7 @@ function drawFindingRow(doc: Doc, y: number, logo: string | null, item: RankedVu
     item.languages.join(", "),
     item.ruleCode,
   ].filter(Boolean);
-  const rightLines = [rem.summary, "", rem.example, "", `Verificar: ${rem.verify}`];
+  const rightLines = [`Norma: ${rem.standard}`, rem.summary, "", rem.example, "", `Verificar: ${rem.verify}`];
   return drawTwoColumns(
     doc,
     y,
@@ -518,7 +523,7 @@ function drawComponentRow(doc: Doc, y: number, logo: string | null, item: Ranked
     item.vulnerabilityCount > 0 ? `${item.vulnerabilityCount} CVE` : "Sin CVE informado",
     item.licenses.length ? item.licenses.join(", ") : "Licencia no declarada",
   ];
-  const rightLines = [rem.summary, "", rem.example, "", `Verificar: ${rem.verify}`];
+  const rightLines = [`Norma: ${rem.standard}`, rem.summary, "", rem.example, "", `Verificar: ${rem.verify}`];
   return drawTwoColumns(doc, y, logo, display, leftLines, rem.title, rightLines, NAVY, item.rank);
 }
 

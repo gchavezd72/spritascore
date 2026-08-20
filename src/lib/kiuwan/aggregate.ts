@@ -465,4 +465,90 @@ function round1(value: number): number {
   return Math.round(value * 10) / 10;
 }
 
+export type SeverityBucket = "critical" | "high" | "medium" | "low";
+
+export interface CategorySeverityRow {
+  category: string;
+  critical: number;
+  high: number;
+  medium: number;
+  low: number;
+  total: number;
+  effort: number;
+}
+
+export function severityBucket(priority: Finding["priority"]): SeverityBucket {
+  if (priority === "very-high") return "critical";
+  if (priority === "high") return "high";
+  if (priority === "medium") return "medium";
+  return "low";
+}
+
+export function categorizeFinding(finding: Finding): string {
+  const hay = `${finding.rule} ${finding.ruleCode} ${finding.characteristic} ${finding.vulnerabilityType}`.toLowerCase();
+  if (/dead code/.test(hay)) return "Codigo muerto";
+  if (/duplicat/.test(hay)) return "Codigo duplicado";
+  if (/exception|error handling|throwable|fault isolation/.test(hay)) return "Manejo de errores";
+  if (/cyclomatic|nested if|too many param|complexity/.test(hay)) return "Complejidad";
+  if (/noscript|100kb|efficiency|instantiation into loops/.test(hay)) return "Rendimiento";
+  if (/backup|debuggable|permission|exported|misconfig/.test(hay)) return "Configuracion";
+  if (finding.kind === "vulnerability" || /injection|xss|secret|security/.test(hay)) return "Seguridad";
+  if (/maintain/.test(hay) || finding.characteristic === "Maintainability") return "Mantenibilidad";
+  if (finding.characteristic === "Reliability") return "Manejo de errores";
+  if (finding.characteristic === "Efficiency") return "Rendimiento";
+  if (finding.characteristic === "Portability") return "Portabilidad";
+  return "Convenciones";
+}
+
+export function defectsByCategoryAndSeverity(
+  findings: Finding[],
+  groupBy: "category" | "language" = "category"
+): CategorySeverityRow[] {
+  const map = new Map<string, CategorySeverityRow>();
+  for (const finding of findings) {
+    const key = groupBy === "language" ? finding.language || "—" : categorizeFinding(finding);
+    const row = map.get(key) ?? {
+      category: key,
+      critical: 0,
+      high: 0,
+      medium: 0,
+      low: 0,
+      total: 0,
+      effort: 0,
+    };
+    const bucket = severityBucket(finding.priority);
+    row[bucket] += 1;
+    row.total += 1;
+    row.effort += finding.effortMinutes;
+    map.set(key, row);
+  }
+  return [...map.values()].sort((a, b) => b.critical + b.high - (a.critical + a.high) || b.total - a.total);
+}
+
+export function effortByCategoryAndSeverity(
+  findings: Finding[],
+  groupBy: "category" | "language" = "category"
+): CategorySeverityRow[] {
+  const map = new Map<string, CategorySeverityRow>();
+  for (const finding of findings) {
+    const key = groupBy === "language" ? finding.language || "—" : categorizeFinding(finding);
+    const row = map.get(key) ?? {
+      category: key,
+      critical: 0,
+      high: 0,
+      medium: 0,
+      low: 0,
+      total: 0,
+      effort: 0,
+    };
+    const minutes = finding.effortMinutes || 0;
+    const bucket = severityBucket(finding.priority);
+    row[bucket] += minutes;
+    row.total += minutes;
+    row.effort += minutes;
+    map.set(key, row);
+  }
+  return [...map.values()].sort((a, b) => b.total - a.total);
+}
+
 export { formatEffort };

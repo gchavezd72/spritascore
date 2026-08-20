@@ -5,6 +5,26 @@ export interface Remediation {
   summary: string;
   example: string;
   verify: string;
+  standard: string;
+}
+
+export const PRACTICE = {
+  java: "Google Java Style + CERT + OWASP",
+  python: "PEP 8 / PEP 257 + OWASP",
+  web: "WHATWG HTML + MDN + WCAG 2.2 + OWASP",
+  generic: "OWASP ASVS",
+} as const;
+
+type PracticeFamily = keyof typeof PRACTICE;
+
+function languageFamily(raw?: string): PracticeFamily {
+  const value = (raw ?? "").toLowerCase();
+  if (value.includes("java") || value.includes("kotlin")) return "java";
+  if (value.includes("python")) return "python";
+  if (value.includes("html") || value.includes("javascript") || value.includes("typescript") || value.includes("css")) {
+    return "web";
+  }
+  return "generic";
 }
 
 interface CatalogEntry {
@@ -22,6 +42,7 @@ const CATALOG: CatalogEntry[] = [
       example:
         '<application\n  android:allowBackup="false"\n  android:fullBackupContent="@xml/backup_rules">',
       verify: "Confirme android:allowBackup=false en el manifesto de release y pruebe que adb backup no extrae datos.",
+      standard: PRACTICE.java,
     },
   },
   {
@@ -31,6 +52,7 @@ const CATALOG: CatalogEntry[] = [
       summary: "android:debuggable=true en release abre el proceso a inspeccion y bypass de controles.",
       example: '<application android:debuggable="false">\n// gradle: buildTypes.release { isDebuggable = false }',
       verify: "aapt dump xmltree app.apk AndroidManifest.xml | grep debuggable debe ser 0x0 en release.",
+      standard: PRACTICE.java,
     },
   },
   {
@@ -41,6 +63,7 @@ const CATALOG: CatalogEntry[] = [
       example:
         '<activity android:name=".SensitiveActivity"\n  android:exported="false" />\n// Si debe exportarse:\nandroid:permission="app.permission.INTERNAL"',
       verify: "Revise exported=true y asigne un permission signature o cambie a exported=false.",
+      standard: PRACTICE.java,
     },
   },
   {
@@ -51,6 +74,7 @@ const CATALOG: CatalogEntry[] = [
       example:
         '<service android:name=".SyncService"\n  android:exported="false" />',
       verify: "dumpsys package <pkg> y confirme que los services sensibles no son exported.",
+      standard: PRACTICE.java,
     },
   },
   {
@@ -61,6 +85,7 @@ const CATALOG: CatalogEntry[] = [
       example:
         '<application android:usesCleartextTraffic="false">\n<uses-permission android:name="android.permission.INTERNET" />\n// OkHttp CertificatePinner para sus hosts',
       verify: "Deshabilite HTTP claro y verifique que solo los hosts previstos reciben trafico.",
+      standard: PRACTICE.java,
     },
   },
   {
@@ -71,6 +96,7 @@ const CATALOG: CatalogEntry[] = [
       example:
         "// No: api_key=sk_live_...\nval key = BuildConfig.API_KEY // inyectado por CI\n// o EncryptedSharedPreferences / Keystore",
       verify: "Busque secretos en el APK (strings, resources) y rote cualquier valor ya publicado.",
+      standard: PRACTICE.java,
     },
   },
   {
@@ -81,6 +107,7 @@ const CATALOG: CatalogEntry[] = [
       example:
         "// Mal: db.execSQL(\"SELECT * FROM u WHERE id=\" + id)\n// Bien: db.query(\"u\", null, \"id=?\", arrayOf(id), ...)",
       verify: "Revise cada frontera de datos no confiables y anada pruebas de payload malicioso.",
+      standard: PRACTICE.java,
     },
   },
   {
@@ -91,6 +118,7 @@ const CATALOG: CatalogEntry[] = [
       example:
         "// Mal: Log.d(TAG, \"token=\" + session)\n// Bien: Log.d(TAG, \"auth.ok\")  // sin payload",
       verify: "Filtre logcat en release (ProGuard/R8) y busque patrones de token/password.",
+      standard: PRACTICE.java,
     },
   },
   {
@@ -100,6 +128,7 @@ const CATALOG: CatalogEntry[] = [
       summary: "Asignar dentro de un if oculta errores y cambia el flujo previsto.",
       example: "// Mal: if (x = next()) {}\nconst next = read();\nif (next) { ... }",
       verify: "Active el linter de asignacion en condiciones y no mutee la regla.",
+      standard: PRACTICE.java,
     },
   },
   {
@@ -109,6 +138,7 @@ const CATALOG: CatalogEntry[] = [
       summary: "Codigo inalcanzable aumenta superficie de mantenimiento y oculta defectos reales.",
       example: "// Borrar funciones no referenciadas.\n// Si es un hook futuro, documente y cubra con test o elimine.",
       verify: "IDE unused-symbol + cobertura: el archivo no debe quedar con ramas a 0%.",
+      standard: PRACTICE.python,
     },
   },
   {
@@ -119,6 +149,7 @@ const CATALOG: CatalogEntry[] = [
       example:
         "// Extraiga early-returns y funciones de <20 lineas.\nfun process(order: Order) {\n  if (!order.valid) return\n  bill(order)\n}",
       verify: "Fije un umbral de complejidad ciclomatica en CI (p. ej. 10) y falle el build al superarlo.",
+      standard: PRACTICE.java,
     },
   },
   {
@@ -129,6 +160,7 @@ const CATALOG: CatalogEntry[] = [
       example:
         "Comprima CSS/JS e imagenes.\n<noscript>Esta aplicacion requiere JavaScript.</noscript>",
       verify: "Mida el peso transferido < 100 KB gzip y compruebe el fallback noscript.",
+      standard: PRACTICE.web,
     },
   },
   {
@@ -139,6 +171,7 @@ const CATALOG: CatalogEntry[] = [
       example:
         "try {\n  parse(input)\n} catch (e: JsonParseException) {\n  logger.warn(\"invalid.payload\")\n  throw BadRequest()\n}",
       verify: "Prohiba catch de Exception/Throwable en SAST y cubra el camino de error con un test.",
+      standard: PRACTICE.java,
     },
   },
   {
@@ -149,6 +182,7 @@ const CATALOG: CatalogEntry[] = [
       example:
         "val buffer = StringBuilder()\nfor (item in items) buffer.append(item.id)",
       verify: "Perfile la ruta (Android Studio CPU/memory) y confirme menor alocacion por frame.",
+      standard: PRACTICE.java,
     },
   },
   {
@@ -159,6 +193,7 @@ const CATALOG: CatalogEntry[] = [
       example:
         "android {\n  defaultConfig {\n    minSdk = 26\n    targetSdk = 35\n  }\n}",
       verify: "merged manifest debe mostrar minSdkVersion y targetSdkVersion coherentes con la politica.",
+      standard: PRACTICE.java,
     },
   },
   {
@@ -169,6 +204,7 @@ const CATALOG: CatalogEntry[] = [
       example:
         "val amount = payload.amount ?: return\nrequire(amount > 0)\ncharge(amount)",
       verify: "Anada tests de nulos y tipos en los limites del modulo.",
+      standard: PRACTICE.java,
     },
   },
 ];
@@ -179,24 +215,28 @@ const CWE_FALLBACK: Record<string, Remediation> = {
     summary: "El defecto es de configuracion. Fije valores seguros por defecto en el artefacto de release.",
     example: "Defina un profile release con defaults restrictivos y falle el CI si el manifesto se desvia.",
     verify: "Compare el manifesto merged de release contra una lista blanca.",
+    standard: PRACTICE.java,
   },
   "CWE-200": {
     title: "Cerrar fugas de informacion",
     summary: "No exponga datos internos en UI, logs, backups ni archivos de configuracion.",
     example: "Elimine el campo sensible o enmascarelo (*** + ultimos 4) antes de persistir o registrar.",
     verify: "Busque el dato en APK, logcat y copias de seguridad.",
+    standard: PRACTICE.java,
   },
   "CWE-265": {
     title: "Ajustar privilegios al minimo",
     summary: "Permisos excesivos amplian el impacto de cualquier otra vulnerabilidad.",
     example: "Conserve solo los uses-permission que la historia de usuario demuestra, con runtime request.",
     verify: "dumpsys package y Play Console: lista de permisos = la minima necesaria.",
+    standard: PRACTICE.java,
   },
   "CWE-396": {
     title: "No tragar excepciones genericas",
     summary: "Capturar Exception/RuntimeException esconde fallos explotables.",
     example: "Catch del tipo concreto, registre un codigo y relance o responda 4xx/5xx controlado.",
     verify: "Un test debe cubrir el error y demostrar que no se silencia.",
+    standard: PRACTICE.java,
   },
 };
 
@@ -206,25 +246,88 @@ export function remediateFinding(item: {
   cwe?: string[];
   vulnerabilityType?: string;
   characteristic?: string;
+  language?: string;
+  languages?: string[];
 }): Remediation {
+  const family = languageFamily(item.language || item.languages?.[0]);
   const haystack = `${item.ruleCode} ${item.rule} ${item.vulnerabilityType ?? ""}`;
+  let matched: Remediation | null = null;
   for (const entry of CATALOG) {
     if (entry.tests.some((test) => test.test(haystack))) {
-      return entry.remediation;
+      matched = entry.remediation;
+      break;
     }
   }
-  for (const cwe of item.cwe ?? []) {
-    const mapped = CWE_FALLBACK[cwe];
-    if (mapped) return mapped;
+  if (!matched) {
+    for (const cwe of item.cwe ?? []) {
+      const mapped = CWE_FALLBACK[cwe];
+      if (mapped) {
+        matched = mapped;
+        break;
+      }
+    }
   }
   const area = item.characteristic || "calidad";
+  const base =
+    matched ?? {
+      title: `Plan de correccion (${area})`,
+      summary: `Priorice este hallazgo de ${area.toLowerCase()} porque aparece entre los 10 de mayor severidad del analisis.`,
+      example:
+        "1) Reproduzca el caso en un test que falle.\n2) Corrija la causa, no el sintoma.\n3) Agregue la regla a la puerta de CI.",
+      verify: "El test nuevo pasa y la regla queda en estado resuelto o muted con justificacion.",
+      standard: PRACTICE[family],
+    };
+  return withPractice(base, family, haystack);
+}
+
+function withPractice(base: Remediation, family: PracticeFamily, haystack: string): Remediation {
+  const overlay = practiceOverlay(family, haystack);
   return {
-    title: `Plan de correccion (${area})`,
-    summary: `Priorice este hallazgo de ${area.toLowerCase()} porque aparece entre los 10 de mayor severidad del analisis.`,
-    example:
-      "1) Reproduzca el caso en un test que falle.\n2) Corrija la causa, no el sintoma.\n3) Agregue la regla a la puerta de CI.",
-    verify: "El test nuevo pasa y la regla queda en estado resuelto o muted con justificacion.",
+    ...base,
+    ...overlay,
+    standard: PRACTICE[family],
   };
+}
+
+function practiceOverlay(family: PracticeFamily, haystack: string): Partial<Remediation> {
+  if (/exception|throwable|error handling/.test(haystack)) {
+    if (family === "java") {
+      return {
+        example:
+          "// CERT ERR08-J + Google Java Style: no capture Exception/Throwable.\ntry {\n  parse(input);\n} catch (JsonParseException ex) {\n  logger.warn(\"invalid.payload\");\n  throw new BadRequestException();\n}",
+        verify: "CERT ERR08-J: el catch es del tipo concreto. OWASP: el error no filtra stack ni datos internos.",
+      };
+    }
+    if (family === "python") {
+      return {
+        example:
+          "# PEP 8: except especifico. No except Exception.\ntry:\n    parse(payload)\nexcept json.JSONDecodeError:\n    LOGGER.warning(\"invalid payload\")\n    raise ValueError(\"bad_request\") from None",
+        verify: "PEP 8 E722 ausente y un test cubre el camino de error (OWASP error handling).",
+      };
+    }
+  }
+  if (/dead code/.test(haystack) && family === "python") {
+    return {
+      example:
+        "# PEP 8: elimine nombres no usados. PEP 257: si se conserva, documente por que.\ndef unused_helper():\n    \"\"\"Deprecated: remove in the next sprint.\"\"\"\n    raise RuntimeError(\"dead\")",
+      verify: "ruff F401/F841 en CI y cobertura: la funcion no queda a 0%.",
+    };
+  }
+  if (/noscript|100kb/.test(haystack) && family === "web") {
+    return {
+      example:
+        "<!-- WHATWG: noscript es contenido alternativo. WCAG 1.1/2.1: el documento sigue siendo usable. -->\n<noscript>\n  <p>Esta aplicacion requiere JavaScript. Use la version estatica.</p>\n</noscript>",
+      verify: "HTML validator WHATWG + axe WCAG 2.2 AA. OWASP: no inyecte HTML no escapado en noscript.",
+    };
+  }
+  if (/injection|xss/.test(haystack) && family === "web") {
+    return {
+      example:
+        "// OWASP A03 + MDN: textContent, nunca innerHTML con datos de usuario.\nnode.textContent = userName;\n// WHATWG: template + escape",
+      verify: "CSP default-src 'self' y un test DOM XSS. WCAG 4.1.2: el nodo sigue siendo accesible.",
+    };
+  }
+  return {};
 }
 
 export function remediateComponent(item: RankedComponentRisk): Remediation {
@@ -232,9 +335,9 @@ export function remediateComponent(item: RankedComponentRisk): Remediation {
     return {
       title: "Actualizar o sustituir el componente vulnerable",
       summary: "Hay CVE o riesgo de seguridad asociado. No deje la version actual en produccion.",
-      example:
-        `// Gradle\nimplementation("${item.name}:${nextVersionHint(item.version)}")\n// y regenere el SBOM`,
+      example: `// Gradle\nimplementation("${item.name}:${nextVersionHint(item.version)}")\n// y regenere el SBOM`,
       verify: "Vuelva a correr SCA: el CVE no debe aparecer, o documente excepcion con fecha de salida.",
+      standard: PRACTICE.generic,
     };
   }
   if (item.licenses.length > 0 && !/artefactos de build/i.test(item.name)) {
@@ -243,6 +346,7 @@ export function remediateComponent(item: RankedComponentRisk): Remediation {
       summary: `Este componente declara: ${item.licenses.join(", ")}. Unknown en riesgo de licencia no significa libre de obligaciones.`,
       example: `SBOM:\n  name: ${item.name}\n  version: ${item.version || "<version>"}\n  license: ${item.licenses[0]}\nAgregue NOTICE y dictamen legal antes de distribuir.`,
       verify: "SPDX queda resuelto (no Unknown) y el inventario legal incluye este artefacto.",
+      standard: PRACTICE.generic,
     };
   }
   if (/high|critical/i.test(item.licenseRisk)) {
@@ -250,26 +354,27 @@ export function remediateComponent(item: RankedComponentRisk): Remediation {
       title: "Resolver el riesgo de licencia",
       summary: "Una licencia copyleft o desconocida puede contaminar la distribucion del producto.",
       example:
-        "Sustituya el artefacto por una alternativa permissiva (Apache-2.0/MIT) o aíslelo en un proceso separado con dictamen legal.",
+        "Sustituya el artefacto por una alternativa permissiva (Apache-2.0/MIT) o aiselo en un proceso separado con dictamen legal.",
       verify: "El SBOM debe listar SPDX conocido y el equipo legal debe firmar el uso.",
+      standard: PRACTICE.generic,
     };
   }
   if (/high|critical|medium/i.test(item.obsolescenceRisk) || item.obsolescenceRisk === "Low") {
     return {
       title: "Plan de actualizacion por obsolescencia",
       summary: "El componente esta desfasado. Cada mes sin parche aumenta la probabilidad de CVE.",
-      example:
-        `Dependabot/Renovate: agrupe ${shortName(item.name)} y suba a la ultima version estable en un PR dedicado.`,
+      example: `Dependabot/Renovate: agrupe ${shortName(item.name)} y suba a la ultima version estable en un PR dedicado.`,
       verify: "La version instalada coincide con la ultima estable del mantenedor.",
+      standard: PRACTICE.generic,
     };
   }
   return {
     title: "Identificar el componente en el inventario",
-    summary:
-      "El artefacto no tiene coordenadas claras (nombre hash o riesgo Unknown). Sin identidad no hay parche.",
+    summary: "El artefacto no tiene coordenadas claras (nombre hash o riesgo Unknown). Sin identidad no hay parche.",
     example:
       "Excluya directorios build/intermediates del analisis SCA y declare el GAV real (group:artifact:version) en el manifiesto de dependencias.",
     verify: "El inventario SCA debe mostrar nombre, version y licencia, no un hash de dex/jar intermedio.",
+    standard: PRACTICE.generic,
   };
 }
 

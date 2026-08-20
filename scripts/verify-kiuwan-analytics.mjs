@@ -121,9 +121,11 @@ if (fs.existsSync(demoPath)) {
   assert(Array.isArray(demo.model?.findings) && demo.model.findings.length > 0, "Demo fixture has findings");
 }
 
-const { buildAnalyticsPdf, logoFileToDataUrl } = await import(
+const { buildAnalyticsPdf, logoFileToDataUrl, uniqueStamp } = await import(
   pathToFileURL(path.join(root, "src/lib/kiuwan/analyticsPdf.ts")).href
 );
+const stamp = uniqueStamp(new Date("2026-08-20T15:04:05.370Z"));
+assert(/\d{2}-\d{2}-\d{2}\.\d$/.test(stamp.split("_")[1] ?? ""), `uniqueStamp has seconds and tenths: ${stamp}`);
 const { remediateFinding } = await import(pathToFileURL(path.join(root, "src/lib/kiuwan/remediation.ts")).href);
 const backup = remediateFinding({
   rule: "Inadecuate backup configuration",

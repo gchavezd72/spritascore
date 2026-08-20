@@ -3,7 +3,9 @@
 import Image from "next/image";
 import { useCallback, useMemo, useState } from "react";
 import { FunnelViz } from "@/components/analytics/FunnelViz";
+import { QualityBoard } from "@/components/analytics/QualityBoard";
 import { QualityRadar } from "@/components/analytics/QualityRadar";
+import { SeverityStackedBar } from "@/components/analytics/SeverityStackedBar";
 import {
   applicationFindings,
   applicationFunnel,
@@ -15,6 +17,7 @@ import {
   executiveSnapshot,
   filePresence,
   formatEffort,
+  defectsByCategoryAndSeverity,
   hotspotFiles,
   improvementsByArea,
   qualityFindings,
@@ -418,6 +421,7 @@ export function AnalyticsDashboard() {
               qualityCount={quality.length}
               components={model.components.length}
               effort={formatEffort(totalEffort(findings))}
+              findings={findings}
             />
           )}
 
@@ -435,6 +439,7 @@ export function AnalyticsDashboard() {
 
           {model && sheet === "calidad" && (
             <CalidadSheet
+              findings={quality}
               radar={radar}
               improvements={improvements}
               area={qualityArea}
@@ -490,6 +495,7 @@ function ResumenSheet({
   qualityCount,
   components,
   effort,
+  findings,
 }: {
   snapshot: ReturnType<typeof executiveSnapshot>;
   appFunnel: ReturnType<typeof applicationFunnel>;
@@ -499,6 +505,7 @@ function ResumenSheet({
   qualityCount: number;
   components: number;
   effort: string;
+  findings: ReturnType<typeof applySelection>;
 }) {
   return (
     <div className="sa-grid">
@@ -536,6 +543,14 @@ function ResumenSheet({
       <p className="sa-card" style={{ margin: 0 }}>
         {snapshot.narrative} Componentes inventariados: {components}. Defectos de calidad visibles: {qualityCount}.
       </p>
+
+      <section className="sa-paper">
+        <h2>Defectos por categoria y severidad</h2>
+        <p className="sa-paper-lead">
+          Las categorias con mayor concentracion de defectos prioritarios aparecen primero.
+        </p>
+        <SeverityStackedBar rows={defectsByCategoryAndSeverity(findings)} />
+      </section>
 
       <div className="sa-split">
         <section className="sa-card">
@@ -593,6 +608,11 @@ function SeguridadSheet({
 
   return (
     <div className="sa-grid">
+      <section className="sa-paper">
+        <h2>Defectos por categoria y severidad</h2>
+        <p className="sa-paper-lead">Concentracion de vulnerabilidades de aplicacion por tipo y prioridad.</p>
+        <SeverityStackedBar rows={defectsByCategoryAndSeverity(findings)} />
+      </section>
       <div className="sa-split">
         <section className="sa-card">
           <div className="sa-card-head">
@@ -704,6 +724,7 @@ function ComponentesSheet({
 }
 
 function CalidadSheet({
+  findings,
   radar,
   improvements,
   area,
@@ -711,6 +732,7 @@ function CalidadSheet({
   hotspots,
   languages,
 }: {
+  findings: ReturnType<typeof qualityFindings>;
   radar: ReturnType<typeof qualityRadar>;
   improvements: Record<string, Improvement[]>;
   area: string;
@@ -723,6 +745,7 @@ function CalidadSheet({
 
   return (
     <div className="sa-grid">
+      <QualityBoard findings={findings} />
       <div className="sa-split">
         <section className="sa-card">
           <div className="sa-card-head">
