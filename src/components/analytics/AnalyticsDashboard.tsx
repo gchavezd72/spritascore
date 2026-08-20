@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useCallback, useMemo, useState } from "react";
 import { FunnelViz } from "@/components/analytics/FunnelViz";
 import { QualityRadar } from "@/components/analytics/QualityRadar";
@@ -80,7 +81,7 @@ export function AnalyticsDashboard() {
     setError(null);
     const accepted = files.filter((file) => allowedUpload(file.name));
     if (accepted.length === 0) {
-      setError("Solo se aceptan CSV, SARIF y JSON (Kiuwan / CycloneDX).");
+      setError("Solo se aceptan CSV, SARIF y JSON (SAST / SCA / CycloneDX).");
       return;
     }
     if (accepted.length > MAX_FILES) {
@@ -182,12 +183,17 @@ export function AnalyticsDashboard() {
     <div className="sa sa-shell">
       <header className="sa-top">
         <div className="sa-brand">
-          <div className="sa-brand-mark" aria-hidden>
-            S
-          </div>
+          <Image
+            src="/logos/sprita-it-light.png"
+            alt="Sprita iT"
+            width={140}
+            height={45}
+            className="sa-brand-logo"
+            priority
+          />
           <div>
-            <h1>Sprita iT Analytics</h1>
-            <p>Kiuwan · CSV · SARIF · SBOM</p>
+            <h1>Analytics</h1>
+            <p>CSV · SARIF · SBOM</p>
           </div>
         </div>
         <div className="sa-sheets" role="tablist" aria-label="Hojas del análisis">
@@ -284,7 +290,7 @@ export function AnalyticsDashboard() {
               onFiles(event.dataTransfer.files);
             }}
           >
-            Arrastre CSV, SARIF o JSON de Kiuwan.
+            Arrastre CSV, SARIF o JSON del análisis.
             <input
               type="file"
               accept=".csv,.json,.sarif,application/json,text/csv"
@@ -394,7 +400,7 @@ export function AnalyticsDashboard() {
 
           {!model && !busy && (
             <div className="sa-empty">
-              <h2>Convierta un análisis Kiuwan en decisiones.</h2>
+              <h2>Convierta un análisis de código en decisiones.</h2>
               <p>
                 Cargue los CSV rfc_4180, SARIF y el SBOM JSON. Los hallazgos no se envían a ningún servidor: todo se
                 calcula en su navegador, con la marca Sprita iT.
@@ -499,7 +505,7 @@ function ResumenSheet({
       <div className={snapshot.securityFile.present ? (snapshot.securityFile.empty ? "sa-ok" : "sa-ok") : "sa-warn"}>
         {snapshot.securityFile.present
           ? snapshot.securityFile.empty
-            ? `Archivo de seguridad SCA presente (${snapshot.securityFile.name}): Kiuwan no reportó CVEs de terceros.`
+            ? `Archivo de seguridad SCA presente (${snapshot.securityFile.name}): no se reportaron CVEs de terceros.`
             : `Archivo de seguridad SCA presente: ${snapshot.componentCves} CVE.`
           : "No se cargó INSIGHT_SECURITY. El embudo de componentes de terceros queda incompleto."}
       </div>
@@ -552,7 +558,7 @@ function ResumenSheet({
         <section className="sa-card">
           <div className="sa-card-head">
             <h2>Radar de calidad</h2>
-            <p>Cinco indicadores Kiuwan ponderados por LOC</p>
+            <p>Cinco indicadores de calidad ponderados por LOC</p>
           </div>
           <QualityRadar attributes={radar} />
         </section>

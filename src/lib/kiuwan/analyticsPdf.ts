@@ -23,7 +23,7 @@ const PAGE_W = 297;
 const PAGE_H = 210;
 const MARGIN = 12;
 const CONTENT_W = PAGE_W - MARGIN * 2;
-const HEADER_H = 22;
+const HEADER_H = 24;
 const FOOTER_Y = PAGE_H - 10;
 const GAP = 4;
 const COL_GAP = 5;
@@ -66,11 +66,10 @@ function drawChrome(doc: Doc, logo: string | null) {
 
   if (logo) {
     try {
-      const logoW = 34;
-      const logoH = logoW * (99 / 404);
-      doc.setFillColor(...WHITE);
-      doc.roundedRect(MARGIN, 4.2, logoW + 4, HEADER_H - 8.4, 1.2, 1.2, "F");
-      doc.addImage(logo, "PNG", MARGIN + 2, 5.4, logoW, logoH, undefined, "FAST");
+      const logoH = 12.5;
+      const logoW = logoH * (500 / 162);
+      const logoY = (HEADER_H - logoH) / 2;
+      doc.addImage(logo, "PNG", MARGIN, logoY, logoW, logoH, undefined, "FAST");
     } catch {
       drawWordmark(doc);
     }
@@ -81,7 +80,7 @@ function drawChrome(doc: Doc, logo: string | null) {
   doc.setFont("helvetica", "bold");
   doc.setFontSize(11);
   doc.setTextColor(...WHITE);
-  draw(doc, "Informe Top 10  |  Kiuwan", PAGE_W - MARGIN, 10, "right");
+  draw(doc, "Informe Top 10", PAGE_W - MARGIN, 10, "right");
   doc.setFont("helvetica", "normal");
   doc.setFontSize(8);
   doc.setTextColor(200, 214, 228);
@@ -248,7 +247,7 @@ export function buildAnalyticsPdf(input: AnalyticsPdfInput, logo: string | null)
   doc.setFont("helvetica", "bold");
   doc.setFontSize(20);
   doc.setTextColor(...NAVY);
-  draw(doc, "Top 10 defectos por analisis Kiuwan", MARGIN, y);
+  draw(doc, "Top 10 defectos por analisis", MARGIN, y);
   y += 8;
   doc.setFont("helvetica", "normal");
   doc.setFontSize(10);
@@ -308,7 +307,7 @@ export function buildAnalyticsPdf(input: AnalyticsPdfInput, logo: string | null)
   doc.setTextColor(...NAVY);
   const intro = wrap(
     doc,
-    "Cada seccion lista como maximo diez defectos, ordenados por severidad y volumen. A la derecha de cada hallazgo hay un ejemplo de remediacion Sprita iT para orientar al equipo de desarrollo. Este documento no sustituye el analisis Kiuwan completo ni una auditoria de codigo.",
+    "Cada seccion lista como maximo diez defectos, ordenados por severidad y volumen. A la derecha de cada hallazgo hay un ejemplo de remediacion Sprita iT para orientar al equipo de desarrollo. Este documento no sustituye el inventario completo ni una auditoria de codigo.",
     CONTENT_W
   );
   intro.forEach((line) => {
@@ -354,7 +353,7 @@ export function buildAnalyticsPdf(input: AnalyticsPdfInput, logo: string | null)
   doc.setFontSize(8);
   draw(
     doc,
-    "Izquierda: el defecto. Derecha: ejemplo de remediacion Sprita iT. Este PDF no sustituye el inventario Kiuwan completo.",
+    "Izquierda: el defecto. Derecha: ejemplo de remediacion Sprita iT. Este PDF no sustituye el inventario completo.",
     MARGIN + 4,
     y + 12
   );
@@ -526,7 +525,7 @@ function drawComponentRow(doc: Doc, y: number, logo: string | null, item: Ranked
 export async function loadLogoDataUrl(): Promise<string | null> {
   if (typeof fetch === "undefined") return null;
   try {
-    const response = await fetch("/logos/sprita-it.png");
+    const response = await fetch("/logos/sprita-it-light.png");
     if (!response.ok) return null;
     const blob = await response.blob();
     return await blobToDataUrl(blob);

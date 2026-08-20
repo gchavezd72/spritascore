@@ -105,13 +105,13 @@ export function parseKiuwanFiles(files: SourceFile[]): ParseResult {
         kind,
         size: file.size,
         rowCount: csv.rows.length,
-        warning: kind === "unknown" ? "No se reconoció el formato Kiuwan." : undefined,
+        warning: kind === "unknown" ? "No se reconoció el formato de análisis." : undefined,
       });
 
       if (kind === "unknown") {
         warnings.push({
           file: file.name,
-          message: "Cabeceras no coinciden con un export Kiuwan conocido.",
+          message: "Cabeceras no coinciden con un export de análisis conocido.",
         });
         continue;
       }

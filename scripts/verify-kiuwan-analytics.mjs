@@ -131,11 +131,12 @@ const backup = remediateFinding({
   cwe: ["CWE-16"],
 });
 assert(backup.example.includes("allowBackup"), "Backup remediation includes example");
-assert(fs.existsSync(path.join(root, "public/logos/sprita-it.png")), "Sprita iT logo is available");
+assert(fs.existsSync(path.join(root, "public/logos/sprita-it-light.png")), "Sprita iT light logo is available");
+assert(fs.existsSync(path.join(root, "public/logos/sprita-it-dark.png")), "Sprita iT dark logo is available");
 if (fs.existsSync(demoPath)) {
   const demo = JSON.parse(fs.readFileSync(demoPath, "utf8"));
   const findings = applySelection(demo.model, defaultSelection());
-  const logo = logoFileToDataUrl(new Uint8Array(fs.readFileSync(path.join(root, "public/logos/sprita-it.png"))));
+  const logo = logoFileToDataUrl(new Uint8Array(fs.readFileSync(path.join(root, "public/logos/sprita-it-light.png"))));
   const doc = buildAnalyticsPdf({ model: demo.model, findings }, logo);
   const bytes = Buffer.from(doc.output("arraybuffer"));
   assert(bytes.subarray(0, 5).toString() === "%PDF-", "PDF magic header");

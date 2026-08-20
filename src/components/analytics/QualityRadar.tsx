@@ -21,7 +21,7 @@ export function QualityRadar({ attributes }: QualityRadarProps) {
   }));
 
   return (
-    <div className="h-72" role="img" aria-label="Radar de cinco atributos de calidad Kiuwan">
+    <div className="h-72" role="img" aria-label="Radar de cinco atributos de calidad">
       <ResponsiveContainer width="100%" height="100%">
         <RadarChart data={data} cx="50%" cy="50%" outerRadius="72%">
           <PolarGrid stroke="rgba(232,237,245,0.14)" />

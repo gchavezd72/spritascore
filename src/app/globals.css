@@ -1359,16 +1359,10 @@ h1, h2, h3, h4 {
   min-width: 0;
 }
 
-.sa-brand-mark {
-  width: 34px;
-  height: 34px;
-  border-radius: 9px;
-  background: var(--sa-green);
-  color: #062113;
-  display: grid;
-  place-items: center;
-  font-weight: 800;
-  letter-spacing: -0.04em;
+.sa-brand-logo {
+  height: 28px;
+  width: auto;
+  display: block;
   flex-shrink: 0;
 }
 

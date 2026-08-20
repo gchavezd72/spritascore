@@ -2,13 +2,13 @@ import type { Metadata } from "next";
 import { SITE_URL } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Sprita iT Analytics — Kiuwan CSV, SARIF y SBOM",
+  title: "Sprita iT Analytics — CSV, SARIF y SBOM",
   description:
-    "Visualice vulnerabilidades de aplicación, componentes de terceros y calidad de código a partir de exportaciones Kiuwan. Embudo de las 10 críticas, radar de cinco atributos y marca Sprita iT.",
+    "Visualice vulnerabilidades de aplicación, componentes de terceros y calidad de código a partir de exportaciones SAST/SCA. Embudo de las 10 críticas, radar de cinco atributos y marca Sprita iT.",
   alternates: { canonical: `${SITE_URL}/analytics` },
   openGraph: {
     title: "Sprita iT Analytics",
-    description: "Análisis visual de resultados Kiuwan: seguridad, SCA y calidad.",
+    description: "Análisis visual de resultados SAST/SCA: seguridad, componentes y calidad.",
     url: `${SITE_URL}/analytics`,
     siteName: "Sprita iT Analytics",
   },

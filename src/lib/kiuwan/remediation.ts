@@ -223,7 +223,7 @@ export function remediateFinding(item: {
     summary: `Priorice este hallazgo de ${area.toLowerCase()} porque aparece entre los 10 de mayor severidad del analisis.`,
     example:
       "1) Reproduzca el caso en un test que falle.\n2) Corrija la causa, no el sintoma.\n3) Agregue la regla a la puerta de CI.",
-    verify: "El test nuevo pasa y la regla Kiuwan queda en estado resuelto o muted con justificacion.",
+    verify: "El test nuevo pasa y la regla queda en estado resuelto o muted con justificacion.",
   };
 }
 
@@ -269,7 +269,7 @@ export function remediateComponent(item: RankedComponentRisk): Remediation {
       "El artefacto no tiene coordenadas claras (nombre hash o riesgo Unknown). Sin identidad no hay parche.",
     example:
       "Excluya directorios build/intermediates del analisis SCA y declare el GAV real (group:artifact:version) en el manifiesto de dependencias.",
-    verify: "Kiuwan Insight debe mostrar nombre, version y licencia, no un hash de dex/jar intermedio.",
+    verify: "El inventario SCA debe mostrar nombre, version y licencia, no un hash de dex/jar intermedio.",
   };
 }
 

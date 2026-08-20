@@ -88,7 +88,7 @@ export function applicationFunnel(findings: Finding[]): {
       id: "all",
       label: "Hallazgos de aplicación",
       count: vulns.length,
-      hint: "Vulnerabilidades SAST reportadas por Kiuwan",
+      hint: "Vulnerabilidades SAST del análisis de aplicación",
     },
     {
       id: "unique",

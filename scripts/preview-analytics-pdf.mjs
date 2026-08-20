@@ -19,7 +19,7 @@ const { buildAnalyticsPdf, logoFileToDataUrl } = await import(
 
 const demo = JSON.parse(fs.readFileSync(path.join(root, "public/analytics-demo.json"), "utf8"));
 const findings = applySelection(demo.model, defaultSelection());
-const logoBytes = fs.readFileSync(path.join(root, "public/logos/sprita-it.png"));
+const logoBytes = fs.readFileSync(path.join(root, "public/logos/sprita-it-light.png"));
 const logo = logoFileToDataUrl(new Uint8Array(logoBytes));
 
 const doc = buildAnalyticsPdf({ model: demo.model, findings }, logo);
