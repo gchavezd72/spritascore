@@ -28,7 +28,7 @@ export function CookieConsent() {
   const [before, after] = t.cookieConsent.text.split("{privacyLink}");
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-[60] border-t border-border-hairline bg-surface/95 backdrop-blur-md px-4 py-4 shadow-[0_-4px_16px_rgba(0,0,0,0.3)]">
+    <div className="fixed inset-x-0 bottom-0 z-[90] border-t border-border-hairline bg-surface/95 backdrop-blur-md px-4 py-4 shadow-[0_-4px_16px_rgba(0,0,0,0.3)]">
       <div className="container mx-auto flex max-w-7xl flex-col items-center gap-4 sm:flex-row sm:justify-between">
         <p className="text-sm text-muted-foreground">
           {before}

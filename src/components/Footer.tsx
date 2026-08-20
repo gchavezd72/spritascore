@@ -57,6 +57,9 @@ export function Footer() {
               <li>
                 <Link href="/#sectores">{l.footer.product.sectors}</Link>
               </li>
+              <li>
+                <Link href="/analytics">Analytics</Link>
+              </li>
             </ul>
           </div>
           <div>

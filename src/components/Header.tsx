@@ -32,6 +32,7 @@ export function Header() {
           <Link href="/#metodo">{n.how}</Link>
           <Link href="/#sectores">{n.sectors}</Link>
           <Link href="/#contacto">{n.contact}</Link>
+          <Link href="/analytics">Analytics</Link>
         </nav>
         <div className="hd-right">
           <div className="lang">

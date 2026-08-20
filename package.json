@@ -13,7 +13,8 @@
     "verify:security": "npx --yes tsx scripts/verify-security.mjs",
     "verify:gtm": "npx --yes tsx scripts/verify-gtm-events.mjs",
     "gtm:import-guide": "node scripts/gtm-import-guide.mjs",
-    "verify:search-console": "node scripts/verify-search-console.mjs"
+    "verify:search-console": "node scripts/verify-search-console.mjs",
+    "verify:analytics": "npx --yes tsx scripts/verify-kiuwan-analytics.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",

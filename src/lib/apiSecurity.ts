@@ -7,6 +7,7 @@ const ALLOWED_ORIGINS = new Set(
   [
     "https://spritascore.com",
     "https://www.spritascore.com",
+    "https://analytics.spritascore.com",
     process.env.NODE_ENV === "development" ? "http://localhost:3000" : null,
     process.env.NODE_ENV === "development" ? "http://127.0.0.1:3000" : null,
   ].filter((v): v is string => Boolean(v))

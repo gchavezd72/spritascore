@@ -49,6 +49,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE_URL}/en/calculadora/05`, lastModified: now, changeFrequency: "weekly", priority: 0.95 },
     { url: `${SITE_URL}/pt/calculadora/05`, lastModified: now, changeFrequency: "weekly", priority: 0.95 },
     { url: `${SITE_URL}/privacidad`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
+    { url: `${SITE_URL}/analytics`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
+    { url: "https://analytics.spritascore.com", lastModified: now, changeFrequency: "weekly", priority: 0.8 },
     ...regionalPages,
     ...legacyCalculators,
   ];
