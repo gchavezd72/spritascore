@@ -121,5 +121,29 @@ if (fs.existsSync(demoPath)) {
   assert(Array.isArray(demo.model?.findings) && demo.model.findings.length > 0, "Demo fixture has findings");
 }
 
+const { buildAnalyticsPdf, logoFileToDataUrl } = await import(
+  pathToFileURL(path.join(root, "src/lib/kiuwan/analyticsPdf.ts")).href
+);
+const { remediateFinding } = await import(pathToFileURL(path.join(root, "src/lib/kiuwan/remediation.ts")).href);
+const backup = remediateFinding({
+  rule: "Inadecuate backup configuration",
+  ruleCode: "OPT.KOTLIN.ANDROID.PreventBackupVulnerability",
+  cwe: ["CWE-16"],
+});
+assert(backup.example.includes("allowBackup"), "Backup remediation includes example");
+assert(fs.existsSync(path.join(root, "public/logos/sprita-it.png")), "Sprita iT logo is available");
+if (fs.existsSync(demoPath)) {
+  const demo = JSON.parse(fs.readFileSync(demoPath, "utf8"));
+  const findings = applySelection(demo.model, defaultSelection());
+  const logo = logoFileToDataUrl(new Uint8Array(fs.readFileSync(path.join(root, "public/logos/sprita-it.png"))));
+  const doc = buildAnalyticsPdf({ model: demo.model, findings }, logo);
+  const bytes = Buffer.from(doc.output("arraybuffer"));
+  assert(bytes.subarray(0, 5).toString() === "%PDF-", "PDF magic header");
+  assert(doc.getNumberOfPages() >= 3, `PDF should have cover + 3 analyses, got ${doc.getNumberOfPages()}`);
+  const raw = bytes.toString("latin1");
+  assert(raw.includes("Top 10") || raw.includes("Informe"), "PDF contains title");
+  assert(bytes.length > 20_000, "PDF is not empty");
+}
+
 console.log(`${passed} passed, ${failed} failed`);
 if (failed > 0) process.exit(1);

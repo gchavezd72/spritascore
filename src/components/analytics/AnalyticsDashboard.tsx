@@ -20,6 +20,7 @@ import {
   qualityRadar,
   totalEffort,
 } from "@/lib/kiuwan/aggregate";
+import { downloadAnalyticsBriefingPdf } from "@/lib/kiuwan/analyticsPdf";
 import { loadDemoAnalysis } from "@/lib/kiuwan/demo";
 import { allowedUpload } from "@/lib/kiuwan/classify";
 import { MAX_FILE_BYTES, MAX_FILES, MAX_TOTAL_BYTES, parseKiuwanFiles } from "@/lib/kiuwan/parse";
@@ -73,6 +74,7 @@ export function AnalyticsDashboard() {
   const [error, setError] = useState<string | null>(null);
   const [over, setOver] = useState(false);
   const [qualityArea, setQualityArea] = useState("Maintainability");
+  const [printing, setPrinting] = useState(false);
 
   const ingest = useCallback(async (files: File[]) => {
     setError(null);
@@ -218,8 +220,21 @@ export function AnalyticsDashboard() {
           <button type="button" className="sa-btn" onClick={() => void loadDemo()} disabled={busy}>
             Ejemplo
           </button>
-          <button type="button" className="sa-btn" onClick={() => window.print()} disabled={!model}>
-            Imprimir
+          <button
+            type="button"
+            className="sa-btn"
+            disabled={!model || printing}
+            onClick={() => {
+              if (!model) return;
+              setPrinting(true);
+              setError(null);
+              void downloadAnalyticsBriefingPdf({ model, findings }).then((ok) => {
+                if (!ok) setError("No se pudo generar el PDF. Reintente o use un navegador reciente.");
+                setPrinting(false);
+              });
+            }}
+          >
+            {printing ? "Generando PDF…" : "Imprimir PDF"}
           </button>
           <a className="sa-btn" href="https://sprita-it.com" target="_blank" rel="noopener noreferrer">
             sprita-it.com
