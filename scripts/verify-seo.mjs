@@ -64,6 +64,20 @@ async function main() {
     }
   }
 
+  const { HOME_OG } = await import(pathToFileURL(path.join(root, "src/lib/seo.ts")).href);
+  if (HOME_OG.image !== `${SITE}/og-image.png` || HOME_OG.url !== SITE) {
+    console.error("FAIL: homepage OG image/url mismatch");
+    failed++;
+  } else {
+    passed++;
+  }
+  if (!String(HOME_OG.title).includes("SpritaScore") || !String(HOME_OG.description).includes("Nine free calculators")) {
+    console.error("FAIL: homepage OG title/description");
+    failed++;
+  } else {
+    passed++;
+  }
+
   const llms = await fetch(`${SITE}/llms.txt`).catch(() => null);
   if (!llms?.ok) {
     console.warn("WARN: could not fetch production llms.txt (offline check skipped)");

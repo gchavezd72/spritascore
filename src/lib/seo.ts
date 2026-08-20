@@ -191,12 +191,44 @@ export function buildPageMetadata({
 
 const googleSiteVerification = process.env.GOOGLE_SITE_VERIFICATION?.trim();
 
+export const HOME_OG = {
+  title: "SpritaScore | Turn Software Risk into Financial Impact",
+  description:
+    "Nine free calculators that turn software risk into financial impact: code quality, OWASP, EU AI Act, DORA and CRA readiness. Your score in 5 minutes.",
+  image: `${SITE_URL}/og-image.png`,
+  url: SITE_URL,
+} as const;
+
 export const rootMetadata: Metadata = {
   ...buildPageMetadata({
     title: "SpritaScore — Calculadora de riesgo y costo de software | DevSecOps y ASPM",
     description: DEFAULT_DESCRIPTION.es,
     path: "",
   }),
+  openGraph: {
+    title: HOME_OG.title,
+    description: HOME_OG.description,
+    url: HOME_OG.url,
+    siteName: SITE_NAME,
+    locale: "en_US",
+    alternateLocale: ["es_ES", "pt_BR"],
+    type: "website",
+    images: [
+      {
+        url: HOME_OG.image,
+        width: 1200,
+        height: 630,
+        alt: HOME_OG.title,
+        type: "image/png",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: HOME_OG.title,
+    description: HOME_OG.description,
+    images: [HOME_OG.image],
+  },
   ...(googleSiteVerification
     ? { verification: { google: googleSiteVerification } }
     : {}),
