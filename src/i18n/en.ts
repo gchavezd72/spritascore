@@ -304,7 +304,7 @@ export const en: TranslationKeys = {
       eyebrow: "Technical diagnosis",
       h2: "This is an estimate. Let's validate your real exposure.",
       btn: "Request a diagnosis",
-      note: "or book a call — info@spritascore.com",
+      note: "or book a call — info@sprita-it.com",
     },
     footer: {
       tagline: "A tool for technology, security and compliance teams to prioritize risk in financial language.",

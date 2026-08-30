@@ -8,6 +8,7 @@ import { getCategoryActions, getLevelActionPlan } from "@/data/executivePdfPlans
 import type { ExecutiveScoreResult } from "@/lib/calculateExecutiveRiskScore";
 import { getAnswerPoints } from "@/lib/calculateExecutiveRiskScore";
 import { pdfText } from "@/lib/pdfText";
+import { calculatorPdfFilename } from "@/lib/pdfFilename";
 import { getExecutiveCopy, getExecutiveQuestions } from "@/i18n/executive";
 import type { Locale } from "@/types/calculator";
 
@@ -397,8 +398,7 @@ export function downloadExecutiveScorePdf(
       drawPageFooter(doc, p, locale);
     }
 
-    const date = new Date().toISOString().slice(0, 10);
-    doc.save(`${pdf.filename}-${date}.pdf`);
+    doc.save(calculatorPdfFilename("executive-software-risk-score"));
     return true;
   } catch {
     return false;

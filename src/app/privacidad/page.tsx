@@ -31,8 +31,8 @@ export default function PrivacyPage() {
         <h2 className="text-xl font-bold text-foreground mt-8 mb-2">{p.s5Heading}</h2>
         <p className="text-foreground/85">
           {p.s5BodyBefore}{" "}
-          <a href="mailto:info@spritascore.com" className="text-brand-green font-semibold hover:underline">
-            info@spritascore.com
+          <a href="mailto:info@sprita-it.com" className="text-brand-green font-semibold hover:underline">
+            info@sprita-it.com
           </a>
           {p.s5BodyAfter}
         </p>
@@ -40,8 +40,8 @@ export default function PrivacyPage() {
         <h2 className="text-xl font-bold text-foreground mt-8 mb-2">{p.s6Heading}</h2>
         <p className="text-foreground/85">
           {p.s6BodyBefore}{" "}
-          <a href="mailto:info@spritascore.com" className="text-brand-green font-semibold hover:underline">
-            info@spritascore.com
+          <a href="mailto:info@sprita-it.com" className="text-brand-green font-semibold hover:underline">
+            info@sprita-it.com
           </a>
           {p.s6BodyAfter}
         </p>

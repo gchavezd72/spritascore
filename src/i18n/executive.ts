@@ -204,7 +204,7 @@ const COPY: Record<Locale, ExecutiveCopy> = {
       successTitle: "Thank you — we received your request.",
       successBody: "A Sprita iT specialist will follow up with your executive assessment details.",
       disposableEmail: "Please use a business email address.",
-      submitError: "Could not submit your request. Please try again or email info@spritascore.com.",
+      submitError: "Could not submit your request. Please try again or email info@sprita-it.com.",
       privacyPrefix: "By submitting, you agree to our ",
       privacySuffix: ". This score is informational and does not constitute legal, regulatory, audit, or technical certification.",
       firstNameRequired: "First name is required",
@@ -241,7 +241,7 @@ const COPY: Record<Locale, ExecutiveCopy> = {
       nextStepsTitle: "Recommended next step",
       nextStepsBody:
         "Request a no-cost Software Risk Assessment from Sprita iT to receive an executive report with the Top 10 critical vulnerabilities, Top 10 priority software quality defects, and a prioritized remediation plan.",
-      contactLine: "spritascore.com · sprita-it.com · info@spritascore.com",
+      contactLine: "spritascore.com · sprita-it.com · info@sprita-it.com",
       page: "Page",
       priority: "Priority",
       disclaimer:
@@ -347,7 +347,7 @@ const COPY: Record<Locale, ExecutiveCopy> = {
       successTitle: "Gracias — recibimos su solicitud.",
       successBody: "Un especialista de Sprita iT dará seguimiento con los detalles de su evaluación ejecutiva.",
       disposableEmail: "Use un correo corporativo válido.",
-      submitError: "No se pudo enviar la solicitud. Intente de nuevo o escriba a info@spritascore.com.",
+      submitError: "No se pudo enviar la solicitud. Intente de nuevo o escriba a info@sprita-it.com.",
       privacyPrefix: "Al enviar, acepta nuestra ",
       privacySuffix: ". Este puntaje es informativo y no constituye certificación legal, regulatoria, de auditoría ni técnica.",
       firstNameRequired: "El nombre es obligatorio",
@@ -384,7 +384,7 @@ const COPY: Record<Locale, ExecutiveCopy> = {
       nextStepsTitle: "Siguiente paso recomendado",
       nextStepsBody:
         "Solicite una evaluación de riesgo de software sin costo de Sprita iT para recibir un informe ejecutivo con las 10 vulnerabilidades críticas, los 10 defectos de calidad prioritarios y un plan de remediación priorizado.",
-      contactLine: "spritascore.com · sprita-it.com · info@spritascore.com",
+      contactLine: "spritascore.com · sprita-it.com · info@sprita-it.com",
       page: "Página",
       priority: "Prioridad",
       disclaimer:
@@ -490,7 +490,7 @@ const COPY: Record<Locale, ExecutiveCopy> = {
       successTitle: "Obrigado — recebemos sua solicitação.",
       successBody: "Um especialista da Sprita iT dará seguimento com os detalhes da sua avaliação executiva.",
       disposableEmail: "Use um e-mail corporativo válido.",
-      submitError: "Não foi possível enviar a solicitação. Tente novamente ou escreva para info@spritascore.com.",
+      submitError: "Não foi possível enviar a solicitação. Tente novamente ou escreva para info@sprita-it.com.",
       privacyPrefix: "Ao enviar, você aceita nossa ",
       privacySuffix: ". Esta pontuação é informativa e não constitui certificação legal, regulatória, de auditoria nem técnica.",
       firstNameRequired: "O nome é obrigatório",
@@ -527,7 +527,7 @@ const COPY: Record<Locale, ExecutiveCopy> = {
       nextStepsTitle: "Próximo passo recomendado",
       nextStepsBody:
         "Solicite uma avaliação de risco de software sem custo da Sprita iT para receber um relatório executivo com as 10 vulnerabilidades críticas, os 10 defeitos de qualidade prioritários e um plano de remediação priorizado.",
-      contactLine: "spritascore.com · sprita-it.com · info@spritascore.com",
+      contactLine: "spritascore.com · sprita-it.com · info@sprita-it.com",
       page: "Página",
       priority: "Prioridade",
       disclaimer:

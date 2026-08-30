@@ -70,8 +70,8 @@ export function ExecutiveSoftwareRiskPage({ locale }: ExecutiveSoftwareRiskPageP
               {copy.meta.privacy}
             </Link>
             {" · "}
-            <a href="mailto:info@spritascore.com" className="underline hover:text-foreground">
-              info@spritascore.com
+            <a href="mailto:info@sprita-it.com" className="underline hover:text-foreground">
+              info@sprita-it.com
             </a>
           </p>
         </footer>

@@ -194,7 +194,7 @@ export function ResultsView({ result: initialResult }: ResultsViewProps) {
               <p className="text-lg mb-2 text-foreground">{rv.ctaBody1}</p>
               <p className="text-muted-foreground mb-6">{rv.ctaBody2}</p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="mailto:info@spritascore.com?subject=Diagn%C3%B3stico%20t%C3%A9cnico%20SpritaScore">
+                <a href="mailto:info@sprita-it.com?subject=Diagn%C3%B3stico%20t%C3%A9cnico%20SpritaScore">
                   <Button
                     size="lg"
                     onClick={() => trackEvent("cta_clicked", { cta: "diagnostico" })}
@@ -209,7 +209,7 @@ export function ResultsView({ result: initialResult }: ResultsViewProps) {
                     {rv.downloadReport}
                   </Button>
                 </Link>
-                <a href="mailto:info@spritascore.com?subject=Reporte%20SpritaScore">
+                <a href="mailto:info@sprita-it.com?subject=Reporte%20SpritaScore">
                   <Button
                     variant="ghost"
                     size="lg"
@@ -221,7 +221,7 @@ export function ResultsView({ result: initialResult }: ResultsViewProps) {
                 </a>
               </div>
               <p className="text-xs text-muted-foreground mt-6">
-                info@spritascore.com · spritascore.com
+                info@sprita-it.com · spritascore.com
               </p>
             </CardContent>
           </Card>

@@ -1,5 +1,6 @@
 import { jsPDF } from "jspdf";
 import { pdfText } from "@/lib/pdfText";
+import { uniqueStamp } from "@/lib/pdfFilename";
 import {
   applicationFunnel,
   executiveSnapshot,
@@ -412,11 +413,7 @@ function emptyState(doc: Doc, y: number, message: string, logo: string | null): 
   return y + 10;
 }
 
-export function uniqueStamp(now = new Date()): string {
-  const pad = (value: number, width = 2) => String(value).padStart(width, "0");
-  const tenths = Math.floor(now.getMilliseconds() / 100);
-  return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}_${pad(now.getHours())}-${pad(now.getMinutes())}-${pad(now.getSeconds())}.${tenths}`;
-}
+export { uniqueStamp };
 
 function drawFindingRow(doc: Doc, y: number, logo: string | null, item: RankedVulnerability): number {
   const rem = remediateFinding({ ...item, language: item.languages[0] });

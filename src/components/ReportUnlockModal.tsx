@@ -17,6 +17,7 @@ import { tr } from "@/lib/translate";
 import { useTranslations } from "@/components/LanguageProvider";
 import type { CalculationResult, LeadData } from "@/types/calculator";
 import { getCalculatorById } from "@/data/calculatorConfigs";
+import { formatCurrency } from "@/lib/formatCurrency";
 import type { TranslationKeys } from "@/i18n/es";
 
 function buildSchema(t: TranslationKeys) {
@@ -84,8 +85,13 @@ export function ReportUnlockModal({ result, onUnlocked }: ReportUnlockModalProps
           score: result.score,
           riskLevel: result.riskLevel,
           estimatedCost: result.cost.probable ?? result.cost.annual,
+          estimatedCostFormatted: formatCurrency(
+            result.cost.probable ?? result.cost.annual ?? 0,
+            result.currency
+          ),
+          executiveSummary: result.executiveSummary,
           topRecommendations: result.recommendations
-            .slice(0, 3)
+            .slice(0, 5)
             .map((r) => tr(r.title, locale)),
           language: locale,
         }),

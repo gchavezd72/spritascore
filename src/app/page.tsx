@@ -232,7 +232,7 @@ export default function HomePage() {
               </div>
               <div className="cta-actions">
                 <a
-                  href="mailto:info@spritascore.com?subject=Diagn%C3%B3stico%20t%C3%A9cnico%20Spritascore"
+                  href="mailto:info@sprita-it.com?subject=Diagn%C3%B3stico%20t%C3%A9cnico%20Spritascore"
                   className="btn btn-light"
                 >
                   {l.cta.btn} <span className="arr">↗</span>

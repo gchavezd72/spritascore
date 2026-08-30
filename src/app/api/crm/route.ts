@@ -29,10 +29,16 @@ const leadSchema = z.object({
   }),
   calculatorId: z.string().trim().max(100).optional(),
   calculatorTitle: z.string().trim().max(300).optional(),
+  language: z.enum(["es", "en", "pt"]).optional(),
   score: z.number().optional(),
   riskLevel: z.string().trim().max(50).optional(),
   estimatedCost: z.number().optional(),
+  estimatedCostFormatted: z.string().trim().max(80).optional(),
+  executiveSummary: z.string().trim().max(4000).optional(),
   topRecommendations: z.array(z.string().trim().max(500)).max(10).optional(),
+  classification: z.string().trim().max(200).optional(),
+  spritaScore: z.union([z.string(), z.number()]).optional(),
+  impactFormatted: z.string().trim().max(120).optional(),
 });
 
 const executiveLeadSchema = z.object({
@@ -55,7 +61,38 @@ const executiveLeadSchema = z.object({
   maturityPercent: z.number().optional(),
   rawMaturityPoints: z.number().optional(),
   levelLabel: z.string().trim().max(100).optional(),
+  executiveSummary: z.string().trim().max(4000).optional(),
+  topRecommendations: z.array(z.string().trim().max(500)).max(10).optional(),
   topWeakCategories: z.array(z.string().trim().max(100)).max(10).optional(),
+  utm_source: utmField,
+  utm_medium: utmField,
+  utm_campaign: utmField,
+  utm_content: utmField,
+  utm_term: utmField,
+  referrer: z.string().trim().max(500).optional(),
+});
+
+const euAiActLeadSchema = z.object({
+  event: z.literal("euaiact_form_submit"),
+  lead: z.object({
+    name: safeString(200).pipe(z.string().min(2)),
+    company: safeString(200).pipe(z.string().min(2)),
+    email: z.string().trim().email().max(200).transform((value) => sanitizeInput(value)),
+    role: z.string().trim().max(200).optional(),
+    country: safeString(50),
+    sector: safeString(100),
+    appCount: z.string().trim().max(20).optional(),
+    wantsEmailReport: z.boolean(),
+  }),
+  calculatorId: z.string().trim().max(100),
+  calculatorTitle: z.string().trim().max(300).optional(),
+  language: z.enum(["en", "es", "pt"]),
+  verdict: z.string().trim().max(80).optional(),
+  confidence: z.string().trim().max(80).optional(),
+  readinessScore: z.number().nullable().optional(),
+  evidenceCoverage: z.number().optional(),
+  executiveSummary: z.string().trim().max(4000).optional(),
+  topRecommendations: z.array(z.string().trim().max(500)).max(10).optional(),
   utm_source: utmField,
   utm_medium: utmField,
   utm_campaign: utmField,
@@ -101,6 +138,30 @@ export async function POST(request: NextRequest) {
 
       if (process.env.NODE_ENV === "development") {
         console.info("[CRM Executive Lead]", parsed.data.lead.email);
+      }
+
+      return NextResponse.json({ success: true });
+    }
+
+    if (body?.event === "euaiact_form_submit") {
+      const parsed = euAiActLeadSchema.safeParse(body);
+      if (!parsed.success) {
+        return NextResponse.json({ error: "Datos inválidos" }, { status: 400 });
+      }
+
+      if (rejectDisposable(parsed.data.lead.email)) {
+        return NextResponse.json({ error: "Use un correo corporativo" }, { status: 400 });
+      }
+
+      const delivered = await notifyLead({
+        ...parsed.data,
+        score: parsed.data.readinessScore ?? undefined,
+        riskLevel: parsed.data.verdict,
+        timestamp: new Date().toISOString(),
+      });
+
+      if (!delivered) {
+        return NextResponse.json({ error: "No se pudo registrar el lead" }, { status: 502 });
       }
 
       return NextResponse.json({ success: true });

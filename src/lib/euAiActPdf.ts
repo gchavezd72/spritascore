@@ -1,6 +1,7 @@
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
 import { pdfText } from "@/lib/pdfText";
+import { calculatorPdfFilename } from "@/lib/pdfFilename";
 import { getEuAiActCopy } from "@/i18n/euAiAct";
 import {
   REGULATORY_ENGINE_VERSION,
@@ -387,7 +388,7 @@ export function downloadEuAiActPdf(
       drawPageFooter(doc, p, pdf.page);
     }
 
-    doc.save(`${pdf.filename}-${new Date().toISOString().slice(0, 10)}.pdf`);
+    doc.save(calculatorPdfFilename("eu-ai-act-compliance"));
     return true;
   } catch {
     return false;

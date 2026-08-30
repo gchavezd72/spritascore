@@ -7,6 +7,7 @@ import { getCalculatorById } from "@/data/calculatorConfigs";
 import { trackEvent } from "@/lib/analytics";
 import { localeDateTag, tr } from "@/lib/translate";
 import { useReportContext } from "@/hooks/useReportContext";
+import { calculatorPdfBasename } from "@/lib/pdfFilename";
 
 interface ReportPreviewProps {
   result: CalculationResult;
@@ -25,6 +26,14 @@ export function ReportPreview({ result }: ReportPreviewProps) {
       resultId: localizedResult.id,
       locale: reportLocale,
     });
+    const prefix = calc?.slug ?? localizedResult.calculatorId;
+    const previousTitle = document.title;
+    document.title = calculatorPdfBasename(prefix);
+    const restoreTitle = () => {
+      document.title = previousTitle;
+      window.removeEventListener("afterprint", restoreTitle);
+    };
+    window.addEventListener("afterprint", restoreTitle);
     window.print();
   };
 

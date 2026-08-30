@@ -73,6 +73,14 @@ export function EuAiActLeadForm({ locale, result, utm }: EuAiActLeadFormProps) {
       readinessScore: result.readinessScore,
       evidenceCoverage: result.evidenceCoverage,
       roles: result.roles,
+      executiveSummary: [
+        result.verdict,
+        result.readinessScore != null ? `readiness ${result.readinessScore}` : null,
+        result.confidence,
+      ]
+        .filter(Boolean)
+        .join(" · "),
+      topRecommendations: result.gaps.slice(0, 5).map((gap) => gap.key),
       ...utm,
     };
 

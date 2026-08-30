@@ -304,7 +304,7 @@ export const pt: TranslationKeys = {
       eyebrow: "Diagnóstico técnico",
       h2: "Isto é uma estimativa. Vamos validar a sua exposição real.",
       btn: "Solicitar diagnóstico",
-      note: "ou agende uma chamada — info@spritascore.com",
+      note: "ou agende uma chamada — info@sprita-it.com",
     },
     footer: {
       tagline: "Uma ferramenta para que equipes de tecnologia, segurança e compliance priorizem riscos com linguagem financeira.",

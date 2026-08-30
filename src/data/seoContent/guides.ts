@@ -295,7 +295,7 @@ const GUIDES: Record<GuideSlug, Partial<Record<`${Locale}:${Market}`, SeoGuideCo
         { question: "Direct NIS2 scope?", answer: "US entities may be indirect via supply chain." },
         { question: "OWASP mapping?", answer: "Use OWASP calculator for web exposure scenarios." },
         { question: "Documentation?", answer: "Keep methodology pages and scan reports." },
-        { question: "Contact?", answer: "info@spritascore.com / Sprita iT." },
+        { question: "Contact?", answer: "info@sprita-it.com / Sprita iT." },
       ],
       references: [{ label: "NIS2", url: "https://digital-strategy.ec.europa.eu/en/policies/nis2-directive" }],
     },

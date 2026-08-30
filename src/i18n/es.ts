@@ -302,7 +302,7 @@ export const es = {
       eyebrow: "Diagnóstico técnico",
       h2: "Esto es una estimación. Validemos tu exposición real.",
       btn: "Solicitar diagnóstico",
-      note: "o agenda una llamada — info@spritascore.com",
+      note: "o agenda una llamada — info@sprita-it.com",
     },
     footer: {
       tagline: "Una herramienta para que equipos de tecnología, seguridad y cumplimiento prioricen riesgos con lenguaje financiero.",

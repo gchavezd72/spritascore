@@ -75,6 +75,8 @@ export function ExecutiveLeadForm({ locale, result, utm, onSuccess }: ExecutiveL
       maturityPercent: result.maturityPercent,
       rawMaturityPoints: result.rawMaturityPoints,
       levelLabel: result.levelLabel,
+      executiveSummary: result.interpretation,
+      topRecommendations: result.recommendations.slice(0, 5).map((item) => item.text),
       topWeakCategories: result.topWeakCategories,
       ...utm,
     };

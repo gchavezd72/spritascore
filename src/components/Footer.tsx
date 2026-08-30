@@ -66,7 +66,7 @@ export function Footer() {
             <h5>{f.contactTitle}</h5>
             <ul>
               <li>
-                <a href="mailto:info@spritascore.com">info@spritascore.com</a>
+                <a href="mailto:info@sprita-it.com">info@sprita-it.com</a>
               </li>
               <li>
                 <a href="https://spritascore.com">spritascore.com</a>

@@ -12,7 +12,7 @@ export const ORGANIZATION = {
   name: "Sprita IT",
   legalName: "Sprita IT",
   url: "https://sprita-it.com",
-  email: "info@spritascore.com",
+  email: "info@sprita-it.com",
   contactEmail: "info@sprita-it.com",
   logo: `${SITE_URL}/spritascore-icon.svg`,
   sameAs: ["https://sprita-it.com"],

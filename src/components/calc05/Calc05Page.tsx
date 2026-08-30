@@ -79,8 +79,8 @@ export function Calc05Page({
                   : "Política de privacidad"}
             </Link>
             {" · "}
-            <a href="mailto:info@spritascore.com" className="underline hover:text-foreground">
-              info@spritascore.com
+            <a href="mailto:info@sprita-it.com" className="underline hover:text-foreground">
+              info@sprita-it.com
             </a>
           </p>
         </footer>
