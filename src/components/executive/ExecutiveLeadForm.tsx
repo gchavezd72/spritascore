@@ -65,7 +65,7 @@ export function ExecutiveLeadForm({ locale, result, utm, onSuccess }: ExecutiveL
         country: locale === "es" ? "ES" : locale === "pt" ? "PT" : "US",
         sector: "Financial services",
         appCount: "Not specified",
-        wantsEmailReport: true,
+        wantsEmailReport: false,
       },
       calculatorId: "executive-software-risk-score",
       calculatorTitle: copy.meta.h1,
@@ -116,7 +116,7 @@ export function ExecutiveLeadForm({ locale, result, utm, onSuccess }: ExecutiveL
         <CardDescription>{copy.form.description}</CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form method="post" onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <Label htmlFor="firstName">{copy.form.firstName} *</Label>

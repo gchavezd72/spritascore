@@ -207,7 +207,10 @@ export function downloadExecutiveScorePdf(
     doc.setFont("helvetica", "normal");
     doc.setFontSize(10);
     doc.setTextColor(...BRAND.muted);
-    drawLine(doc, `${result.exposureLabel} exposure`, col2, y + 24);
+    const exposureLine = `${result.exposureLabel} ${copy.ui.exposureSuffix}`.trim();
+    if (exposureLine.toLowerCase() !== result.levelLabel.toLowerCase()) {
+      drawLine(doc, exposureLine, col2, y + 24);
+    }
 
     doc.setTextColor(...BRAND.navy);
     doc.setFontSize(10);

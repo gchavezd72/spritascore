@@ -63,7 +63,7 @@ export function EuAiActLeadForm({ locale, result, utm }: EuAiActLeadFormProps) {
         role: "EU AI Act assessment",
         country: locale === "es" ? "ES" : locale === "pt" ? "PT" : "US",
         sector: "AI / Compliance",
-        wantsEmailReport: true,
+        wantsEmailReport: false,
       },
       calculatorId: "eu-ai-act-compliance",
       calculatorTitle: copy.meta.h1,
@@ -118,7 +118,7 @@ export function EuAiActLeadForm({ locale, result, utm }: EuAiActLeadFormProps) {
         <CardDescription>{copy.form.description}</CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form method="post" onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <Label htmlFor="firstName">{copy.form.firstName} *</Label>

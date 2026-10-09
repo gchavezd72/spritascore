@@ -59,6 +59,24 @@ const FILE_LABELS: Record<KiuwanFileKind, string> = {
   unknown: "No reconocido",
 };
 
+const CHARACTERISTIC_LABELS: Record<string, string> = {
+  Efficiency: "Eficiencia",
+  Maintainability: "Mantenibilidad",
+  Reliability: "Fiabilidad",
+  Security: "Seguridad",
+  Portability: "Portabilidad",
+};
+
+function characteristicLabel(value: string): string {
+  return CHARACTERISTIC_LABELS[value] ?? value;
+}
+
+function fileStatus(state: "on" | "empty" | "off"): string {
+  if (state === "on") return "cargado";
+  if (state === "empty") return "sin filas";
+  return "no cargado";
+}
+
 const EXPECTED: KiuwanFileKind[] = [
   "vulnerabilities",
   "defects",
@@ -176,7 +194,7 @@ export function AnalyticsDashboard() {
     ...selection.languages.map((item) => ({ key: `l-${item}`, label: item, clear: () => toggleValue("languages", item) })),
     ...selection.characteristics.map((item) => ({
       key: `c-${item}`,
-      label: item,
+      label: characteristicLabel(item),
       clear: () => toggleValue("characteristics", item),
     })),
     ...selection.types.map((item) => ({ key: `t-${item}`, label: item, clear: () => toggleValue("types", item) })),
@@ -255,7 +273,7 @@ export function AnalyticsDashboard() {
         <span>Selección</span>
         {selection.hideBuildArtifacts && (
           <span className="sa-chip">
-            Sin artefactos de build
+            Ocultando artefactos de build
             <button type="button" aria-label="Mostrar artefactos" onClick={() => setSelection((c) => ({ ...c, hideBuildArtifacts: false }))}>
               ×
             </button>
@@ -316,7 +334,7 @@ export function AnalyticsDashboard() {
                   <span className={`sa-dot ${state}`} aria-hidden />
                   <div>
                     <strong>{FILE_LABELS[kind]}</strong>
-                    <em>{file ? file.name : "No cargado"}</em>
+                    <em>{file ? file.name : "No cargado"} · {fileStatus(state)}</em>
                   </div>
                   <span className="sa-mono">{file ? file.rowCount : "—"}</span>
                 </div>
@@ -329,7 +347,7 @@ export function AnalyticsDashboard() {
                   <span className="sa-dot on" aria-hidden />
                   <div>
                     <strong>{FILE_LABELS[file.kind]}</strong>
-                    <em>{file.name}</em>
+                    <em>{file.name} · cargado</em>
                   </div>
                   <span className="sa-mono">{file.rowCount}</span>
                 </div>
@@ -370,7 +388,7 @@ export function AnalyticsDashboard() {
                 title="Característica"
                 options={characteristics.map((item) => ({
                   id: item,
-                  label: item,
+                  label: characteristicLabel(item),
                   count: model.findings.filter((finding) => (finding.characteristic || "Sin clasificar") === item).length,
                 }))}
                 selected={selection.characteristics}
@@ -545,7 +563,7 @@ function ResumenSheet({
       </p>
 
       <section className="sa-paper">
-        <h2>Defectos por categoria y severidad</h2>
+        <h2>Defectos por categoría y severidad</h2>
         <p className="sa-paper-lead">
           Las categorias con mayor concentracion de defectos prioritarios aparecen primero.
         </p>
@@ -609,7 +627,7 @@ function SeguridadSheet({
   return (
     <div className="sa-grid">
       <section className="sa-paper">
-        <h2>Defectos por categoria y severidad</h2>
+        <h2>Defectos por categoría y severidad</h2>
         <p className="sa-paper-lead">Concentracion de vulnerabilidades de aplicacion por tipo y prioridad.</p>
         <SeverityStackedBar rows={defectsByCategoryAndSeverity(findings)} />
       </section>

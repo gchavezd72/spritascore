@@ -49,6 +49,8 @@ type ExecutiveCopy = {
     disclaimer: string;
     pdfGenerating: string;
     pdfError: string;
+    pdfSaved: string;
+    zeroRiskNote: string;
   };
   form: {
     title: string;
@@ -108,7 +110,7 @@ type ExecutiveCopy = {
 const COPY: Record<Locale, ExecutiveCopy> = {
   en: {
     meta: {
-      title: "Executive Software Risk Score | SpritaScore by Sprita iT",
+      title: "Executive Software Risk Score",
       description:
         "A 15-question software risk self-assessment for CIO, CISO, Risk and Technology teams. Identify gaps across AI-assisted code, vendor code, open-source dependencies and release controls.",
       ogDescription:
@@ -192,10 +194,12 @@ const COPY: Record<Locale, ExecutiveCopy> = {
       disclaimer: "This score is an executive self-assessment and prioritization aid. It does not constitute legal advice, audit certification, or proof of compliance.",
       pdfGenerating: "Generating PDF…",
       pdfError: "Could not generate the PDF. Please try again or use Print to PDF from your browser.",
+      pdfSaved: "PDF downloaded in this browser.",
+      zeroRiskNote: "0 is the best answer on this questionnaire and 1000 is the worst. A score of 0 does not claim that real-world risk is zero.",
     },
     form: {
       title: "Request a no-cost Software Risk Assessment",
-      description: "Receive an executive report with the Top 10 critical vulnerabilities and Top 10 priority software quality defects, plus a prioritized remediation plan.",
+      description: "A later technical assessment can review critical vulnerabilities and priority quality defects. It requires application access, a defined scope, and time after this questionnaire.",
       firstName: "First name",
       company: "Company",
       email: "Business email",
@@ -240,7 +244,7 @@ const COPY: Record<Locale, ExecutiveCopy> = {
       colAnswer: "Answer",
       nextStepsTitle: "Recommended next step",
       nextStepsBody:
-        "Request a no-cost Software Risk Assessment from Sprita iT to receive an executive report with the Top 10 critical vulnerabilities, Top 10 priority software quality defects, and a prioritized remediation plan.",
+        "Request a no-cost Software Risk Assessment from Sprita iT. A later technical assessment can review critical vulnerabilities and priority quality defects once access, scope, and timing are defined. This questionnaire does not produce that list.",
       contactLine: "spritascore.com · sprita-it.com · info@sprita-it.com",
       page: "Page",
       priority: "Priority",
@@ -251,7 +255,7 @@ const COPY: Record<Locale, ExecutiveCopy> = {
   },
   es: {
     meta: {
-      title: "Puntaje Ejecutivo de Riesgo de Software | SpritaScore by Sprita iT",
+      title: "Puntaje Ejecutivo de Riesgo de Software",
       description:
         "Autoevaluación de riesgo de software en 15 preguntas para equipos de CIO, CISO, Riesgo y Tecnología. Identifique brechas en código asistido por IA, código de proveedores, dependencias open source y controles de release.",
       ogDescription:
@@ -335,10 +339,12 @@ const COPY: Record<Locale, ExecutiveCopy> = {
       disclaimer: "Este puntaje es una autoevaluación ejecutiva y una ayuda de priorización. No constituye asesoría legal, certificación de auditoría ni prueba de cumplimiento.",
       pdfGenerating: "Generando PDF…",
       pdfError: "No se pudo generar el PDF. Intente de nuevo o use Imprimir como PDF en su navegador.",
+      pdfSaved: "PDF descargado en este navegador.",
+      zeroRiskNote: "0 es la mejor respuesta de este cuestionario y 1000 la peor. Un 0 no afirma que el riesgo real sea cero.",
     },
     form: {
       title: "Solicitar evaluación de riesgo de software sin costo",
-      description: "Reciba un informe ejecutivo con las 10 vulnerabilidades críticas y los 10 defectos de calidad prioritarios, más un plan de remediación priorizado.",
+      description: "Una evaluación técnica posterior puede revisar vulnerabilidades críticas y defectos de calidad prioritarios. Requiere acceso a la aplicación, un alcance definido y un plazo después de este cuestionario.",
       firstName: "Nombre",
       company: "Empresa",
       email: "Correo corporativo",
@@ -383,7 +389,7 @@ const COPY: Record<Locale, ExecutiveCopy> = {
       colAnswer: "Respuesta",
       nextStepsTitle: "Siguiente paso recomendado",
       nextStepsBody:
-        "Solicite una evaluación de riesgo de software sin costo de Sprita iT para recibir un informe ejecutivo con las 10 vulnerabilidades críticas, los 10 defectos de calidad prioritarios y un plan de remediación priorizado.",
+        "Solicite una evaluación de riesgo de software sin costo de Sprita iT. Una evaluación técnica posterior puede revisar vulnerabilidades críticas y defectos de calidad prioritarios cuando haya acceso, alcance y plazo. Este cuestionario no produce esa lista.",
       contactLine: "spritascore.com · sprita-it.com · info@sprita-it.com",
       page: "Página",
       priority: "Prioridad",
@@ -394,7 +400,7 @@ const COPY: Record<Locale, ExecutiveCopy> = {
   },
   pt: {
     meta: {
-      title: "Pontuação Executiva de Risco de Software | SpritaScore by Sprita iT",
+      title: "Pontuação Executiva de Risco de Software",
       description:
         "Autoavaliação de risco de software em 15 perguntas para equipes de CIO, CISO, Risco e Tecnologia. Identifique lacunas em código assistido por IA, código de fornecedores, dependências open source e controles de release.",
       ogDescription:
@@ -478,10 +484,12 @@ const COPY: Record<Locale, ExecutiveCopy> = {
       disclaimer: "Esta pontuação é uma autoavaliação executiva e auxílio de priorização. Não constitui assessoria legal, certificação de auditoria nem prova de conformidade.",
       pdfGenerating: "Gerando PDF…",
       pdfError: "Não foi possível gerar o PDF. Tente novamente ou use Imprimir como PDF no navegador.",
+      pdfSaved: "PDF baixado neste navegador.",
+      zeroRiskNote: "0 é a melhor resposta deste questionário e 1000 a pior. Um 0 não afirma que o risco real seja zero.",
     },
     form: {
       title: "Solicitar avaliação de risco de software sem custo",
-      description: "Receba um relatório executivo com as 10 vulnerabilidades críticas e os 10 defeitos de qualidade prioritários, mais um plano de remediação priorizado.",
+      description: "Uma avaliação técnica posterior pode revisar vulnerabilidades críticas e defeitos de qualidade prioritários. Ela exige acesso à aplicação, um escopo definido e um prazo depois deste questionário.",
       firstName: "Nome",
       company: "Empresa",
       email: "E-mail corporativo",
@@ -526,7 +534,7 @@ const COPY: Record<Locale, ExecutiveCopy> = {
       colAnswer: "Resposta",
       nextStepsTitle: "Próximo passo recomendado",
       nextStepsBody:
-        "Solicite uma avaliação de risco de software sem custo da Sprita iT para receber um relatório executivo com as 10 vulnerabilidades críticas, os 10 defeitos de qualidade prioritários e um plano de remediação priorizado.",
+        "Solicite uma avaliação de risco de software sem custo da Sprita iT. Uma avaliação técnica posterior pode revisar vulnerabilidades críticas e defeitos de qualidade prioritários quando houver acesso, escopo e prazo. Este questionário não produz essa lista.",
       contactLine: "spritascore.com · sprita-it.com · info@sprita-it.com",
       page: "Página",
       priority: "Prioridade",

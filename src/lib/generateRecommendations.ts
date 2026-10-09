@@ -13,6 +13,41 @@ interface RecommendationContext {
   riskFactors: string[];
 }
 
+const OWASP_WEB_LEAD: Record<"2025" | "2021", Record<string, string>> = {
+  "2025": {
+    A01: "controles-acceso-revisar",
+    A02: "config-segura-validar",
+    A03: "sca-implementar",
+    A04: "config-segura-validar",
+    A05: "dast-implementar",
+    A06: "sast-implementar",
+    A07: "controles-acceso-revisar",
+    A08: "sbom-mantener",
+    A09: "monitoreo-logging-fortalecer",
+    A10: "config-segura-validar",
+  },
+  "2021": {
+    A01: "controles-acceso-revisar",
+    A02: "config-segura-validar",
+    A03: "dast-implementar",
+    A04: "sast-implementar",
+    A05: "config-segura-validar",
+    A06: "sca-implementar",
+    A07: "controles-acceso-revisar",
+    A08: "sbom-mantener",
+    A09: "monitoreo-logging-fortalecer",
+    A10: "dast-implementar",
+  },
+};
+
+function owaspWebLeadKey(raw: unknown): string | undefined {
+  const value = String(raw ?? "").trim();
+  if (!value) return undefined;
+  const edition = value.startsWith("2025:") ? "2025" : "2021";
+  const id = value.includes(":") ? value.slice(value.indexOf(":") + 1) : value;
+  return OWASP_WEB_LEAD[edition][id];
+}
+
 function pickUnique(recommendations: Recommendation[], limit = 10): Recommendation[] {
   const seen = new Set<string>();
   const result: Recommendation[] = [];
@@ -36,17 +71,18 @@ export function generateRecommendations(
 } {
   const { score, riskLevel, inputs } = context;
   const keys: string[] = [];
+  const generic: string[] = [];
 
   if (riskLevel === "critico") {
-    keys.push("diagnostico-inmediato");
+    generic.push("diagnostico-inmediato");
   }
 
   if (score > 75) {
-    keys.push("plan-remediacion-30d");
+    generic.push("plan-remediacion-30d");
   } else if (score >= 50) {
-    keys.push("roadmap-riesgo-60d");
+    generic.push("roadmap-riesgo-60d");
   } else {
-    keys.push("monitoreo-preventivo-baseline");
+    generic.push("monitoreo-preventivo-baseline");
   }
 
   const dataTypes = (inputs.dataTypes as string[]) ?? [];
@@ -78,6 +114,11 @@ export function generateRecommendations(
   }
 
   if (context.calculatorId === "owasp-web") {
+    const lead = owaspWebLeadKey(inputs.owaspCategory);
+    if (lead) keys.push(lead);
+    if (inputs.exploitationLevel === "explotada" || inputs.exploitationLevel === "explotada-fuga") {
+      keys.push("diagnostico-inmediato");
+    }
     keys.push("sca-implementar");
     keys.push("sbom-mantener");
     keys.push("dast-implementar");
@@ -90,7 +131,11 @@ export function generateRecommendations(
   }
 
   if (context.calculatorId === "owasp-mobile") {
-    keys.push("almacenamiento-local-movil");
+    const encryption = String(inputs.localEncryption ?? "");
+    const storage = String(inputs.insecureStorage ?? "");
+    if (encryption === "no" || storage === "si") {
+      keys.push("almacenamiento-local-movil");
+    }
     keys.push("sca-implementar");
     if (inputs.thirdPartySdks === "si" || inputs.thirdPartySdks === true) {
       keys.push("supply-chain-movil");
@@ -116,7 +161,9 @@ export function generateRecommendations(
     keys.push("evidencia-auditorias");
     keys.push("pruebas-seguridad-recurrentes");
     keys.push("aspm-consolidar");
-    keys.push("sbom-mantener");
+    if (!controls.includes("sbom") && !controls.includes("sca")) {
+      keys.push("sbom-mantener");
+    }
     keys.push("vuln-management-programa");
   }
 
@@ -142,21 +189,39 @@ export function generateRecommendations(
   }
 
   if (context.calculatorId === "dora-compliance") {
-    keys.push("dora-marco-riesgos");
-    keys.push("dora-inventario-activos");
-    keys.push("dora-pruebas-resiliencia");
-    keys.push("dora-proveedores-tic");
-    keys.push("dora-reporte-incidentes");
-    keys.push("dora-analisis-codigo");
-    keys.push("dora-cultura-resiliencia");
-    keys.push("sast-implementar");
-    keys.push("dast-implementar");
-    keys.push("sca-implementar");
-    keys.push("vuln-management-programa");
-    keys.push("quality-gates-cicd");
+    const low = (fields: string[]) =>
+      fields.some((field) => {
+        const value = Number(inputs[field]);
+        return Number.isFinite(value) && value <= 2;
+      });
+    if (low(["q1", "q2", "q3", "q4"])) {
+      keys.push("dora-marco-riesgos");
+      keys.push("dora-inventario-activos");
+    }
+    if (low(["q5", "q6", "q7"])) keys.push("dora-reporte-incidentes");
+    if (low(["q8", "q9"])) {
+      keys.push("dora-pruebas-resiliencia");
+      keys.push("dast-implementar");
+    }
+    if (low(["q10", "q11", "q12"])) keys.push("dora-proveedores-tic");
+    if (low(["q13", "q14", "q15"])) keys.push("dora-cultura-resiliencia");
+    if (low(["q1", "q2", "q3", "q4", "q8", "q9"])) {
+      keys.push("dora-analisis-codigo");
+      keys.push("sast-implementar");
+      keys.push("sca-implementar");
+    }
+    if (low(Array.from({ length: 15 }, (_, index) => `q${index + 1}`))) {
+      keys.push("vuln-management-programa");
+      keys.push("quality-gates-cicd");
+    }
   }
 
-  const all = pickUnique(keys.map(getRecommendationByKey), 10);
+  keys.push(...generic);
+
+  const timeframeOrder = { inmediato: 0, "30-dias": 1, "60-dias": 2, "90-dias": 3 } as const;
+  const all = pickUnique(keys.map(getRecommendationByKey), 16)
+    .sort((a, b) => timeframeOrder[a.timeframe] - timeframeOrder[b.timeframe])
+    .slice(0, 10);
 
   return {
     all,

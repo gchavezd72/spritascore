@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Logo } from "@/components/Logo";
 import { useTranslations } from "@/components/LanguageProvider";
+import { localizedSibling } from "@/lib/calculatorPath";
 import { cn } from "@/lib/utils";
 import type { Locale } from "@/types/calculator";
 
@@ -41,7 +42,13 @@ export function Header() {
                 key={loc}
                 type="button"
                 className={locale === loc ? "on" : ""}
-                onClick={() => setLocale(loc)}
+                onClick={() => {
+                  setLocale(loc);
+                  const nextPath = localizedSibling(window.location.pathname, loc);
+                  if (nextPath && nextPath !== window.location.pathname) {
+                    window.location.assign(`${nextPath}${window.location.search}${window.location.hash}`);
+                  }
+                }}
                 aria-pressed={locale === loc}
               >
                 {loc.toUpperCase()}
@@ -55,7 +62,7 @@ export function Header() {
             type="button"
             className="burger"
             onClick={() => setOpen((o) => !o)}
-            aria-label="Menu"
+            aria-label={n.menu}
             aria-expanded={open}
           >
             <span />

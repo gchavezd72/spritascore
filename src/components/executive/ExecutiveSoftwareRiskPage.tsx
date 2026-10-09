@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { ExecutiveSoftwareRiskCalculator } from "@/components/executive/ExecutiveSoftwareRiskCalculator";
-import { ExecutiveLanguageBar } from "@/components/executive/ExecutiveLanguageBar";
 import { ExecutiveLocaleSync } from "@/components/executive/ExecutiveLocaleSync";
 import { JsonLd } from "@/components/JsonLd";
 import { getExecutiveCopy, EXECUTIVE_ROUTES } from "@/i18n/executive";
@@ -36,7 +35,6 @@ export function ExecutiveSoftwareRiskPage({ locale }: ExecutiveSoftwareRiskPageP
       <ExecutiveLocaleSync locale={locale} />
       <JsonLd data={jsonLd} />
       <div className="container mx-auto px-4 max-w-3xl">
-        <ExecutiveLanguageBar activeLocale={locale} />
 
         <header className="text-center mb-10">
           <p className="text-sm font-semibold text-brand-green uppercase tracking-wider mb-3">

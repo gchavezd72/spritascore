@@ -40,6 +40,7 @@ export function ExecutiveSoftwareRiskResult({
 }: ExecutiveSoftwareRiskResultProps) {
   const copy = getExecutiveCopy(locale);
   const [pdfError, setPdfError] = useState("");
+  const [pdfSaved, setPdfSaved] = useState(false);
   const [pdfLoading, setPdfLoading] = useState(false);
 
   const copySummary = async () => {
@@ -56,9 +57,11 @@ export function ExecutiveSoftwareRiskResult({
   const handlePdfDownload = () => {
     setPdfLoading(true);
     setPdfError("");
+    setPdfSaved(false);
     const ok = downloadExecutiveScorePdf(locale, answers, result);
     setPdfLoading(false);
-    if (!ok) setPdfError(copy.ui.pdfError);
+    if (ok) setPdfSaved(true);
+    else setPdfError(copy.ui.pdfError);
     trackExecutiveEvent("software_score_pdf_download", {
       riskExposureScore: result.riskExposureScore,
       route,
@@ -84,7 +87,9 @@ export function ExecutiveSoftwareRiskResult({
             <Progress
               value={(result.riskExposureScore / 1000) * 100}
               className="mt-4 h-3 max-w-md mx-auto"
+              aria-label={copy.ui.riskExposureScore}
             />
+            <p className="text-sm text-muted-foreground mt-3 max-w-md mx-auto">{copy.ui.zeroRiskNote}</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
@@ -93,20 +98,22 @@ export function ExecutiveSoftwareRiskResult({
                 {copy.ui.executiveMaturity}
               </p>
               <p className="font-semibold text-brand-navy mt-1">{result.levelLabel}</p>
-              <Badge
-                variant={
-                  result.level === "low"
-                    ? "bajo"
-                    : result.level === "moderate"
-                      ? "moderado"
-                      : result.level === "high"
-                        ? "alto"
-                        : "critico"
-                }
-                className="mt-2"
-              >
-                {result.exposureLabel} {copy.ui.exposureSuffix}
-              </Badge>
+              {`${result.exposureLabel} ${copy.ui.exposureSuffix}`.trim().toLowerCase() !== result.levelLabel.toLowerCase() && (
+                <Badge
+                  variant={
+                    result.level === "low"
+                      ? "bajo"
+                      : result.level === "moderate"
+                        ? "moderado"
+                        : result.level === "high"
+                          ? "alto"
+                          : "critico"
+                  }
+                  className="mt-2"
+                >
+                  {result.exposureLabel} {copy.ui.exposureSuffix}
+                </Badge>
+              )}
             </div>
             <div className="p-4 rounded-xl bg-background border border-border-hairline">
               <p className="text-xs text-muted-foreground uppercase tracking-wide">
@@ -174,6 +181,7 @@ export function ExecutiveSoftwareRiskResult({
           </div>
 
           {pdfError && <p className="text-sm text-risk-critical text-center">{pdfError}</p>}
+          {pdfSaved && <p className="text-sm text-center text-muted-foreground" role="status">{copy.ui.pdfSaved}</p>}
 
           <button
             type="button"

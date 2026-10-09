@@ -1,4 +1,4 @@
-import { OWASP_TOP10_2021 } from "@/data/owaspTop10";
+import { OWASP_TOP10_2021, OWASP_TOP10_2025 } from "@/data/owaspTop10";
 import { OWASP_MOBILE_TOP10_2024 } from "@/data/owaspMobileTop10";
 import { ISO_25010_DIMENSIONS } from "@/data/isoQualityModel";
 import { SECTOR_OPTIONS } from "@/data/sectorRiskFactors";
@@ -6,6 +6,9 @@ import {
   APP_TYPES,
   CONFORMITY_STATUS,
   COUNTRIES,
+  CRA_DISTRIBUTION,
+  CRA_ROLES,
+  CRA_SCOPE_OPTIONS,
   DATA_TYPES,
   DEPENDENCY_LEVELS,
   EXPLOITATION_LEVELS,
@@ -64,7 +67,7 @@ export const CALCULATOR_CONFIGS: CalculatorConfig[] = [
           { name: "country", label: { es: "País", en: "Country", pt: "País" }, type: "select", options: COUNTRIES, required: true },
           { name: "softwareDependency", label: { es: "Dependencia del negocio del software", en: "Business dependency on software", pt: "Dependência do negócio em relação ao software" }, type: "select", options: DEPENDENCY_LEVELS, tooltip: { es: "Qué tan crítico es el software para las operaciones del negocio.", en: "How critical the software is to business operations.", pt: "Quão crítico o software é para as operações do negócio." }, required: true },
           { name: "appType", label: { es: "Tipo de aplicación principal", en: "Main application type", pt: "Tipo principal de aplicação" }, type: "select", options: APP_TYPES, required: true },
-          { name: "codeAge", label: { es: "Antigüedad promedio del código (años)", en: "Average code age (years)", pt: "Idade média do código (anos)" }, type: "number", placeholder: "3", required: true },
+          { name: "codeAge", label: { es: "Antigüedad promedio del código (años)", en: "Average code age (years)", pt: "Idade média do código (anos)" }, type: "number", placeholder: "3", min: 0, max: 80, required: true },
           { name: "linesOfCode", label: { es: "Líneas de código aproximadas", en: "Approximate lines of code", pt: "Linhas de código aproximadas" }, type: "select", options: LOC_OPTIONS, required: true },
         ],
       },
@@ -75,16 +78,16 @@ export const CALCULATOR_CONFIGS: CalculatorConfig[] = [
         fields: [
           { name: "devCount", label: { es: "Número de desarrolladores", en: "Number of developers", pt: "Número de desenvolvedores" }, type: "number", placeholder: "15", required: true },
           { name: "devMonthlyCost", label: { es: "Costo promedio mensual por desarrollador", en: "Average monthly cost per developer", pt: "Custo médio mensal por desenvolvedor" }, type: "number", placeholder: "5000", tooltip: { es: "Salario + cargas + beneficios.", en: "Salary + payroll charges + benefits.", pt: "Salário + encargos + benefícios." }, required: true },
-          { name: "bugHours", label: { es: "Horas semanales en corrección de bugs", en: "Weekly hours spent fixing bugs", pt: "Horas semanais em correção de bugs" }, type: "number", placeholder: "8", required: true },
-          { name: "supportHours", label: { es: "Horas semanales en soporte por defectos", en: "Weekly hours spent on defect-related support", pt: "Horas semanais em suporte por defeitos" }, type: "number", placeholder: "4", required: true },
-          { name: "reworkHours", label: { es: "Horas semanales en retrabajo", en: "Weekly hours spent on rework", pt: "Horas semanais em retrabalho" }, type: "number", placeholder: "6", required: true },
+          { name: "bugHours", label: { es: "Horas semanales del equipo en corrección de bugs (total, no por persona)", en: "Team weekly hours fixing bugs (total, not per person)", pt: "Horas semanais da equipe em correção de bugs (total, não por pessoa)" }, type: "number", placeholder: "8", min: 0, max: 400, required: true },
+          { name: "supportHours", label: { es: "Horas semanales del equipo en soporte por defectos (total, no por persona)", en: "Team weekly hours on defect support (total, not per person)", pt: "Horas semanais da equipe em suporte por defeitos (total, não por pessoa)" }, type: "number", placeholder: "4", min: 0, max: 400, required: true },
+          { name: "reworkHours", label: { es: "Horas semanales del equipo en retrabajo (total, no por persona)", en: "Team weekly hours on rework (total, not per person)", pt: "Horas semanais da equipe em retrabalho (total, não por pessoa)" }, type: "number", placeholder: "6", min: 0, max: 400, required: true },
           { name: "monthlyIncidents", label: { es: "Incidentes mensuales promedio", en: "Average monthly incidents", pt: "Incidentes mensais em média" }, type: "number", placeholder: "3", required: true },
         ],
       },
       {
         id: "quality",
         title: { es: "Calidad de su código (ISO/IEC 25010)", en: "Your code quality (ISO/IEC 25010)", pt: "Qualidade do seu código (ISO/IEC 25010)" },
-        description: { es: "Deslice cada indicador de 1 (muy deficiente) a 5 (excelente). Ya vienen en un punto medio, ajuste solo lo que sepa.", en: "Slide each indicator from 1 (very poor) to 5 (excellent). They start at a midpoint — adjust only what you know.", pt: "Deslize cada indicador de 1 (muito deficiente) a 5 (excelente). Eles já começam em um ponto médio — ajuste apenas o que souber." },
+        description: { es: "Deslice cada indicador de 1 (muy deficiente) a 5 (excelente). Si no lo sabe, deje «No sé». Un punto medio no se toma como evidencia.", en: "Slide each indicator from 1 (very poor) to 5 (excellent). If you do not know, leave “Don't know”. A midpoint is not treated as evidence.", pt: "Deslize cada indicador de 1 (muito deficiente) a 5 (excelente). Se não souber, deixe «Não sei». Um ponto médio não é tratado como evidência." },
         fields: ISO_25010_DIMENSIONS.map((dim) => ({
           name: dim.id,
           label: {
@@ -93,9 +96,9 @@ export const CALCULATOR_CONFIGS: CalculatorConfig[] = [
             pt: `${dim.nameEs}${dim.iso9126Mapping ? ` (ISO 9126: ${dim.iso9126Mapping})` : ""}`,
           },
           type: "slider" as const,
-          min: 1,
+          min: 0,
           max: 5,
-          defaultValue: 3,
+          defaultValue: 0,
           tooltip: dim.description,
           required: true,
         })),
@@ -113,7 +116,7 @@ export const CALCULATOR_CONFIGS: CalculatorConfig[] = [
     slug: "owasp-top10-web",
     category: "seguridad",
     title: { es: "Costo de vulnerabilidad OWASP Top 10", en: "Cost of an OWASP Top 10 vulnerability", pt: "Custo de vulnerabilidade OWASP Top 10" },
-    shortDescription: { es: "Estima el impacto económico de una vulnerabilidad OWASP Top 10 2021 en aplicaciones web.", en: "Estimates the financial impact of an OWASP Top 10 2021 vulnerability in web applications.", pt: "Estima o impacto financeiro de uma vulnerabilidade OWASP Top 10 2021 em aplicações web." },
+    shortDescription: { es: "Estima el impacto económico de una vulnerabilidad OWASP Top 10. La edición 2025 es la vigente; 2021 queda como opción histórica.", en: "Estimates the financial impact of an OWASP Top 10 vulnerability. The 2025 edition is current; 2021 remains a historical option.", pt: "Estima o impacto financeiro de uma vulnerabilidade OWASP Top 10. A edição 2025 é a vigente; 2021 fica como opção histórica." },
     complexity: "media",
     estimatedTime: { es: "2 a 3 minutos", en: "2 to 3 minutes", pt: "2 a 3 minutos" },
     steps: [
@@ -144,7 +147,10 @@ export const CALCULATOR_CONFIGS: CalculatorConfig[] = [
         title: { es: "La vulnerabilidad", en: "The vulnerability", pt: "A vulnerabilidade" },
         description: { es: "Detalles específicos de la vulnerabilidad OWASP identificada.", en: "Specific details of the identified OWASP vulnerability.", pt: "Detalhes específicos da vulnerabilidade OWASP identificada." },
         fields: [
-          { name: "owaspCategory", label: { es: "Categoría OWASP Top 10", en: "OWASP Top 10 category", pt: "Categoria OWASP Top 10" }, type: "select", options: OWASP_TOP10_2021.map((c) => ({ value: c.id, label: { es: `${c.id}: ${c.nameEs}`, en: `${c.id}: ${c.name}`, pt: `${c.id}: ${c.nameEs}` } })), required: true },
+          { name: "owaspCategory", label: { es: "Categoría OWASP Top 10", en: "OWASP Top 10 category", pt: "Categoria OWASP Top 10" }, type: "select", options: [
+            ...OWASP_TOP10_2025.map((c) => ({ value: `2025:${c.id}`, label: { es: `2025 · ${c.id}: ${c.nameEs}`, en: `2025 · ${c.id}: ${c.name}`, pt: `2025 · ${c.id}: ${c.nameEs}` } })),
+            ...OWASP_TOP10_2021.map((c) => ({ value: `2021:${c.id}`, label: { es: `2021 (histórico) · ${c.id}: ${c.nameEs}`, en: `2021 (historical) · ${c.id}: ${c.name}`, pt: `2021 (histórico) · ${c.id}: ${c.nameEs}` } })),
+          ], required: true },
           { name: "environment", label: { es: "Ambiente afectado", en: "Affected environment", pt: "Ambiente afetado" }, type: "select", options: [
             { value: "desarrollo", label: { es: "Desarrollo", en: "Development", pt: "Desenvolvimento" } }, { value: "testing", label: { es: "Testing", en: "Testing", pt: "Testes" } }, { value: "produccion", label: { es: "Producción", en: "Production", pt: "Produção" } },
           ], required: true },
@@ -159,7 +165,7 @@ export const CALCULATOR_CONFIGS: CalculatorConfig[] = [
         description: { es: "Costos operativos y confirmación final.", en: "Operational costs and final confirmation.", pt: "Custos operacionais e confirmação final." },
         fields: [
           { name: "hourlyRate", label: { es: "Costo promedio por hora del equipo técnico", en: "Average hourly cost of the technical team", pt: "Custo médio por hora da equipe técnica" }, type: "number", placeholder: "75", required: true },
-          { name: "annualRevenue", label: { es: "Ingreso anual aproximado (USD)", en: "Approximate annual revenue (USD)", pt: "Receita anual aproximada (USD)" }, type: "number", placeholder: "5000000", required: true },
+          { name: "annualRevenue", label: { es: "Ingreso anual aproximado, en la moneda del informe", en: "Approximate annual revenue, in the report currency", pt: "Receita anual aproximada, na moeda do relatório" }, type: "number", placeholder: "5000000", required: true },
           { name: "operationalImpact", label: { es: "Impacto en operación", en: "Operational impact", pt: "Impacto na operação" }, type: "select", options: OPERATIONAL_IMPACT, required: true },
           CURRENCY_FIELD,
           CONFIRM_FIELD,
@@ -212,7 +218,7 @@ export const CALCULATOR_CONFIGS: CalculatorConfig[] = [
         fields: [
           { name: "mobileCategory", label: { es: "Categoría OWASP Mobile Top 10", en: "OWASP Mobile Top 10 category", pt: "Categoria OWASP Mobile Top 10" }, type: "select", options: OWASP_MOBILE_TOP10_2024.map((c) => ({ value: c.id, label: { es: `${c.id}: ${c.nameEs}`, en: `${c.id}: ${c.name}`, pt: `${c.id}: ${c.nameEs}` } })), required: true },
           { name: "insecureStorage", label: { es: "¿Almacena datos sensibles en el dispositivo?", en: "Does it store sensitive data on the device?", pt: "Armazena dados sensíveis no dispositivo?" }, type: "select", options: [{ value: "si", label: { es: "Sí", en: "Yes", pt: "Sim" } }, { value: "no", label: { es: "No", en: "No", pt: "Não" } }], required: true },
-          { name: "localEncryption", label: { es: "¿Usa cifrado local?", en: "Does it use local encryption?", pt: "Usa criptografia local?" }, type: "select", options: [{ value: "si", label: { es: "Sí", en: "Yes", pt: "Sim" } }, { value: "no", label: { es: "No", en: "No", pt: "Não" } }], required: true },
+          { name: "localEncryption", label: { es: "¿Usa cifrado local?", en: "Does it use local encryption?", pt: "Usa criptografia local?" }, type: "select", options: [{ value: "si", label: { es: "Sí", en: "Yes", pt: "Sim" } }, { value: "no", label: { es: "No", en: "No", pt: "Não" } }, { value: "no_se", label: { es: "No sé", en: "Don't know", pt: "Não sei" } }], required: true },
           { name: "thirdPartySdks", label: { es: "¿Usa SDKs de terceros?", en: "Does it use third-party SDKs?", pt: "Usa SDKs de terceiros?" }, type: "select", options: [{ value: "si", label: { es: "Sí", en: "Yes", pt: "Sim" } }, { value: "no", label: { es: "No", en: "No", pt: "Não" } }], required: true },
           { name: "jailbreakDetection", label: { es: "¿Detección de jailbreak/root?", en: "Jailbreak/root detection?", pt: "Detecção de jailbreak/root?" }, type: "select", options: [{ value: "si", label: { es: "Sí", en: "Yes", pt: "Sim" } }, { value: "no", label: { es: "No", en: "No", pt: "Não" } }], required: true },
           { name: "updateFrequency", label: { es: "Frecuencia de actualización (días)", en: "Update frequency (days)", pt: "Frequência de atualização (dias)" }, type: "number", placeholder: "30", required: true },
@@ -226,7 +232,7 @@ export const CALCULATOR_CONFIGS: CalculatorConfig[] = [
         fields: [
           { name: "devCount", label: { es: "Desarrolladores móviles", en: "Mobile developers", pt: "Desenvolvedores móveis" }, type: "number", placeholder: "5", required: true },
           { name: "hourlyRate", label: { es: "Costo por hora del equipo", en: "Team hourly cost", pt: "Custo por hora da equipe" }, type: "number", placeholder: "75", required: true },
-          { name: "annualRevenue", label: { es: "Ingreso anual aproximado (USD)", en: "Approximate annual revenue (USD)", pt: "Receita anual aproximada (USD)" }, type: "number", placeholder: "2000000", required: true },
+          { name: "annualRevenue", label: { es: "Ingreso anual aproximado, en la moneda del informe", en: "Approximate annual revenue, in the report currency", pt: "Receita anual aproximada, na moeda do relatório" }, type: "number", placeholder: "2000000", required: true },
           CURRENCY_FIELD,
           CONFIRM_FIELD,
         ],
@@ -269,7 +275,7 @@ export const CALCULATOR_CONFIGS: CalculatorConfig[] = [
     slug: "costo-de-no-usar-aspm",
     category: "ahorros",
     title: { es: "Costo de no tener un ASPM", en: "Cost of not having an ASPM", pt: "Custo de não ter um ASPM" },
-    shortDescription: { es: "Mide cuánto tiempo y dinero pierde su equipo triando alertas duplicadas y sin priorizar entre herramientas de seguridad desconectadas.", en: "Measures how much time and money your team loses triaging duplicate, unprioritized alerts across disconnected security tools.", pt: "Mede quanto tempo e dinheiro sua equipe perde triando alertas duplicadas e sem priorização entre ferramentas de segurança desconectadas." },
+    shortDescription: { es: "Mide cuánto tiempo y dinero dedica su equipo a clasificar y correlacionar alertas. Varias herramientas no se tratan como desconectadas si usted no lo declara.", en: "Measures the time and money your team spends classifying and correlating alerts. Several tools are not treated as disconnected unless you say so.", pt: "Mede quanto tempo e dinheiro a sua equipe dedica a classificar e correlacionar alertas. Várias ferramentas não são tratadas como desconectadas se você não o declarar." },
     complexity: "baja",
     estimatedTime: { es: "2 minutos", en: "2 minutes", pt: "2 minutos" },
     steps: [
@@ -298,7 +304,7 @@ export const CALCULATOR_CONFIGS: CalculatorConfig[] = [
         title: { es: "Su equipo y costos", en: "Your team and costs", pt: "Sua equipe e custos" },
         description: { es: "Último paso: esfuerzo dedicado a triar manualmente.", en: "Last step: effort spent on manual triage.", pt: "Última etapa: esforço dedicado à triagem manual." },
         fields: [
-          { name: "triageHoursWeek", label: { es: "Horas semanales dedicadas a triar y correlacionar hallazgos manualmente", en: "Weekly hours spent manually triaging and correlating findings", pt: "Horas semanais dedicadas a triar e correlacionar achados manualmente" }, type: "number", placeholder: "10", required: true },
+          { name: "triageHoursWeek", label: { es: "Horas semanales por persona clasificando y correlacionando hallazgos", en: "Weekly hours per person classifying and correlating findings", pt: "Horas semanais por pessoa classificando e correlacionando achados" }, type: "number", placeholder: "10", min: 0, max: 80, required: true },
           { name: "teamSize", label: { es: "Personas involucradas en ese triage", en: "People involved in that triage", pt: "Pessoas envolvidas nessa triagem" }, type: "number", placeholder: "2", required: true },
           { name: "hourlyRate", label: { es: "Costo promedio por hora de esas personas", en: "Average hourly cost of those people", pt: "Custo médio por hora dessas pessoas" }, type: "number", placeholder: "60", required: true },
           { name: "remediationDelayDays", label: { es: "Días extra que tarda en resolverse una vulnerabilidad crítica por falta de priorización clara", en: "Extra days it takes to resolve a critical vulnerability due to lack of clear prioritization", pt: "Dias extras para resolver uma vulnerabilidade crítica por falta de priorização clara" }, type: "number", placeholder: "21", required: true },
@@ -324,8 +330,11 @@ export const CALCULATOR_CONFIGS: CalculatorConfig[] = [
         fields: [
           { name: "sector", label: { es: "Sector", en: "Sector", pt: "Setor" }, type: "select", options: SECTOR_OPTIONS, required: true },
           { name: "country", label: { es: "País", en: "Country", pt: "País" }, type: "select", options: COUNTRIES, required: true },
-          { name: "productCategory", label: { es: "Categoría de su producto según el CRA", en: "Your product's category under the CRA", pt: "Categoria do seu produto conforme o CRA" }, type: "select", options: PRODUCT_CATEGORIES, tooltip: { es: "Los productos importantes y críticos (Anexo III/IV) requieren evaluación de conformidad por terceros.", en: "Important and critical products (Annex III/IV) require third-party conformity assessment.", pt: "Produtos importantes e críticos (Anexo III/IV) exigem avaliação de conformidade por terceiros." }, required: true },
-          { name: "annualRevenue", label: { es: "Ingreso anual aproximado (USD)", en: "Approximate annual revenue (USD)", pt: "Receita anual aproximada (USD)" }, type: "number", placeholder: "5000000", required: true },
+          { name: "euMarket", label: { es: "¿El producto se comercializa en la UE o trata datos de usuarios de la UE?", en: "Is the product placed on the EU market or does it process EU users' data?", pt: "O produto é comercializado na UE ou trata dados de usuários da UE?" }, type: "select", options: CRA_SCOPE_OPTIONS, required: true },
+          { name: "distribution", label: { es: "¿Qué comercializa?", en: "What do you place on the market?", pt: "O que você comercializa?" }, type: "select", options: CRA_DISTRIBUTION, required: true },
+          { name: "craRole", label: { es: "Su rol respecto del producto", en: "Your role regarding the product", pt: "Seu papel em relação ao produto" }, type: "select", options: CRA_ROLES, required: true },
+          { name: "productCategory", label: { es: "Categoría orientativa según el Reglamento (UE) 2024/2847", en: "Illustrative category under Regulation (EU) 2024/2847", pt: "Categoria orientativa conforme o Regulamento (UE) 2024/2847" }, type: "select", options: PRODUCT_CATEGORIES, tooltip: { es: "Clase I y clase II son productos importantes del Anexo III. El Anexo IV no incluye sistemas operativos. Esto no es un dictamen jurídico.", en: "Class I and Class II are important products in Annex III. Annex IV does not list operating systems. This is not a legal opinion.", pt: "Classe I e classe II são produtos importantes do Anexo III. O Anexo IV não inclui sistemas operativos. Isto não é um parecer jurídico." }, required: true },
+          { name: "annualRevenue", label: { es: "Ingreso anual aproximado, en la moneda del informe", en: "Approximate annual revenue, in the report currency", pt: "Receita anual aproximada, na moeda do relatório" }, type: "number", placeholder: "5000000", required: true },
         ],
       },
       {
@@ -404,7 +413,8 @@ export const CALCULATOR_CONFIGS: CalculatorConfig[] = [
             },
             required: true,
           },
-          { name: "annualRevenue", label: { es: "Ingreso anual aproximado (USD)", en: "Approximate annual revenue (USD)", pt: "Receita anual aproximada (USD)" }, type: "number", placeholder: "50000000", required: true },
+          { name: "doraInScope", label: { es: "¿La entidad está en el ámbito de DORA?", en: "Is the entity in scope of DORA?", pt: "A entidade está no âmbito do DORA?" }, type: "select", options: CRA_SCOPE_OPTIONS, tooltip: { es: "Si no lo sabe, elija No sé. Una respuesta negativa no se etiqueta como incumplimiento.", en: "If you do not know, choose Don't know. A negative answer is not labeled as non-compliance.", pt: "Se não souber, escolha Não sei. Uma resposta negativa não é rotulada como incumprimento." }, required: true },
+          { name: "annualRevenue", label: { es: "Ingreso anual aproximado, en la moneda del informe", en: "Approximate annual revenue, in the report currency", pt: "Receita anual aproximada, na moeda do relatório" }, type: "number", placeholder: "50000000", required: true },
         ],
       },
       {

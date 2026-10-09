@@ -16,7 +16,8 @@
     "verify:search-console": "node scripts/verify-search-console.mjs",
     "verify:analytics": "npx --yes tsx scripts/verify-kiuwan-analytics.mjs",
     "verify:pdf-filename": "npx --yes tsx scripts/verify-pdf-filename.mjs",
-    "verify:lead-email": "npx --yes tsx scripts/verify-lead-email.mjs"
+    "verify:lead-email": "npx --yes tsx scripts/verify-lead-email.mjs",
+    "verify:score": "npx --yes tsx scripts/verify-score-contract.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",

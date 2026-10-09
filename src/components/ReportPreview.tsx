@@ -130,7 +130,7 @@ export function ReportPreview({ result }: ReportPreviewProps) {
               {i + 1}. {tr(rec.title, reportLocale)}
             </p>
             <p className="text-sm text-slate-600">{tr(rec.description, reportLocale)}</p>
-            <p className="text-xs text-slate-400 mt-1">
+            <p className="text-xs text-muted-foreground mt-1">
               {rc.priority}: {rc.priorityLabels[rec.priority]} | {rc.timeframe}:{" "}
               {rc.timeframeLabels[rec.timeframe]} | {rc.area}: {rc.areaLabels[rec.area]}
             </p>
@@ -172,7 +172,7 @@ export function ReportPreview({ result }: ReportPreviewProps) {
         )}
       </div>
 
-      <div className="border-t pt-6 text-xs text-slate-400 leading-relaxed">
+      <div className="border-t pt-6 text-xs text-muted-foreground leading-relaxed">
         <p className="font-semibold mb-1">{rp.methodologyDisclaimer}</p>
         <p>{rp.disclaimerText}</p>
       </div>

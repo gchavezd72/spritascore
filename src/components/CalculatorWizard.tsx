@@ -1,21 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { ArrowLeft, ArrowRight, Calculator } from "lucide-react";
-import type { CalculatorConfig, Currency } from "@/types/calculator";
+import { ArrowLeft, ArrowRight, Calculator, RotateCcw } from "lucide-react";
+import type { CalculatorConfig, Currency, WizardField } from "@/types/calculator";
 import { QuestionStep } from "@/components/QuestionStep";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { calculate } from "@/lib/calculateCost";
-import { saveResult } from "@/lib/storage";
+import { getResult, saveResult } from "@/lib/storage";
 import { trackEvent } from "@/lib/analytics";
-import { getCurrencyForCountry } from "@/lib/formatCurrency";
-import { tr } from "@/lib/translate";
+import { formatTemplate, tr } from "@/lib/translate";
 import { useTranslations } from "@/components/LanguageProvider";
 import type { TranslationKeys } from "@/i18n/es";
 
@@ -23,24 +22,51 @@ interface CalculatorWizardProps {
   config: CalculatorConfig;
 }
 
+function emptyToUndefined(value: unknown): unknown {
+  if (value === "" || value == null) return undefined;
+  if (typeof value === "number" && Number.isNaN(value)) return undefined;
+  if (typeof value === "string" && value.trim() !== "") {
+    const parsed = Number(value);
+    return Number.isNaN(parsed) ? value : parsed;
+  }
+  return value;
+}
+
+function numericField(field: WizardField, t: TranslationKeys) {
+  const min = field.min ?? 0;
+  const max = field.max;
+  const rangeMessage =
+    max === undefined
+      ? formatTemplate(t.wizard.validation.numberMin, { min })
+      : formatTemplate(t.wizard.validation.numberRange, { min, max });
+  const bounded = z
+    .number({ error: t.wizard.validation.numberRequired })
+    .min(min, rangeMessage);
+  const schema = max === undefined ? bounded : bounded.max(max, rangeMessage);
+  return z.preprocess(emptyToUndefined, schema);
+}
+
 function buildSchema(config: CalculatorConfig, t: TranslationKeys) {
-  const shape: Record<string, z.ZodTypeAny> = {};
+  const shape: Record<string, z.ZodType> = {};
   for (const step of config.steps) {
     for (const field of step.fields) {
       if (!field.required) continue;
       switch (field.type) {
         case "number":
         case "slider":
-          shape[field.name] = z.coerce.number().min(field.min ?? 0);
+          shape[field.name] = numericField(field, t);
           break;
         case "multiselect":
-          shape[field.name] = z.array(z.string()).min(1, t.wizard.validation.selectAtLeastOne);
+          shape[field.name] = z.preprocess(
+            (value) => (Array.isArray(value) ? value : []),
+            z.array(z.string()).min(1, t.wizard.validation.selectAtLeastOne)
+          );
           break;
         case "checkbox":
-          shape[field.name] = z.union([
-            z.literal(true),
-            z.string().transform((v) => v === "on" || v === "true"),
-          ]).refine((v) => v === true, { message: t.wizard.validation.mustAccept });
+          shape[field.name] = z.preprocess(
+            (value) => value === true || value === "on" || value === "true",
+            z.boolean().refine((value) => value === true, { message: t.wizard.validation.mustAccept })
+          );
           break;
         default:
           shape[field.name] = z.string().min(1, t.wizard.validation.fieldRequired);
@@ -71,10 +97,25 @@ export function CalculatorWizard({ config }: CalculatorWizardProps) {
   });
 
   const steps = config.steps;
-  const progress = ((currentStep + 1) / steps.length) * 100;
+  const progress = (currentStep / steps.length) * 100;
   const step = steps[currentStep];
   const isLastStep = currentStep === steps.length - 1;
   const stepsRemaining = steps.length - 1 - currentStep;
+
+  useEffect(() => {
+    const editId = new URLSearchParams(window.location.search).get("edit");
+    if (!editId) return;
+    const stored = getResult(editId);
+    if (!stored || stored.calculatorId !== config.id) return;
+    const frame = window.setTimeout(() => {
+      methods.reset({
+        currency: stored.currency ?? "USD",
+        ...stored.inputs,
+      });
+      setCurrentStep(0);
+    }, 0);
+    return () => window.clearTimeout(frame);
+  }, [config.id, methods]);
 
   const validateCurrentStep = async () => {
     const fieldNames = step.fields.map((f) => f.name);
@@ -84,11 +125,6 @@ export function CalculatorWizard({ config }: CalculatorWizardProps) {
   const handleNext = async () => {
     const valid = await validateCurrentStep();
     if (!valid) return;
-
-    const country = methods.getValues("country");
-    if (country && currentStep === 0 && !methods.getValues("currency")) {
-      methods.setValue("currency", getCurrencyForCountry(country as string));
-    }
 
     if (currentStep < steps.length - 1) {
       setCurrentStep((s) => s + 1);
@@ -101,9 +137,7 @@ export function CalculatorWizard({ config }: CalculatorWizardProps) {
     const values = methods.getValues();
     const currency = (values.currency as Currency) || "USD";
 
-    if (currentStep === 0) {
-      trackEvent("calculator_started", { calculator: config.id });
-    }
+    trackEvent("calculator_started", { calculator: config.id });
 
     const result = calculate(config.id, values as Record<string, unknown>, currency, locale);
     saveResult(result);
@@ -120,8 +154,8 @@ export function CalculatorWizard({ config }: CalculatorWizardProps) {
     <FormProvider {...methods}>
       <div className="max-w-3xl mx-auto">
         <div className="mb-8">
-          <div className="flex justify-between text-sm text-muted-foreground mb-2">
-            <span>
+          <div className="flex justify-between text-sm text-muted-foreground mb-2" aria-live="polite">
+            <span id="wizard-progress-label">
               {t.wizard.step} {currentStep + 1} {t.wizard.of} {steps.length}
               {isLastStep
                 ? ` — ${t.wizard.lastStep}`
@@ -131,7 +165,7 @@ export function CalculatorWizard({ config }: CalculatorWizardProps) {
             </span>
             <span>{Math.round(progress)}%</span>
           </div>
-          <Progress value={progress} />
+          <Progress value={progress} aria-labelledby="wizard-progress-label" />
         </div>
 
         <Card key={currentStep} className="animate-[fadeInStep_0.3s_ease-out]">
@@ -144,15 +178,21 @@ export function CalculatorWizard({ config }: CalculatorWizardProps) {
           </CardContent>
         </Card>
 
-        <div className="flex justify-between mt-6">
-          <Button
-            variant="ghost"
-            onClick={() => setCurrentStep((s) => Math.max(0, s - 1))}
-            disabled={currentStep === 0}
-          >
-            <ArrowLeft className="h-4 w-4" />
-            {t.wizard.previous}
-          </Button>
+        <div className="flex justify-between mt-6 gap-3">
+          <div className="flex gap-2">
+            <Button
+              variant="ghost"
+              onClick={() => setCurrentStep((s) => Math.max(0, s - 1))}
+              disabled={currentStep === 0}
+            >
+              <ArrowLeft className="h-4 w-4" />
+              {t.wizard.previous}
+            </Button>
+            <Button variant="ghost" onClick={() => setCurrentStep(0)}>
+              <RotateCcw className="h-4 w-4" />
+              {t.wizard.restart}
+            </Button>
+          </div>
           <Button onClick={handleNext}>
             {isLastStep ? (
               <>

@@ -278,11 +278,6 @@ export function webSiteJsonLd() {
       name: ORGANIZATION.name,
       url: ORGANIZATION.url,
     },
-    potentialAction: {
-      "@type": "SearchAction",
-      target: `${SITE_URL}/#calculadoras`,
-      "query-input": "required name=search_term_string",
-    },
   };
 }
 
@@ -318,7 +313,7 @@ export function faqJsonLd() {
     },
     {
       q: "¿Qué calculadoras incluye SpritaScore?",
-      a: `Incluye ${CALCULATOR_CONFIGS.length} calculadoras: costo de no calidad ISO 25010, OWASP Top 10 web, OWASP Mobile Top 10, riesgo por sector, costo de no tener ASPM, compliance EU CRA y evaluación DORA.`,
+      a: `Incluye ${CALCULATOR_CONFIGS.length} calculadoras: ${CALCULATOR_CONFIGS.map((c) => tr(c.title, "es")).join(", ")}.`,
     },
     {
       q: "¿SpritaScore está disponible en varios idiomas?",

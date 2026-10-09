@@ -90,6 +90,8 @@ export interface CalculationResult {
   actions90Days: Recommendation[];
   executiveSummary: string;
   partialSummary: string;
+  /** How the headline figure was built. Shown under the amount. */
+  methodNote?: string;
   inputs: Record<string, unknown>;
   currency: Currency;
   /** Set by calculate(); legacy results may omit this. */

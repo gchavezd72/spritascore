@@ -176,6 +176,7 @@ export function formatImpact(result: Calc05Result): string {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
+    currencyDisplay: "code",
     maximumFractionDigits: 0,
   }).format(result.impactUSD);
 }

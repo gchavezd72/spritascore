@@ -30,6 +30,7 @@ export function RiskScore({ score, riskLevel, size = "lg", reportLocale }: RiskS
   return (
     <div className="flex flex-col items-center gap-4">
       <div style={{ width: dim, height: dim }} className="relative">
+        <div className="absolute inset-0" aria-hidden="true" inert>
         <ResponsiveContainer>
           <PieChart>
             <Pie
@@ -48,7 +49,8 @@ export function RiskScore({ score, riskLevel, size = "lg", reportLocale }: RiskS
             </Pie>
           </PieChart>
         </ResponsiveContainer>
-        <div className="absolute inset-0 flex flex-col items-center justify-center">
+        </div>
+        <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
           <span className={`font-bold text-brand-navy ${size === "lg" ? "text-4xl" : "text-2xl"}`}>
             {score}
           </span>

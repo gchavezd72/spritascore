@@ -39,7 +39,7 @@ export type Calc05Copy = {
 
 const ES: Calc05Copy = {
   meta: {
-    title: "Costo de Vulnerabilidad por Sector | SpritaScore",
+    title: "Costo de Vulnerabilidad por Sector",
     description:
       "Calcule el impacto financiero de una vulnerabilidad considerando su sector, regulación y madurez de seguridad.",
     h1: "¿Cuánto cuesta una vulnerabilidad en su sector?",
@@ -128,7 +128,7 @@ const ES: Calc05Copy = {
   },
   result: {
     title: "Su resultado",
-    score_label: "SpritaScore",
+    score_label: "Exposición 0–100",
     impact_label: "Su exposición estimada",
     impact_note: "basado en su perfil de sector y madurez actual",
     factors_title: "Factores de mayor peso",
@@ -144,26 +144,26 @@ const ES: Calc05Copy = {
   },
   bullets: {
     ia_prod:
-      "Uso de IA generativa sin trazabilidad de autoría — riesgo directo bajo el Art. 46 de la LGPD.",
+      "Declaró IA en producción. Eso no demuestra falta de trazabilidad de autoría: es una hipótesis a verificar.",
     incident:
       "Historial de incidentes confirmado — aumenta 40% la probabilidad de reincidencia sin remediación estructural.",
     no_sca:
-      "Ausencia de inventario de dependencias (SBOM) — componentes de terceros sin visibilidad de CVEs.",
+      "No declaró SCA. Eso no demuestra que no exista un SBOM: es una hipótesis a verificar.",
     no_insight:
       "Falta de visibilidad sobre incidentes pasados — imposible remediar lo que no fue documentado.",
-    high_vol: "Volumen de datos a escala — exposición regulatoria máxima ante la ANPD.",
+    high_vol: "Volumen alto de registros. La presión regulatoria depende del país y de la ley que correspondan; esta respuesta no cita una norma.",
     basic_mat:
       "Madurez de seguridad básica — sin proceso formal de AppSec ni políticas documentadas.",
     ia_dev:
       "IA en fase de pruebas ya genera superficie de ataque — riesgo antes de llegar a producción.",
-    reg_sector: "Sector de alta regulación — la ANPD intensificó inspecciones técnicas en 2025.",
+    reg_sector: "Sector regulado declarado. Las obligaciones dependen del país y del mercado; no se asume una ley concreta.",
     generic: "Exposición a vulnerabilidades en el ciclo de desarrollo detectada.",
   },
 };
 
 const EN: Calc05Copy = {
   meta: {
-    title: "Vulnerability Cost by Sector | SpritaScore",
+    title: "Vulnerability Cost by Sector",
     description:
       "Calculate the financial impact of a vulnerability considering your sector, regulation, and security maturity.",
     h1: "How much does a vulnerability cost in your sector?",
@@ -252,7 +252,7 @@ const EN: Calc05Copy = {
   },
   result: {
     title: "Your result",
-    score_label: "SpritaScore",
+    score_label: "Exposure 0–100",
     impact_label: "Your estimated exposure",
     impact_note: "based on your sector profile and current maturity",
     factors_title: "Key risk factors",
@@ -268,25 +268,25 @@ const EN: Calc05Copy = {
   },
   bullets: {
     ia_prod:
-      "Generative AI in use without authorship traceability — direct risk under LGPD Art. 46.",
+      "Declared AI in production. That does not prove missing authorship traceability: it is a hypothesis to check.",
     incident:
       "Confirmed incident history — increases recurrence probability by 40% without structural remediation.",
-    no_sca: "No dependency inventory (SBOM) — third-party components with no CVE visibility.",
+    no_sca: "Did not declare SCA. That does not prove there is no SBOM: it is a hypothesis to check.",
     no_insight:
       "No visibility into past incidents — impossible to remediate what was not documented.",
-    high_vol: "Data at scale — maximum regulatory exposure before the ANPD.",
+    high_vol: "High record volume. Regulatory pressure depends on the country and the applicable law; this answer cites none.",
     basic_mat: "Basic security maturity — no formal AppSec process or documented policies.",
     ia_dev: "AI in testing already creates attack surface — risk before reaching production.",
-    reg_sector: "Highly regulated sector — ANPD intensified technical inspections in 2025.",
+    reg_sector: "Declared regulated sector. Duties depend on the country and the market; no specific statute is assumed.",
     generic: "Vulnerability exposure detected in the development cycle.",
   },
 };
 
 const PT: Calc05Copy = {
   meta: {
-    title: "Custo de Vulnerabilidade por Setor | SpritaScore",
+    title: "Custo de Vulnerabilidade por Setor",
     description:
-      "Calcule o impacto financeiro de uma vulnerabilidade considerando seu setor, regulamentação LGPD e maturidade de segurança.",
+      "Calcule o impacto financeiro de uma vulnerabilidade considerando seu setor e a maturidade de segurança. A lei aplicável depende do país declarado.",
     h1: "Quanto custa uma vulnerabilidade no seu setor?",
     ogDescription:
       "6 perguntas · 2–3 minutos · resultado imediato em R$ ou USD. Estime a exposição financeira por setor.",
@@ -373,7 +373,7 @@ const PT: Calc05Copy = {
   },
   result: {
     title: "Seu resultado",
-    score_label: "SpritaScore",
+    score_label: "Exposição 0–100",
     impact_label: "Sua exposição estimada",
     impact_note: "baseado no seu perfil de setor e maturidade atual",
     factors_title: "Fatores de maior peso",
@@ -389,19 +389,19 @@ const PT: Calc05Copy = {
   },
   bullets: {
     ia_prod:
-      "Uso de IA generativa sem rastreabilidade de autoria — risco direto perante o Art. 46 da LGPD.",
+      "Declarou IA em produção. Isso não demonstra falta de rastreabilidade de autoria: é uma hipótese a verificar.",
     incident:
       "Histórico de incidentes confirmado — aumenta 40% a probabilidade de reincidência sem remediação estrutural.",
     no_sca:
-      "Ausência de inventário de dependências (SBOM) — componentes de terceiros sem visibilidade de CVEs.",
+      "Não declarou SCA. Isso não demonstra que não exista um SBOM: é uma hipótese a verificar.",
     no_insight:
       "Falta de visibilidade sobre incidentes passados — impossível remediar o que não foi documentado.",
-    high_vol: "Volume de dados em escala — exposição regulatória máxima perante a ANPD.",
+    high_vol: "Volume alto de registros. A pressão regulatória depende do país e da lei aplicável; esta resposta não cita uma norma.",
     basic_mat:
       "Maturidade de segurança básica — sem processo formal de AppSec nem políticas documentadas.",
     ia_dev:
       "IA em fase de testes já gera superfície de ataque — risco antes mesmo de chegar à produção.",
-    reg_sector: "Setor de alta regulação — a ANPD intensificou inspeções técnicas em 2025.",
+    reg_sector: "Setor regulado declarado. As obrigações dependem do país e do mercado; não se assume uma lei concreta.",
     generic: "Exposição a vulnerabilidades no ciclo de desenvolvimento detectada.",
   },
 };

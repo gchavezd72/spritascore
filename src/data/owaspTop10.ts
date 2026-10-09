@@ -143,6 +143,57 @@ export const OWASP_TOP10_2021: OwaspCategory[] = [
   },
 ];
 
-export function getOwaspCategory(id: string): OwaspCategory | undefined {
-  return OWASP_TOP10_2021.find((c) => c.id === id);
+/** 2025 categories. Economic weights are carried from the closest 2021 category until this model is calibrated. */
+export const OWASP_TOP10_2025: OwaspCategory[] = [
+  { ...OWASP_TOP10_2021[0], name: "Broken Access Control", nameEs: "Control de acceso roto" },
+  {
+    ...OWASP_TOP10_2021[4],
+    id: "A02",
+    name: "Security Misconfiguration",
+    nameEs: "Configuración de seguridad incorrecta",
+  },
+  {
+    ...OWASP_TOP10_2021[5],
+    id: "A03",
+    name: "Software Supply Chain Failures",
+    nameEs: "Fallos en la cadena de suministro de software",
+    severityWeight: 8,
+  },
+  { ...OWASP_TOP10_2021[1], id: "A04", name: "Cryptographic Failures", nameEs: "Fallos criptográficos" },
+  { ...OWASP_TOP10_2021[2], id: "A05", name: "Injection", nameEs: "Inyección" },
+  { ...OWASP_TOP10_2021[3], id: "A06", name: "Insecure Design", nameEs: "Diseño inseguro" },
+  { ...OWASP_TOP10_2021[6], id: "A07", name: "Authentication Failures", nameEs: "Fallos de autenticación" },
+  {
+    ...OWASP_TOP10_2021[7],
+    id: "A08",
+    name: "Software or Data Integrity Failures",
+    nameEs: "Fallos de integridad de software o datos",
+  },
+  {
+    ...OWASP_TOP10_2021[8],
+    id: "A09",
+    name: "Security Logging and Alerting Failures",
+    nameEs: "Fallos de registro y alerta de seguridad",
+  },
+  {
+    ...OWASP_TOP10_2021[9],
+    id: "A10",
+    name: "Mishandling of Exceptional Conditions",
+    nameEs: "Manejo incorrecto de condiciones excepcionales",
+    severityWeight: 6,
+  },
+];
+
+export function getOwaspCategory(
+  id: string
+): (OwaspCategory & { edition: "2021" | "2025" }) | undefined {
+  const prefixed = /^(2021|2025):(A\d+)$/.exec(id);
+  if (prefixed) {
+    const edition = prefixed[1] as "2021" | "2025";
+    const list = edition === "2025" ? OWASP_TOP10_2025 : OWASP_TOP10_2021;
+    const found = list.find((category) => category.id === prefixed[2]);
+    return found ? { ...found, edition } : undefined;
+  }
+  const legacy = OWASP_TOP10_2021.find((category) => category.id === id);
+  return legacy ? { ...legacy, edition: "2021" } : undefined;
 }

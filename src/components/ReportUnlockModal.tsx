@@ -69,7 +69,7 @@ export function ReportUnlockModal({ result, onUnlocked }: ReportUnlockModalProps
       country: (inputs.country as string) || "No especificado",
       sector: (inputs.sector as string) || "No especificado",
       appCount: (inputs.appCount as string | number | undefined)?.toString() || "No especificado",
-      wantsEmailReport: true,
+      wantsEmailReport: false,
     };
 
     try {
@@ -125,7 +125,7 @@ export function ReportUnlockModal({ result, onUnlocked }: ReportUnlockModalProps
         <h2 className="text-2xl font-bold text-brand-navy text-center mb-1">{t.unlockModal.title}</h2>
         <p className="text-sm text-muted-foreground text-center mb-6">{t.unlockModal.description}</p>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form method="post" onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="grid grid-cols-2 gap-3">
             <div>
               <Label htmlFor="unlock-firstName">{t.leadForm.firstName} *</Label>

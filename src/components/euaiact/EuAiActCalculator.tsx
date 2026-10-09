@@ -180,15 +180,31 @@ export function EuAiActCalculator({ locale, route }: EuAiActCalculatorProps) {
     );
   }
 
-  const stepTitle =
-    step.kind === "class" ? copy.stages[step.stage] : step.label;
+  const stepTitle = (step.kind === "class" ? copy.stages[step.stage] : step.label).replace(/^\d+\.\s*/, "");
+  const territorialOut =
+    classAnswers.S1 === "no" && classAnswers.S2 === "no" && classAnswers.S3 === "no";
+
+  const finishOutOfScope = () => {
+    setCompleted(true);
+    const result = calculateEuAiAct({ classification: classAnswers, annexArea, readiness: readinessAnswers });
+    trackEvent("euaiact_completed", {
+      verdict: result.verdict,
+      readinessScore: result.readinessScore,
+      confidence: result.confidence,
+      route,
+      language: locale,
+      early: "out-of-scope",
+      ...getPersistedUtm(),
+    });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
   const isReadinessStep = step.kind === "readiness";
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between gap-4 flex-wrap">
         <div>
-          <p className="text-sm text-muted-foreground">
+          <p id="euaiact-progress-label" className="text-sm text-muted-foreground">
             {formatEuAiAct(copy.ui.stageProgress, { current: stepIndex + 1, total: steps.length })}
             {" · "}
             <span className="font-medium">
@@ -200,7 +216,7 @@ export function EuAiActCalculator({ locale, route }: EuAiActCalculatorProps) {
         <Badge variant="outline">{formatEuAiAct(copy.ui.complete, { percent: progress })}</Badge>
       </div>
 
-      <Progress value={progress} className="h-2" />
+      <Progress value={progress} className="h-2" aria-labelledby="euaiact-progress-label" />
 
       <Card>
         <CardHeader>
@@ -314,6 +330,15 @@ export function EuAiActCalculator({ locale, route }: EuAiActCalculatorProps) {
             })}
         </CardContent>
       </Card>
+
+      {territorialOut && (
+        <div className="rounded-lg border border-border-hairline p-4 space-y-3">
+          <p className="text-sm text-muted-foreground">{copy.ui.outOfScopeObligations}</p>
+          <Button type="button" variant="outline" onClick={finishOutOfScope}>
+            {copy.ui.finishOutOfScope}
+          </Button>
+        </div>
+      )}
 
       <div className="flex justify-between gap-4">
         <Button type="button" variant="outline" onClick={goBack} disabled={stepIndex === 0}>

@@ -9,8 +9,9 @@ interface LogoProps {
 
 export function Logo({ className, showScore = true, variant = "dark" }: LogoProps) {
   const wordmark = variant === "light" ? "text-white" : "text-brand-navy";
-  const secondary = variant === "light" ? "text-white/60" : "text-slate-400";
-  const divider = variant === "light" ? "bg-white/25" : "bg-slate-300";
+  const secondary = variant === "light" ? "text-white/85" : "text-brand-navy-light";
+  const score = variant === "light" ? "text-brand-green-on-dark" : "text-brand-green";
+  const divider = variant === "light" ? "bg-white/40" : "bg-slate-300";
 
   return (
     <Link
@@ -27,7 +28,7 @@ export function Logo({ className, showScore = true, variant = "dark" }: LogoProp
       {showScore && (
         <>
           <span className={cn("mx-1.5 h-4 w-px", divider)} aria-hidden />
-          <span className="text-brand-green">Score</span>
+          <span className={score}>Score</span>
         </>
       )}
     </Link>

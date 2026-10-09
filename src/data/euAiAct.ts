@@ -290,13 +290,13 @@ export const OBLIGATION_GROUPS: ObligationGroup[] = [
     id: "prohibited",
     legalSource: "Art. 5",
     effectiveFrom: "2025-02-02",
-    appliesTo: () => true,
+    appliesTo: (v) => v !== "out-of-scope" && v !== "not-ai-system",
   },
   {
     id: "ai-literacy",
     legalSource: "Art. 4",
     effectiveFrom: "2025-02-02",
-    appliesTo: () => true,
+    appliesTo: (v) => v !== "out-of-scope" && v !== "not-ai-system",
   },
   {
     id: "gpai",

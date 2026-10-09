@@ -1,6 +1,7 @@
 export const COUNTRIES = [
   { value: "MX", label: { es: "México", en: "Mexico", pt: "México" } },
   { value: "US", label: { es: "Estados Unidos", en: "United States", pt: "Estados Unidos" } },
+  { value: "PR", label: { es: "Puerto Rico", en: "Puerto Rico", pt: "Porto Rico" } },
   { value: "CO", label: { es: "Colombia", en: "Colombia", pt: "Colômbia" } },
   { value: "BR", label: { es: "Brasil", en: "Brazil", pt: "Brasil" } },
   { value: "AR", label: { es: "Argentina", en: "Argentina", pt: "Argentina" } },
@@ -143,8 +144,29 @@ export const NOISE_LEVELS = [
 
 export const PRODUCT_CATEGORIES = [
   { value: "default", label: { es: "Producto por defecto (la mayoría del software)", en: "Default product (most software)", pt: "Produto padrão (a maioria do software)" } },
-  { value: "importante", label: { es: "Producto importante (Anexo III — ej. gestores de identidad, firewalls, navegadores)", en: "Important product (Annex III — e.g. identity managers, firewalls, browsers)", pt: "Produto importante (Anexo III — ex.: gerenciadores de identidade, firewalls, navegadores)" } },
-  { value: "critico", label: { es: "Producto crítico (Anexo IV — ej. sistemas operativos, HSM, tarjetas inteligentes)", en: "Critical product (Annex IV — e.g. operating systems, HSMs, smart cards)", pt: "Produto crítico (Anexo IV — ex.: sistemas operacionais, HSMs, cartões inteligentes)" } },
+  { value: "class-i", label: { es: "Importante clase I (Anexo III — ej. sistemas operativos, navegadores, gestores de contraseñas)", en: "Important Class I (Annex III — e.g. operating systems, browsers, password managers)", pt: "Importante classe I (Anexo III — ex.: sistemas operativos, navegadores, gestores de senhas)" } },
+  { value: "class-ii", label: { es: "Importante clase II (Anexo III — ej. cortafuegos, IDS/IPS, hipervisores)", en: "Important Class II (Annex III — e.g. firewalls, IDS/IPS, hypervisors)", pt: "Importante classe II (Anexo III — ex.: firewalls, IDS/IPS, hipervisores)" } },
+  { value: "critico", label: { es: "Crítico (Anexo IV — ej. cajas de seguridad hardware, pasarelas de contadores, tarjetas inteligentes)", en: "Critical (Annex IV — e.g. hardware security boxes, smart-meter gateways, smartcards)", pt: "Crítico (Anexo IV — ex.: caixas de segurança em hardware, gateways de contadores, cartões inteligentes)" } },
+];
+
+export const CRA_SCOPE_OPTIONS = [
+  { value: "si", label: { es: "Sí", en: "Yes", pt: "Sim" } },
+  { value: "no", label: { es: "No", en: "No", pt: "Não" } },
+  { value: "no_se", label: { es: "No sé", en: "Don't know", pt: "Não sei" } },
+];
+
+export const CRA_DISTRIBUTION = [
+  { value: "product", label: { es: "Producto con elementos digitales que se pone en el mercado", en: "Product with digital elements placed on the market", pt: "Produto com elementos digitais colocado no mercado" } },
+  { value: "remote", label: { es: "Tratamiento remoto de datos ligado a ese producto", en: "Remote data processing tied to that product", pt: "Tratamento remoto de dados ligado a esse produto" } },
+  { value: "saas", label: { es: "Servicio remoto puro, sin producto distribuido", en: "Pure remote service, with no distributed product", pt: "Serviço remoto puro, sem produto distribuído" } },
+  { value: "no_se", label: { es: "No sé", en: "Don't know", pt: "Não sei" } },
+];
+
+export const CRA_ROLES = [
+  { value: "manufacturer", label: { es: "Fabricante", en: "Manufacturer", pt: "Fabricante" } },
+  { value: "importer", label: { es: "Importador", en: "Importer", pt: "Importador" } },
+  { value: "distributor", label: { es: "Distribuidor", en: "Distributor", pt: "Distribuidor" } },
+  { value: "no_se", label: { es: "No sé", en: "Don't know", pt: "Não sei" } },
 ];
 
 export const YES_NO = [

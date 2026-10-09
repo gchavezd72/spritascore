@@ -50,7 +50,7 @@ export function LeadCaptureForm({ result, onSuccess }: LeadCaptureFormProps) {
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(buildSchema(t)),
-    defaultValues: { wantsEmailReport: true },
+    defaultValues: { wantsEmailReport: false },
   });
 
   const onSubmit = async (data: FormValues) => {
@@ -124,7 +124,7 @@ export function LeadCaptureForm({ result, onSuccess }: LeadCaptureFormProps) {
         <CardDescription>{t.leadForm.description}</CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form method="post" onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <Label htmlFor="firstName">{t.leadForm.firstName} *</Label>

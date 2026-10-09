@@ -5,9 +5,7 @@ import { BrandFooterLine } from "@/components/BrandBar";
 import { Logo } from "@/components/Logo";
 import { useTranslations } from "@/components/LanguageProvider";
 import { CALCULATOR_CONFIGS } from "@/data/calculatorConfigs";
-import { getExecutiveRoute } from "@/data/executiveSoftwareRiskScore";
-import { getEuAiActRoute } from "@/data/euAiAct";
-import { getCalc05Route } from "@/i18n/calc05";
+import { calculatorPath } from "@/lib/calculatorPath";
 import { tr } from "@/lib/translate";
 
 export function Footer() {
@@ -24,20 +22,12 @@ export function Footer() {
             <p className="ft-about">{l.footer.tagline}</p>
           </div>
           <div>
-            <h5>{f.calculatorsTitle}</h5>
+            <h2>{f.calculatorsTitle}</h2>
             <ul>
               {CALCULATOR_CONFIGS.map((calc) => (
                 <li key={calc.id}>
                   <Link
-                    href={
-                      calc.id === "executive-software-risk-score"
-                        ? getExecutiveRoute(locale)
-                        : calc.id === "eu-ai-act-compliance"
-                          ? getEuAiActRoute(locale)
-                          : calc.id === "sector"
-                            ? getCalc05Route(locale)
-                            : (calc.customRoute ?? `/calculadora/${calc.slug}`)
-                    }
+                    href={calculatorPath(calc, locale)}
                   >
                     {tr(calc.title, locale)}
                   </Link>
@@ -46,7 +36,7 @@ export function Footer() {
             </ul>
           </div>
           <div>
-            <h5>{l.footer.productTitle}</h5>
+            <h2>{l.footer.productTitle}</h2>
             <ul>
               <li>
                 <Link href="/#producto">{l.footer.product.score}</Link>
@@ -63,7 +53,7 @@ export function Footer() {
             </ul>
           </div>
           <div>
-            <h5>{f.contactTitle}</h5>
+            <h2>{f.contactTitle}</h2>
             <ul>
               <li>
                 <a href="mailto:info@sprita-it.com">info@sprita-it.com</a>

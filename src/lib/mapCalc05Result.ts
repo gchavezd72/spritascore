@@ -58,9 +58,9 @@ function recommendationsFor(
           pt: "Governança de código assistido por IA",
         },
         {
-          es: "Defina políticas de uso de asistentes de código, exija revisión humana de PRs generados con IA y registre la procedencia del código en el pipeline para cumplir expectativas LGPD/ANPD y de clientes regulados.",
-          en: "Define coding-assistant policies, require human review of AI-generated PRs, and record code provenance in the pipeline to meet LGPD/ANPD and regulated-customer expectations.",
-          pt: "Defina políticas de uso de assistentes de código, exija revisão humana de PRs gerados com IA e registre a proveniência do código no pipeline para atender LGPD/ANPD e clientes regulados.",
+          es: "Hipótesis ligada a la respuesta de IA en producción: defina políticas de asistentes de código, exija revisión humana y registre la procedencia. El uso de IA no demuestra por sí solo que falte trazabilidad.",
+          en: "Hypothesis tied to the production-AI answer: define coding-assistant policies, require human review, and record provenance. AI use alone does not prove missing traceability.",
+          pt: "Hipótese ligada à resposta de IA em produção: defina políticas de assistentes de código, exija revisão humana e registre a proveniência. O uso de IA não demonstra sozinho que falte rastreabilidade.",
         },
         "critica",
         "inmediato",
@@ -80,9 +80,9 @@ function recommendationsFor(
           pt: "Automatizar SCA e gerar SBOM no CI/CD",
         },
         {
-          es: "Integre análisis de composición de software en cada build, bloquee CVEs críticas conocidas y publique un SBOM (CycloneDX/SPDX) por release para trazabilidad de dependencias.",
-          en: "Integrate software composition analysis on every build, block known critical CVEs, and publish a CycloneDX/SPDX SBOM per release for dependency traceability.",
-          pt: "Integre análise de composição de software em cada build, bloqueie CVEs críticas conhecidas e publique um SBOM (CycloneDX/SPDX) por release para rastreabilidade de dependências.",
+          es: "Hipótesis ligada a la respuesta sin SCA: integre análisis de composición en cada build. No tener SCA no demuestra que no exista un SBOM; verifíquelo antes de afirmarlo.",
+          en: "Hypothesis tied to the no-SCA answer: integrate composition analysis on every build. Lacking SCA does not prove there is no SBOM; check that before stating it.",
+          pt: "Hipótese ligada à resposta sem SCA: integre análise de composição em cada build. Não ter SCA não demonstra que não exista um SBOM; verifique antes de afirmá-lo.",
         },
         "critica",
         "30-dias",
@@ -146,9 +146,9 @@ function recommendationsFor(
           pt: "Reduzir superfície de dados sensíveis",
         },
         {
-          es: "Clasifique datos, minimice retención, cifre en reposo y en tránsito, y separe entornos con datos productivos de no productivos. Documente bases legales LGPD y DPA con procesadores.",
-          en: "Classify data, minimize retention, encrypt at rest and in transit, and segregate production data from non-production. Document LGPD legal bases and processor DPAs.",
-          pt: "Classifique dados, minimize retenção, criptografe em repouso e em trânsito e separe ambientes com dados produtivos dos não produtivos. Documente bases legais LGPD e DPAs com processadores.",
+          es: "Ligado al volumen declarado: clasifique datos, minimice retención y cifre. La ley aplicable se cita solo cuando el país y el mercado estén declarados.",
+          en: "Tied to the declared volume: classify data, minimize retention, and encrypt. Cite a statute only once the country and market are declared.",
+          pt: "Ligado ao volume declarado: classifique dados, minimize retenção e criptografe. Cite uma lei só quando o país e o mercado estiverem declarados.",
         },
         "alta",
         "30-dias",
@@ -250,19 +250,28 @@ function summaries(
     critical: { es: "crítico", en: "critical", pt: "crítico" },
   }[result.classification][locale];
 
+  const exposure = calc05ToPlatformScore(result.score);
+  const rateNote =
+    result.currency === "USD"
+      ? locale === "en"
+        ? " USD figures use 1 BRL = 0.18 USD (August 2026 reference)."
+        : locale === "pt"
+          ? " Os valores em USD usam 1 BRL = 0,18 USD (referência de agosto de 2026)."
+          : " Las cifras en USD usan 1 BRL = 0,18 USD (referencia de agosto de 2026)."
+      : "";
   const partial =
     locale === "en"
-      ? `Estimated exposure of ${impactFormatted} for a ${sector} profile (SpritaScore ${result.score}/1000 · ${classLabel} risk). Unlock the full report for the executive summary, cost breakdown, and prioritized actions.`
+      ? `Estimated exposure of ${impactFormatted} for a ${sector} profile (exposure ${exposure}/100, where 100 is worse · ${classLabel} risk).${rateNote}`
       : locale === "pt"
-        ? `Exposição estimada de ${impactFormatted} para um perfil de ${sector} (SpritaScore ${result.score}/1000 · risco ${classLabel}). Desbloqueie o relatório completo para o resumo executivo, decomposição de custo e ações priorizadas.`
-        : `Exposición estimada de ${impactFormatted} para un perfil de ${sector} (SpritaScore ${result.score}/1000 · riesgo ${classLabel}). Desbloquee el reporte completo para el resumen ejecutivo, desglose de costos y acciones priorizadas.`;
+        ? `Exposição estimada de ${impactFormatted} para um perfil de ${sector} (exposição ${exposure}/100, em que 100 é pior · risco ${classLabel}).${rateNote}`
+        : `Exposición estimada de ${impactFormatted} para un perfil de ${sector} (exposición ${exposure}/100, donde 100 es peor · riesgo ${classLabel}).${rateNote}`;
 
   const executive =
     locale === "en"
-      ? `Based on six operational questions, your organization in the ${sector} sector shows a ${classLabel} application-risk posture (platform risk score ${calc05ToPlatformScore(result.score)}/100; SpritaScore ${result.score}/1000). Modeled financial exposure is approximately ${impactFormatted}, calibrated by record volume, generative-AI use in the SDLC, dependency (SCA) maturity, AppSec maturity, and recent incident history. Treat this as a planning estimate—not a penetration test or legal opinion. Priority should focus on the factors below, validated with a technical diagnosis covering code quality, third-party risk, and release controls. Contact info@sprita-it.com to schedule a free technical diagnosis with Sprita iT.`
+      ? `Based on six operational questions, your organization in the ${sector} sector shows ${classLabel} application-risk exposure (${exposure}/100, where 100 is worse). Modeled financial exposure is approximately ${impactFormatted}.${rateNote} The figure is calibrated by declared record volume, generative-AI use, SCA maturity, AppSec maturity, and incident history. AI use does not prove missing authorship traceability, and the absence of SCA does not prove there is no SBOM. This is a planning estimate, not a penetration test or a legal opinion. Contact info@sprita-it.com for a technical diagnosis.`
       : locale === "pt"
-        ? `Com base em seis perguntas operacionais, sua organização no setor de ${sector} apresenta postura de risco de aplicações ${classLabel} (score de risco ${calc05ToPlatformScore(result.score)}/100; SpritaScore ${result.score}/1000). A exposição financeira modelada é de aproximadamente ${impactFormatted}, calibrada por volume de registros, uso de IA generativa no SDLC, maturidade de SCA, maturidade AppSec e histórico de incidentes. Trate isto como estimativa de planejamento — não é pentest nem parecer jurídico. A prioridade deve focar nos fatores abaixo, validados com um diagnóstico técnico de qualidade de código, risco de terceiros e controles de release. Contate info@sprita-it.com para agendar um diagnóstico técnico gratuito com a Sprita iT.`
-        : `Con base en seis preguntas operativas, su organización en el sector de ${sector} presenta una postura de riesgo de aplicaciones ${classLabel} (score de riesgo ${calc05ToPlatformScore(result.score)}/100; SpritaScore ${result.score}/1000). La exposición financiera modelada es de aproximadamente ${impactFormatted}, calibrada por volumen de registros, uso de IA generativa en el SDLC, madurez de SCA, madurez AppSec e historial de incidentes. Trátelo como estimación de planificación — no es un pentest ni una opinión legal. La prioridad debe centrarse en los factores siguientes, validados con un diagnóstico técnico de calidad de código, riesgo de terceros y controles de release. Contacte info@sprita-it.com para agendar un diagnóstico técnico gratuito con Sprita iT.`;
+        ? `Com base em seis perguntas operacionais, sua organização no setor de ${sector} apresenta exposição de risco de aplicações ${classLabel} (${exposure}/100, em que 100 é pior). A exposição financeira modelada é de aproximadamente ${impactFormatted}.${rateNote} O valor é calibrado por volume de registros, uso de IA generativa, maturidade de SCA, maturidade AppSec e histórico de incidentes. O uso de IA não prova falta de rastreabilidade de autoria, e a ausência de SCA não prova que não exista um SBOM. É uma estimativa de planejamento, não um pentest nem um parecer jurídico. Contate info@sprita-it.com para um diagnóstico técnico.`
+        : `Con base en seis preguntas operativas, su organización en el sector de ${sector} presenta una exposición de riesgo de aplicaciones ${classLabel} (${exposure}/100, donde 100 es peor). La exposición financiera modelada es de aproximadamente ${impactFormatted}.${rateNote} La cifra se calibra con el volumen de registros, el uso de IA generativa, la madurez de SCA, la madurez AppSec y el historial de incidentes. El uso de IA no demuestra falta de trazabilidad de autoría, y la ausencia de SCA no demuestra que no exista un SBOM. Es una estimación de planificación, no un pentest ni una opinión legal. Contacte info@sprita-it.com para un diagnóstico técnico.`;
 
   // Risk factors will be resolved with i18n bullets in the caller via copy
   return { executive, partial, factors: result.bullets };
@@ -286,20 +295,20 @@ export function mapCalc05ToCalculationResult(
     locale === "en"
       ? [
           { label: "Base exposure (sector × volume)", value: Math.round(impact * 0.45) },
-          { label: "Regulatory / LGPD pressure", value: Math.round(impact * 0.2) },
+          { label: "Regulatory pressure (sector assumption, not a cited statute)", value: Math.round(impact * 0.2) },
           { label: "AI & supply-chain amplification", value: Math.round(impact * 0.2) },
           { label: "Maturity & incident history", value: Math.round(impact * 0.15) },
         ]
       : locale === "pt"
         ? [
             { label: "Exposição base (setor × volume)", value: Math.round(impact * 0.45) },
-            { label: "Pressão regulatória / LGPD", value: Math.round(impact * 0.2) },
+            { label: "Pressão regulatória (suposto de setor, sem lei citada)", value: Math.round(impact * 0.2) },
             { label: "Amplificação IA e cadeia de suprimentos", value: Math.round(impact * 0.2) },
             { label: "Maturidade e histórico de incidentes", value: Math.round(impact * 0.15) },
           ]
         : [
             { label: "Exposición base (sector × volumen)", value: Math.round(impact * 0.45) },
-            { label: "Presión regulatoria / LGPD", value: Math.round(impact * 0.2) },
+            { label: "Presión regulatoria (supuesto de sector, sin ley citada)", value: Math.round(impact * 0.2) },
             { label: "Amplificación IA y cadena de suministro", value: Math.round(impact * 0.2) },
             { label: "Madurez e historial de incidentes", value: Math.round(impact * 0.15) },
           ];

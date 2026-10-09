@@ -42,6 +42,7 @@ interface EuAiActResultProps {
 export function EuAiActResult({ locale, route, result, answers }: EuAiActResultProps) {
   const copy = getEuAiActCopy(locale);
   const [pdfError, setPdfError] = useState("");
+  const [pdfSaved, setPdfSaved] = useState(false);
   const [pdfLoading, setPdfLoading] = useState(false);
 
   const verdict = copy.verdicts[result.verdict];
@@ -67,9 +68,11 @@ export function EuAiActResult({ locale, route, result, answers }: EuAiActResultP
   const handlePdf = () => {
     setPdfLoading(true);
     setPdfError("");
+    setPdfSaved(false);
     const ok = downloadEuAiActPdf(locale, answers, result);
     setPdfLoading(false);
     if (!ok) setPdfError(copy.ui.pdfError);
+    else setPdfSaved(true);
     trackEvent("euaiact_pdf_download", { verdict: result.verdict, route, language: locale });
   };
 
@@ -161,7 +164,9 @@ export function EuAiActResult({ locale, route, result, answers }: EuAiActResultP
         </CardHeader>
         <CardContent className="space-y-3">
           {result.obligations.length === 0 ? (
-            <p className="text-sm text-muted-foreground">{copy.ui.noObligations}</p>
+            <p className="text-sm text-muted-foreground">
+              {result.regulatoryApplicable ? copy.ui.noObligations : copy.ui.outOfScopeObligations}
+            </p>
           ) : (
             result.obligations.map((o) => (
               <div
@@ -237,7 +242,7 @@ export function EuAiActResult({ locale, route, result, answers }: EuAiActResultP
             )}
 
             <div>
-              <h4 className="text-sm font-semibold text-brand-navy mb-3">{copy.ui.domainBreakdown}</h4>
+              <h3 className="text-sm font-semibold text-brand-navy mb-3">{copy.ui.domainBreakdown}</h3>
               <div className="space-y-2">
                 {result.domainScores.map((d) => (
                   <div key={d.domain} className="flex items-center gap-3">
@@ -246,7 +251,7 @@ export function EuAiActResult({ locale, route, result, answers }: EuAiActResultP
                     </span>
                     {d.applicable && d.score != null ? (
                       <>
-                        <Progress value={d.score} className="h-2 flex-1" />
+                        <Progress value={d.score} className="h-2 flex-1" aria-label={copy.domains[d.domain]} />
                         <span className="text-sm font-semibold text-brand-navy w-10 text-right">
                           {d.score}
                         </span>
@@ -344,7 +349,8 @@ export function EuAiActResult({ locale, route, result, answers }: EuAiActResultP
               {pdfLoading ? copy.ui.pdfGenerating : copy.ui.downloadPdf}
             </Button>
           </div>
-          {pdfError && <p className="text-sm text-risk-critical text-center">{pdfError}</p>}
+          {pdfError && <p className="text-sm text-risk-critical text-center" role="status">{pdfError}</p>}
+          {pdfSaved && <p className="text-sm text-brand-green text-center" role="status">{copy.ui.pdfSaved}</p>}
           <button
             type="button"
             onClick={copySummary}

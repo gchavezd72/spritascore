@@ -22,22 +22,35 @@ export function ImpactMatrix({ matrix, reportLocale }: ImpactMatrixProps) {
   ];
 
   return (
-    <div className="h-72">
-      <ResponsiveContainer width="100%" height="100%">
-        <RadarChart data={data}>
-          <PolarGrid stroke="#e2e8f0" />
-          <PolarAngleAxis dataKey="dimension" tick={{ fontSize: 12, fill: "#475569" }} />
-          <PolarRadiusAxis angle={90} domain={[0, 100]} tick={{ fontSize: 10, fill: "#94a3b8" }} />
-          <Radar
-            name="Impacto"
-            dataKey="value"
-            stroke="#1fbf6c"
-            fill="#1fbf6c"
-            fillOpacity={0.3}
-            strokeWidth={2}
-          />
-        </RadarChart>
-      </ResponsiveContainer>
+    <div>
+      <div className="h-80" aria-hidden="true" inert>
+        <ResponsiveContainer width="100%" height="100%">
+          <RadarChart data={data} margin={{ top: 28, right: 48, bottom: 28, left: 48 }}>
+            <PolarGrid stroke="#e2e8f0" />
+            <PolarAngleAxis dataKey="dimension" tick={{ fontSize: 11, fill: "#475569" }} />
+            <PolarRadiusAxis angle={90} domain={[0, 100]} tick={{ fontSize: 9, fill: "#94a3b8" }} />
+            <Radar
+              name="Impacto"
+              dataKey="value"
+              stroke="#1fbf6c"
+              fill="#1fbf6c"
+              fillOpacity={0.3}
+              strokeWidth={2}
+            />
+          </RadarChart>
+        </ResponsiveContainer>
+      </div>
+      <table className="w-full text-sm mt-2">
+        <caption className="sr-only">{labels.financial}, {labels.technical}, {labels.operational}, {labels.regulatory}, {labels.reputational}</caption>
+        <tbody>
+          {data.map((row) => (
+            <tr key={row.dimension} className="border-t border-border-hairline">
+              <th scope="row" className="py-1.5 text-left font-medium text-foreground">{row.dimension}</th>
+              <td className="py-1.5 text-right tabular-nums text-muted-foreground">{row.value}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }

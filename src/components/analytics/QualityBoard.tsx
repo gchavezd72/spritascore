@@ -56,7 +56,7 @@ export function QualityBoard({ findings }: QualityBoardProps) {
         </div>
       </div>
 
-      <h3>Defectos por categoria y severidad</h3>
+      <h3>Defectos por categoría y severidad</h3>
       <p className="sa-paper-lead">
         Las categorias con mayor concentracion de defectos prioritarios aparecen primero.
       </p>

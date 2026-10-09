@@ -5,6 +5,7 @@ import { Reveal } from "@/components/Reveal";
 import { CountUp, ScoreRing, ScoreGauge, HeroBg } from "@/components/site/animated";
 import { useTranslations } from "@/components/LanguageProvider";
 import { CALCULATOR_CONFIGS } from "@/data/calculatorConfigs";
+import { calculatorPath, catalogGroup, type CatalogGroup } from "@/lib/calculatorPath";
 import { formatTemplate, tr } from "@/lib/translate";
 
 export default function HomePage() {
@@ -108,22 +109,31 @@ export default function HomePage() {
               <p className="lead">{l.calc.lead}</p>
             </div>
           </Reveal>
-          <Reveal>
-            <div className="svc-grid">
-              {CALCULATOR_CONFIGS.map((calc, i) => (
-                <Link href={`/calculadora/${calc.slug}`} className="svc" key={calc.id}>
-                  <span className="go">↗</span>
-                  <span className="svc-tag">{cs.categories[calc.category]}</span>
-                  <div className="svc-i">{String(i + 1).padStart(2, "0")}</div>
-                  <h3 className="h3">{tr(calc.title, locale)}</h3>
-                  <p>{tr(calc.shortDescription, locale)}</p>
-                  <div className="svc-meta">
-                    {cs.complexity} {cs.complexityLabels[calc.complexity]} · {tr(calc.estimatedTime, locale)}
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </Reveal>
+          {(["executive", "technical", "regulatory"] as CatalogGroup[]).map((group) => {
+            const meta = l.calc.groups[group];
+            const items = CALCULATOR_CONFIGS.filter((calc) => catalogGroup(calc.id) === group);
+            return (
+              <Reveal key={group}>
+                <p className="eyebrow" style={{ marginTop: 28 }}>{meta.title}</p>
+                <div className="svc-grid">
+                  {items.map((calc) => (
+                    <Link href={calculatorPath(calc, locale)} className="svc" key={calc.id}>
+                      <span className="go">↗</span>
+                      <span className="svc-tag">{cs.categories[calc.category]}</span>
+                      <h3 className="h3">{tr(calc.title, locale)}</h3>
+                      <p>{tr(calc.shortDescription, locale)}</p>
+                      <div className="svc-meta">
+                        {meta.who}. {meta.need}. {meta.gets}.
+                      </div>
+                      <div className="svc-meta">
+                        {cs.complexity} {cs.complexityLabels[calc.complexity]} · {tr(calc.estimatedTime, locale)}
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </Reveal>
+            );
+          })}
         </div>
       </section>
 

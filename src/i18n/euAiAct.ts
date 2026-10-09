@@ -79,6 +79,8 @@ export type EuAiActCopy = {
     obligationsHeading: string;
     nextDate: string;
     noObligations: string;
+    outOfScopeObligations: string;
+    finishOutOfScope: string;
     readinessHeading: string;
     readinessScore: string;
     evidenceCoverage: string;
@@ -96,6 +98,7 @@ export type EuAiActCopy = {
     disclaimer: string;
     pdfGenerating: string;
     pdfError: string;
+    pdfSaved: string;
     selectPlaceholder: string;
     of: string;
   };
@@ -157,7 +160,7 @@ export type EuAiActCopy = {
 
 const EN: EuAiActCopy = {
   meta: {
-    title: "EU AI Act Compliance Readiness Assessment | SpritaScore by Sprita iT",
+    title: "EU AI Act Compliance Readiness Assessment",
     description:
       "Classify an AI system under the EU AI Act (Regulation (EU) 2024/1689), find out which obligations apply now and later, and measure your compliance readiness with a prioritized action plan. Multilingual, no code upload.",
     ogDescription:
@@ -469,6 +472,9 @@ const EN: EuAiActCopy = {
     obligationsHeading: "Applicable obligations and timeline",
     nextDate: "Next relevant date",
     noObligations: "No specific obligations were mapped for this classification beyond baseline duties.",
+    outOfScopeObligations:
+      "Preliminary result: this system does not appear to fall under Regulation (EU) 2024/1689. It is not labeled as non-compliance. Any controls you answer are voluntary and are not obligations of that Regulation.",
+    finishOutOfScope: "See the preliminary out-of-scope result",
     readinessHeading: "Compliance readiness",
     readinessScore: "Readiness score",
     evidenceCoverage: "Evidence coverage",
@@ -488,6 +494,7 @@ const EN: EuAiActCopy = {
       "This tool provides a preliminary assessment of applicability and readiness. It does not constitute legal advice, certification, a declaration of conformity or authorization to place an AI system on the EU market. Results must be validated by qualified technical and legal professionals.",
     pdfGenerating: "Generating PDF…",
     pdfError: "Could not generate the PDF. Please try again or use Print to PDF from your browser.",
+    pdfSaved: "PDF downloaded in this browser. Check your downloads folder.",
     selectPlaceholder: "Select…",
     of: "of",
   },
@@ -552,7 +559,7 @@ const EN: EuAiActCopy = {
 
 const ES: EuAiActCopy = {
   meta: {
-    title: "Evaluación de Preparación para el Cumplimiento del EU AI Act | SpritaScore by Sprita iT",
+    title: "Evaluación de Preparación para el Cumplimiento del EU AI Act",
     description:
       "Clasifique un sistema de IA bajo el EU AI Act (Reglamento (UE) 2024/1689), descubra qué obligaciones aplican hoy y en el futuro, y mida su preparación con un plan de acción priorizado. Multiidioma, sin subir código.",
     ogDescription:
@@ -864,6 +871,9 @@ const ES: EuAiActCopy = {
     obligationsHeading: "Obligaciones aplicables y calendario",
     nextDate: "Próxima fecha relevante",
     noObligations: "No se mapearon obligaciones específicas para esta clasificación más allá de los deberes básicos.",
+    outOfScopeObligations:
+      "Resultado preliminar: el sistema no parece estar en el ámbito del Reglamento (UE) 2024/1689. No se etiqueta como incumplimiento. Los controles que responda son voluntarios y no son obligaciones de ese reglamento.",
+    finishOutOfScope: "Ver el resultado preliminar de fuera de ámbito",
     readinessHeading: "Preparación para el cumplimiento",
     readinessScore: "Puntuación de preparación",
     evidenceCoverage: "Cobertura de evidencias",
@@ -883,6 +893,7 @@ const ES: EuAiActCopy = {
       "Esta herramienta proporciona una evaluación preliminar de aplicabilidad y preparación. No constituye asesoramiento jurídico, certificación, declaración de conformidad ni autorización para introducir un sistema de IA en la UE. Los resultados deben ser validados por profesionales técnicos y jurídicos cualificados.",
     pdfGenerating: "Generando PDF…",
     pdfError: "No se pudo generar el PDF. Intente de nuevo o use Imprimir como PDF en su navegador.",
+    pdfSaved: "PDF descargado en este navegador. Revise la carpeta de descargas.",
     selectPlaceholder: "Seleccionar…",
     of: "de",
   },
@@ -947,7 +958,7 @@ const ES: EuAiActCopy = {
 
 const PT: EuAiActCopy = {
   meta: {
-    title: "Avaliação de Preparação para a Conformidade com o EU AI Act | SpritaScore by Sprita iT",
+    title: "Avaliação de Preparação para a Conformidade com o EU AI Act",
     description:
       "Classifique um sistema de IA sob o EU AI Act (Regulamento (UE) 2024/1689), descubra quais obrigações se aplicam hoje e no futuro, e meça sua preparação com um plano de ação priorizado. Multilíngue, sem upload de código.",
     ogDescription:
@@ -1259,6 +1270,9 @@ const PT: EuAiActCopy = {
     obligationsHeading: "Obrigações aplicáveis e calendário",
     nextDate: "Próxima data relevante",
     noObligations: "Não foram mapeadas obrigações específicas para esta classificação além dos deveres básicos.",
+    outOfScopeObligations:
+      "Resultado preliminar: o sistema não parece estar no âmbito do Regulamento (UE) 2024/1689. Não é rotulado como incumprimento. Os controles que responder são voluntários e não são obrigações desse regulamento.",
+    finishOutOfScope: "Ver o resultado preliminar de fora do âmbito",
     readinessHeading: "Preparação para a conformidade",
     readinessScore: "Pontuação de preparação",
     evidenceCoverage: "Cobertura de evidências",
@@ -1278,6 +1292,7 @@ const PT: EuAiActCopy = {
       "Esta ferramenta fornece uma avaliação preliminar de aplicabilidade e preparação. Não constitui assessoria jurídica, certificação, declaração de conformidade nem autorização para introduzir um sistema de IA na UE. Os resultados devem ser validados por profissionais técnicos e jurídicos qualificados.",
     pdfGenerating: "Gerando PDF…",
     pdfError: "Não foi possível gerar o PDF. Tente novamente ou use Imprimir como PDF no navegador.",
+    pdfSaved: "PDF baixado neste navegador. Verifique a pasta de downloads.",
     selectPlaceholder: "Selecionar…",
     of: "de",
   },

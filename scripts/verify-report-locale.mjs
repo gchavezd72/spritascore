@@ -57,9 +57,9 @@ const FIXTURES = {
 };
 
 const SUMMARY_MARKERS = {
-  es: [/Con base en/i, /Sin una plataforma/i, /nivel de riesgo/i, /nivel de brecha/i, /Quedan \d+ días/i, /Obtuvo \d+\/75/i],
-  en: [/Based on the information/i, /Without an Application Security/i, /risk level/i, /compliance gap level/i, /\d+ days left before/i, /You scored \d+\/75/i],
-  pt: [/Com base nos dados/i, /Sem uma plataforma/i, /nível de risco/i, /nível de lacuna/i, /Restam \d+ dias/i, /obteve \d+\/75/i],
+  es: [/Con base en/i, /Sin una plataforma/i, /nivel de riesgo/i, /nivel de brecha/i, /Quedan \d+ días/i, /Obtuvo \d+\/75/i, /Con los datos declarados/i, /Ámbito/i, /Brecha de madurez/i, /madurez normalizada/i],
+  en: [/Based on the information/i, /Without an Application Security/i, /risk level/i, /compliance gap level/i, /\d+ days left before/i, /You scored \d+\/75/i, /From the declared inputs/i, /EU scope/i, /Maturity gap/i, /normalized maturity/i],
+  pt: [/Com base nos dados/i, /Sem uma plataforma/i, /nível de risco/i, /nível de lacuna/i, /Restam \d+ dias/i, /obteve \d+\/75/i, /Com os dados declarados/i, /Âmbito UE/i, /Lacuna de maturidade/i, /maturidade normalizada/i],
 };
 
 const UI_MARKERS = {
@@ -75,15 +75,15 @@ function matchesAny(text, patterns) {
 function costLabelMatchesLocale(label, locale) {
   if (!label) return false;
   if (locale === "es") {
-    return /Costo|Riesgo|Exposición|Remediación|Corrección|Triage|Factor|Interrupción|base/i.test(label)
+    return /Costo|Riesgo|Exposición|Remediación|Corrección|Triage|Factor|Interrupción|base|Sanción|Conformidad/i.test(label)
       && !/\b(the|without|based on)\b/i.test(label);
   }
   if (locale === "en") {
-    return /\b(cost|base|bug|vulnerability|exposure|technical|remediation|triage|factor|estimated|fixing|support)\b/i.test(label)
+    return /\b(cost|base|bug|vulnerability|exposure|technical|remediation|triage|factor|estimated|fixing|support|sanction|conformity)\b/i.test(label)
       && !/ção\b/i.test(label);
   }
   if (locale === "pt") {
-    return /Custo|Exposição|Remediação|Correção|Triagem|Fator|Interrupção|base/i.test(label);
+    return /Custo|Exposição|Remediação|Correção|Triagem|Fator|Interrupção|base|Sanção|Conformidade/i.test(label);
   }
   return false;
 }

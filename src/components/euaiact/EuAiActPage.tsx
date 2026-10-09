@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { EuAiActCalculator } from "@/components/euaiact/EuAiActCalculator";
-import { EuAiActLanguageBar } from "@/components/euaiact/EuAiActLanguageBar";
 import { ExecutiveLocaleSync } from "@/components/executive/ExecutiveLocaleSync";
 import { JsonLd } from "@/components/JsonLd";
 import { getEuAiActCopy, EU_AI_ACT_ROUTES } from "@/i18n/euAiAct";
@@ -32,7 +31,6 @@ export function EuAiActPage({ locale }: { locale: Locale }) {
       <ExecutiveLocaleSync locale={locale} />
       <JsonLd data={jsonLd} />
       <div className="container mx-auto px-4 max-w-3xl">
-        <EuAiActLanguageBar activeLocale={locale} />
 
         <header className="text-center mb-8">
           <p className="text-sm font-semibold text-brand-green uppercase tracking-wider mb-3">

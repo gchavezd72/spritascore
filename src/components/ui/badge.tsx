@@ -7,10 +7,10 @@ const badgeVariants = cva(
     variants: {
       variant: {
         default: "bg-brand-navy text-white",
-        bajo: "bg-risk-low/15 text-risk-low",
-        moderado: "bg-risk-moderate/15 text-yellow-700",
-        alto: "bg-risk-high/15 text-risk-high",
-        critico: "bg-risk-critical/15 text-risk-critical",
+        bajo: "bg-[#1fbf6c]/15 text-risk-low",
+        moderado: "bg-[#eab308]/15 text-risk-moderate",
+        alto: "bg-[#f97316]/15 text-risk-high",
+        critico: "bg-[#ef4444]/15 text-risk-critical",
         outline: "border border-border-strong text-muted-foreground",
       },
     },

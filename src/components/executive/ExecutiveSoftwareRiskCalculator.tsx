@@ -125,7 +125,7 @@ export function ExecutiveSoftwareRiskCalculator({ locale, route }: ExecutiveSoft
     <div className="space-y-6">
       <div className="flex items-center justify-between gap-4 flex-wrap">
         <div>
-          <p className="text-sm text-muted-foreground">
+          <p id="executive-progress-label" className="text-sm text-muted-foreground">
             {formatExecutive(copy.ui.sectionProgress, {
               current: sectionIndex + 1,
               total: EXECUTIVE_SECTIONS.length,
@@ -143,7 +143,7 @@ export function ExecutiveSoftwareRiskCalculator({ locale, route }: ExecutiveSoft
         </Badge>
       </div>
 
-      <Progress value={progress} className="h-2" />
+      <Progress value={progress} className="h-2" aria-labelledby="executive-progress-label" />
 
       <Card>
         <CardHeader>

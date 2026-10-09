@@ -56,6 +56,8 @@ export interface EuAiActResult {
   roles: OperatorRole[];
   roleTransformation: boolean;
   criticalStop: boolean; // prohibited practice
+  /** False for out-of-scope and not-an-AI-system. Obligations and readiness stay empty. */
+  regulatoryApplicable: boolean;
   manualReview: boolean;
   notes: string[]; // note keys (military / rnd / out-of-scope / not-ai / manual-review)
   confidence: ConfidenceLevel;
@@ -416,11 +418,12 @@ export function calculateEuAiAct(
   const rd = answers.readiness ?? {};
   const a = classify(cls, answers.annexArea ?? "none");
   const criticalStop = a.prohibitedYes;
+  const regulatoryApplicable = a.verdict !== "out-of-scope" && a.verdict !== "not-ai-system";
 
   const { confidence, reasons: confidenceReasons } = computeConfidence(cls, rd, a);
 
   const isHighRiskProvider = (a.hrProduct || a.hrUse) && a.roles.includes("provider");
-  const readiness = criticalStop ? null : computeReadiness(rd, isHighRiskProvider);
+  const readiness = criticalStop || !regulatoryApplicable ? null : computeReadiness(rd, isHighRiskProvider);
 
   const readinessScore = readiness ? readiness.overall : null;
   const readinessLevel = readiness ? getReadinessLevel(readiness.overall) : null;
@@ -445,20 +448,22 @@ export function calculateEuAiAct(
     .sort();
   const nextRelevantDate = futureDates[0] ?? null;
 
-  const complementary = computeComplementary(a, cls);
-  const gaps = computeGaps(a, rd, complementary);
+  const complementary = regulatoryApplicable ? computeComplementary(a, cls) : [];
+  const gaps = regulatoryApplicable ? computeGaps(a, rd, complementary) : [];
 
-  // Warnings (spec §29.6)
+  // Warnings only when the Act is in play. Out of scope is not non-compliance.
   const warnings: string[] = [];
   const isHighRisk = a.hrProduct || a.hrUse;
-  if (a.roleTransformation) warnings.push("role-change");
-  if (criticalStop || isHighRisk || a.manualReview) warnings.push("legal-review");
-  if (complementary.includes("gdpr-dpia")) warnings.push("dpia");
-  if (complementary.includes("fria")) warnings.push("fria");
-  if (complementary.includes("sector-safety")) warnings.push("sector-review");
-  if (isHighRisk) {
-    warnings.push("registration");
-    warnings.push("conformity");
+  if (regulatoryApplicable) {
+    if (a.roleTransformation) warnings.push("role-change");
+    if (criticalStop || isHighRisk || a.manualReview) warnings.push("legal-review");
+    if (complementary.includes("gdpr-dpia")) warnings.push("dpia");
+    if (complementary.includes("fria")) warnings.push("fria");
+    if (complementary.includes("sector-safety")) warnings.push("sector-review");
+    if (isHighRisk) {
+      warnings.push("registration");
+      warnings.push("conformity");
+    }
   }
 
   return {
@@ -467,6 +472,7 @@ export function calculateEuAiAct(
     roles: a.roles,
     roleTransformation: a.roleTransformation,
     criticalStop,
+    regulatoryApplicable,
     manualReview: a.manualReview,
     notes: a.notes,
     confidence,

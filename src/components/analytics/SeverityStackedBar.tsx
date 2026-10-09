@@ -21,7 +21,7 @@ export function SeverityStackedBar({ rows, metricLabel = "Cantidad" }: SeverityS
   }
 
   return (
-    <div className="sa-paper-chart" role="img" aria-label="Defectos por categoria y severidad">
+    <div className="sa-paper-chart" role="img" aria-label="Defectos por categoría y severidad">
       <ResponsiveContainer width="100%" height={Math.max(220, rows.length * 42 + 48)}>
         <BarChart layout="vertical" data={rows} margin={{ top: 8, right: 16, left: 8, bottom: 8 }} barCategoryGap="28%">
           <CartesianGrid stroke="#e6e8ec" horizontal={false} />

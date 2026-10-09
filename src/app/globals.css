@@ -10,13 +10,16 @@
   --border-strong: #cfd5e0;
   --brand-navy: #12213b;
   --brand-navy-light: #4a5d82;
-  --brand-green: #1fbf6c;
+  /* Text and solid buttons. White on this green is 6.3:1; the green on white is 6.3:1. */
+  --brand-green: #136e3c;
+  /* Wordmark and links on navy or near-black. 9.5:1 on #0a0e14. */
+  --brand-green-on-dark: #3dce7c;
   --brand-gray: #c7ccd3;
   --brand-gray-light: #f0f1f3;
-  --risk-low: #1fbf6c;
-  --risk-moderate: #eab308;
-  --risk-high: #f97316;
-  --risk-critical: #ef4444;
+  --risk-low: #136e3c;
+  --risk-moderate: #92400e;
+  --risk-high: #9a3412;
+  --risk-critical: #991b1b;
 
   --ease-linear-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -32,6 +35,7 @@
   --color-brand-navy: var(--brand-navy);
   --color-brand-navy-light: var(--brand-navy-light);
   --color-brand-green: var(--brand-green);
+  --color-brand-green-on-dark: var(--brand-green-on-dark);
   --color-brand-gray: var(--brand-gray);
   --color-brand-gray-light: var(--brand-gray-light);
   --color-risk-low: var(--risk-low);
@@ -51,6 +55,15 @@ body {
 
 h1, h2, h3, h4 {
   letter-spacing: -0.018em;
+}
+
+/* Visible keyboard focus on links and the corporate header controls.
+   White outline reads on navy; the green halo reads on white. */
+a:focus-visible,
+.sc button:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px var(--brand-green);
 }
 
 /* Soft ambient gradient behind the hero (light, Linear-style) */
@@ -565,7 +578,7 @@ h1, h2, h3, h4 {
   font-style: italic;
   font-size: 22px;
   color: var(--ink);
-  opacity: 0.55;
+  opacity: 0.7;
   display: inline-flex;
   align-items: center;
   gap: 54px;
@@ -1001,19 +1014,20 @@ h1, h2, h3, h4 {
   border-bottom: 1px solid var(--lined);
 }
 .sc .ft-about {
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(255, 255, 255, 0.82);
   font-size: 14.5px;
   line-height: 1.6;
   max-width: 300px;
   margin-top: 20px;
 }
-.sc .ft h5 {
+.sc .ft h2 {
   font-family: var(--font-space-mono), "Space Mono", monospace;
   font-size: 11px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.82);
   margin-bottom: 20px;
+  line-height: 1.4;
 }
 .sc .ft ul {
   list-style: none;
@@ -1024,7 +1038,7 @@ h1, h2, h3, h4 {
   padding: 0;
 }
 .sc .ft ul a {
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.88);
   text-decoration: none;
   font-size: 15px;
   transition: 0.2s;
@@ -1033,7 +1047,7 @@ h1, h2, h3, h4 {
   color: var(--green2);
 }
 .sc .ft-disc {
-  color: rgba(255, 255, 255, 0.38);
+  color: rgba(255, 255, 255, 0.82);
   font-size: 12.5px;
   line-height: 1.6;
   max-width: 760px;
@@ -1045,14 +1059,15 @@ h1, h2, h3, h4 {
   justify-content: space-between;
   align-items: center;
   padding-top: 26px;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.82);
   font-size: 13px;
   flex-wrap: wrap;
   gap: 12px;
 }
 .sc .ft-bot a {
-  color: rgba(255, 255, 255, 0.55);
-  text-decoration: none;
+  color: #ffffff;
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 .sc .ft-bot a:hover {
   color: #fff;
@@ -1147,15 +1162,16 @@ h1, h2, h3, h4 {
   flex-wrap: wrap;
 }
 .brand-bar a {
-  color: var(--brand-green);
+  color: var(--brand-green-on-dark);
   font-weight: 600;
-  text-decoration: none;
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 .brand-bar a:hover {
   text-decoration: underline;
 }
 .brand-bar-link {
-  opacity: 0.85;
+  opacity: 1;
   font-family: var(--font-mono), monospace;
   font-size: 11px;
 }
@@ -1166,8 +1182,9 @@ h1, h2, h3, h4 {
   line-height: 1.5;
 }
 .brand-footer-line a {
-  color: var(--brand-green);
-  text-decoration: none;
+  color: var(--brand-green-on-dark);
+  text-decoration: underline;
+  text-underline-offset: 2px;
   font-weight: 600;
 }
 .brand-footer-line a:hover {
@@ -1423,6 +1440,7 @@ h1, h2, h3, h4 {
   padding: 8px 12px;
   border-radius: 8px;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .sa-btn:hover { border-color: var(--sa-green); }
@@ -1530,7 +1548,7 @@ h1, h2, h3, h4 {
 }
 
 .sa-dot.on { background: var(--sa-green); }
-.sa-dot.empty { background: var(--sa-high); }
+.sa-dot.empty { background: #8b95a8; }
 .sa-dot.off { background: #3a4558; }
 
 .sa-file strong {
@@ -1544,7 +1562,8 @@ h1, h2, h3, h4 {
   font-style: normal;
   color: var(--sa-faint);
   font-size: 11px;
-  word-break: break-all;
+  overflow-wrap: anywhere;
+  word-break: normal;
 }
 
 .sa-listbox {
@@ -1657,6 +1676,7 @@ h1, h2, h3, h4 {
   border: 1px dashed var(--sa-line-strong);
   border-radius: 12px;
   padding: 18px 14px;
+  margin-bottom: 16px;
   text-align: center;
   color: var(--sa-muted);
   font-size: 13px;
