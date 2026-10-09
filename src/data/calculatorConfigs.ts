@@ -243,7 +243,7 @@ export const CALCULATOR_CONFIGS: CalculatorConfig[] = [
     id: "sector",
     slug: "riesgo-por-sector",
     category: "seguridad",
-    customRoute: "/es/calculadora/05",
+    customRoute: "/en/calculadora/05",
     title: { es: "Costo de vulnerabilidad por sector", en: "Cost of vulnerability by sector", pt: "Custo de vulnerabilidade por setor" },
     shortDescription: {
       es: "Estime el impacto financiero de una vulnerabilidad según sector, volumen de datos, uso de IA, SCA y madurez AppSec — 6 preguntas, resultado en R$ o USD.",

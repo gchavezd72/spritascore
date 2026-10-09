@@ -18,6 +18,6 @@ export function getRiskLevel(score: number): RiskLevel {
   return "critico";
 }
 
-export function getRiskLevelLabel(level: RiskLevel, locale: Locale = "es"): string {
+export function getRiskLevelLabel(level: RiskLevel, locale: Locale = "en"): string {
   return tr(RISK_LEVELS[level].label, locale);
 }

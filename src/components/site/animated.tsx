@@ -64,7 +64,7 @@ function useCountUp<T extends HTMLElement>(target: number, durationMs = 1200) {
 }
 
 /** Animated integer, e.g. the stat numbers. */
-export function CountUp({ target, locale = "es" }: { target: number; locale?: string }) {
+export function CountUp({ target, locale = "en" }: { target: number; locale?: string }) {
   const { ref, value } = useCountUp<HTMLSpanElement>(target);
   return <span ref={ref}>{value.toLocaleString(localeTag(locale))}</span>;
 }
@@ -73,7 +73,7 @@ export function CountUp({ target, locale = "es" }: { target: number; locale?: st
 export function ScoreRing({
   target = 842,
   label,
-  locale = "es",
+  locale = "en",
 }: {
   target?: number;
   label: string;
@@ -96,7 +96,7 @@ export function ScoreRing({
 export function ScoreGauge({
   target = 842,
   sub,
-  locale = "es",
+  locale = "en",
 }: {
   target?: number;
   sub: string;

@@ -8,7 +8,7 @@ export function RegionLocaleSync({ locale }: { locale: Locale }) {
   const { setLocale } = useTranslations();
 
   useEffect(() => {
-    setLocale(locale);
+    setLocale(locale, { persist: false });
   }, [locale, setLocale]);
 
   return null;

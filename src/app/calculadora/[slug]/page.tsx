@@ -25,7 +25,8 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps) {
   const { slug } = await params;
-  return calculatorMetadata(slug);
+  const locale = readLocaleCookie((await cookies()).get("spritascore_locale")?.value);
+  return calculatorMetadata(slug, locale);
 }
 
 export default async function CalculatorPage({ params }: PageProps) {
@@ -46,7 +47,7 @@ export default async function CalculatorPage({ params }: PageProps) {
 
   return (
     <div className="py-12 bg-background min-h-screen">
-      <JsonLd data={calculatorJsonLd(config)} />
+      <JsonLd data={calculatorJsonLd(config, locale)} />
       <div className="container mx-auto px-4">
         <CalculatorPageHeader config={config} />
         <CalculatorWizard config={config} />

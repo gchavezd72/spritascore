@@ -361,7 +361,7 @@ export const EU_AI_ACT_CARD = {
   id: "eu-ai-act-compliance" as const,
   slug: "eu-ai-act-compliance",
   category: "compliance" as const,
-  customRoute: EU_AI_ACT_ROUTES.es,
+  customRoute: EU_AI_ACT_ROUTES.en,
   title: {
     es: "Preparación para el cumplimiento del EU AI Act",
     en: "EU AI Act Compliance Readiness",

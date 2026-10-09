@@ -7,7 +7,7 @@ export const CALC05_ROUTES: Record<Locale, string> = {
 };
 
 export function getCalc05Route(locale: Locale): string {
-  return CALC05_ROUTES[locale] ?? CALC05_ROUTES.es;
+  return CALC05_ROUTES[locale] ?? CALC05_ROUTES.en;
 }
 
 export type Calc05Copy = {

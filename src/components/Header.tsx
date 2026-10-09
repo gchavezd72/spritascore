@@ -8,7 +8,7 @@ import { localizedSibling } from "@/lib/calculatorPath";
 import { cn } from "@/lib/utils";
 import type { Locale } from "@/types/calculator";
 
-const LOCALES: Locale[] = ["es", "en", "pt"];
+const LOCALES: Locale[] = ["en", "es", "pt"];
 
 export function Header() {
   const { t, locale, setLocale } = useTranslations();

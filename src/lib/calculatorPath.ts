@@ -1,6 +1,7 @@
 import { EU_AI_ACT_ROUTES, getEuAiActRoute } from "@/data/euAiAct";
 import { EXECUTIVE_ROUTES, getExecutiveRoute } from "@/data/executiveSoftwareRiskScore";
 import { CALC05_ROUTES, getCalc05Route } from "@/i18n/calc05";
+import { isRegion, REGION_LOCALE } from "@/lib/regions";
 import type { Locale } from "@/types/calculator";
 
 export type CatalogGroup = "executive" | "technical" | "regulatory";
@@ -30,5 +31,17 @@ export function localizedSibling(pathname: string, locale: Locale): string | nul
     const paths = Object.values(routes);
     if (paths.includes(pathname)) return routes[locale];
   }
+  return null;
+}
+
+/** Locale pinned by the URL. Unprefixed pages return null and use the saved preference or English. */
+export function localeFromPath(pathname: string): Locale | null {
+  for (const routes of LOCALIZED_ROUTES) {
+    for (const locale of ["en", "es", "pt"] as const) {
+      if (routes[locale] === pathname) return locale;
+    }
+  }
+  const region = pathname.split("/").filter(Boolean)[0];
+  if (region && isRegion(region)) return REGION_LOCALE[region];
   return null;
 }

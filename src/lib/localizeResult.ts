@@ -8,7 +8,7 @@ import type { CalculationResult, Locale } from "@/types/calculator";
  */
 export function localizeResult(
   result: CalculationResult,
-  locale: Locale = result.locale ?? "es"
+  locale: Locale = result.locale ?? "en"
 ): CalculationResult {
   const customEngine =
     result.inputs?.calculator === "calc05" ||

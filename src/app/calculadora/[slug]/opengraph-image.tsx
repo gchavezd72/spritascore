@@ -19,16 +19,16 @@ export default async function Image({ params }: ImageProps) {
   const config = getCalculatorBySlug(slug);
 
   if (!config) {
-    return createOgImage({ title: "Calculadora no encontrada" });
+    return createOgImage({ title: "Calculator not found" });
   }
 
-  const title = CALCULATOR_SEO[slug]?.title.es ?? tr(config.title, "es");
-  const subtitle = tr(config.shortDescription, "es").slice(0, 120);
+  const title = CALCULATOR_SEO[slug]?.title.en ?? tr(config.title, "en");
+  const subtitle = tr(config.shortDescription, "en").slice(0, 120);
 
   return createOgImage({
     title,
     subtitle,
-    eyebrow: "SpritaScore · Calculadora de riesgo",
-    chips: ["Score de riesgo", "Estimación económica", "ES · EN · PT"],
+    eyebrow: "SpritaScore · Risk calculator",
+    chips: ["Risk score", "Cost estimate", "EN · ES · PT"],
   });
 }

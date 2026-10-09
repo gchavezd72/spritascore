@@ -1,3 +1,4 @@
+import { headers } from "next/headers";
 import { Geist, Geist_Mono, Space_Mono } from "next/font/google";
 import { BrandBar } from "@/components/BrandBar";
 import { Header } from "@/components/Header";
@@ -7,10 +8,11 @@ import { LanguageProvider } from "@/components/LanguageProvider";
 import { GoogleTagManagerBody, GoogleTagManagerHead } from "@/components/GoogleTagManager";
 import { GtmConsentInit } from "@/components/GtmConsentInit";
 import { JsonLd } from "@/components/JsonLd";
+import { readLocaleCookie } from "@/lib/localePreference";
 import {
   faqJsonLd,
+  homeMetadata,
   organizationJsonLd,
-  rootMetadata,
   webApplicationJsonLd,
   webSiteJsonLd,
 } from "@/lib/seo";
@@ -32,22 +34,23 @@ const spaceMono = Space_Mono({
   subsets: ["latin"],
 });
 
-export const metadata = {
-  ...rootMetadata,
-  title: {
-    default: "SpritaScore — Calculadora de riesgo y costo de software | DevSecOps y ASPM",
-    template: "%s | SpritaScore",
-  },
-  metadataBase: new URL("https://spritascore.com"),
-};
+export async function generateMetadata() {
+  const locale = readLocaleCookie((await headers()).get("x-sprita-locale"));
+  return {
+    ...homeMetadata(locale),
+    metadataBase: new URL("https://spritascore.com"),
+  };
+}
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = readLocaleCookie((await headers()).get("x-sprita-locale"));
+
   return (
-    <html lang="es" className={`${geistSans.variable} ${geistMono.variable} ${spaceMono.variable} h-full antialiased`}>
+    <html lang={locale} className={`${geistSans.variable} ${geistMono.variable} ${spaceMono.variable} h-full antialiased`}>
       <head>
         <GoogleTagManagerHead />
       </head>
@@ -55,9 +58,14 @@ export default function RootLayout({
         <GoogleTagManagerBody />
         <GtmConsentInit />
         <JsonLd
-          data={[organizationJsonLd(), webSiteJsonLd(), webApplicationJsonLd(), faqJsonLd()]}
+          data={[
+            organizationJsonLd(),
+            webSiteJsonLd(locale),
+            webApplicationJsonLd(locale),
+            faqJsonLd(locale),
+          ]}
         />
-        <LanguageProvider>
+        <LanguageProvider initialLocale={locale}>
           <BrandBar />
           <Header />
           <main className="flex-1">{children}</main>

@@ -81,7 +81,7 @@ export function CalculatorSeoLanding({ region, internalSlug }: CalculatorSeoLand
 
   return (
     <>
-      <JsonLd data={calculatorJsonLd(config)} />
+      <JsonLd data={calculatorJsonLd(config, locale)} />
       <article className="seo-page">
         <div className="container mx-auto px-4 max-w-4xl pt-10 pb-4">
           <p className="seo-eyebrow">

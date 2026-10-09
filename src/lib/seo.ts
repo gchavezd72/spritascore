@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { CALCULATOR_CONFIGS } from "@/data/calculatorConfigs";
-import type { CalculatorConfig } from "@/types/calculator";
+import type { CalculatorConfig, Locale } from "@/types/calculator";
 import { tr } from "@/lib/translate";
 
 export const SITE_URL = "https://spritascore.com";
@@ -133,12 +133,42 @@ export function siteAlternates(path = "") {
   };
 }
 
+const OG_LOCALE: Record<Locale, string> = {
+  en: "en_US",
+  es: "es_ES",
+  pt: "pt_BR",
+};
+
+function openGraphLocales(locale?: Locale): { locale: string; alternateLocale: string[] } {
+  if (!locale) return { locale: "es_ES", alternateLocale: ["en_US", "pt_BR"] };
+  return {
+    locale: OG_LOCALE[locale],
+    alternateLocale: (["en", "es", "pt"] as const)
+      .filter((item) => item !== locale)
+      .map((item) => OG_LOCALE[item]),
+  };
+}
+
+const CATALOG_LABEL: Record<Locale, string> = {
+  en: "Calculators",
+  es: "Calculadoras",
+  pt: "Calculadoras",
+};
+
+const NOT_FOUND_TITLE: Record<Locale, string> = {
+  en: "Calculator not found",
+  es: "Calculadora no encontrada",
+  pt: "Calculadora não encontrada",
+};
+
 interface PageMetadataInput {
   title: string;
   description: string;
   path?: string;
   keywords?: string[];
   type?: "website" | "article";
+  /** Sets Open Graph locale. Omitted pages keep the previous es_ES default. */
+  locale?: Locale;
 }
 
 export function buildPageMetadata({
@@ -147,6 +177,7 @@ export function buildPageMetadata({
   path = "",
   keywords = [],
   type = "website",
+  locale,
   hreflangAlternates,
 }: PageMetadataInput & { hreflangAlternates?: Record<string, string> }): Metadata {
   const url = absoluteUrl(path);
@@ -154,6 +185,7 @@ export function buildPageMetadata({
   const languages = hreflangAlternates
     ? { ...hreflangAlternates, "x-default": hreflangAlternates["es-es"] ?? url }
     : siteAlternates(path).languages;
+  const og = openGraphLocales(locale);
 
   return {
     title,
@@ -165,8 +197,8 @@ export function buildPageMetadata({
       description,
       url,
       siteName: SITE_NAME,
-      locale: "es_ES",
-      alternateLocale: ["en_US", "pt_BR"],
+      locale: og.locale,
+      alternateLocale: og.alternateLocale,
       type,
     },
     twitter: {
@@ -199,56 +231,80 @@ export const HOME_OG = {
   url: SITE_URL,
 } as const;
 
-export const rootMetadata: Metadata = {
-  ...buildPageMetadata({
-    title: "SpritaScore — Calculadora de riesgo y costo de software | DevSecOps y ASPM",
-    description: DEFAULT_DESCRIPTION.es,
-    path: "",
-  }),
-  openGraph: {
-    title: HOME_OG.title,
-    description: HOME_OG.description,
-    url: HOME_OG.url,
-    siteName: SITE_NAME,
-    locale: "en_US",
-    alternateLocale: ["es_ES", "pt_BR"],
-    type: "website",
-    images: [
-      {
-        url: HOME_OG.image,
-        width: 1200,
-        height: 630,
-        alt: HOME_OG.title,
-        type: "image/png",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: HOME_OG.title,
-    description: HOME_OG.description,
-    images: [HOME_OG.image],
-  },
-  ...(googleSiteVerification
-    ? { verification: { google: googleSiteVerification } }
-    : {}),
+const HOME_TITLE: Record<Locale, string> = {
+  en: "SpritaScore — Software risk and cost calculator | DevSecOps and ASPM",
+  es: "SpritaScore — Calculadora de riesgo y costo de software | DevSecOps y ASPM",
+  pt: "SpritaScore — Calculadora de risco e custo de software | DevSecOps e ASPM",
 };
 
-export function calculatorMetadata(slug: string): Metadata {
+export const DEFAULT_TITLE = HOME_TITLE.en;
+
+export function homeMetadata(locale: Locale): Metadata {
+  const title = HOME_TITLE[locale];
+  const description = DEFAULT_DESCRIPTION[locale];
+  const socialTitle = locale === "en" ? HOME_OG.title : title;
+  const socialDescription = locale === "en" ? HOME_OG.description : description;
+  const og = openGraphLocales(locale);
+
+  return {
+    ...buildPageMetadata({
+      title,
+      description,
+      path: "",
+      locale,
+    }),
+    title: {
+      default: title,
+      template: "%s | SpritaScore",
+    },
+    openGraph: {
+      title: socialTitle,
+      description: socialDescription,
+      url: HOME_OG.url,
+      siteName: SITE_NAME,
+      locale: og.locale,
+      alternateLocale: og.alternateLocale,
+      type: "website",
+      images: [
+        {
+          url: HOME_OG.image,
+          width: 1200,
+          height: 630,
+          alt: socialTitle,
+          type: "image/png",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: socialTitle,
+      description: socialDescription,
+      images: [HOME_OG.image],
+    },
+    ...(googleSiteVerification
+      ? { verification: { google: googleSiteVerification } }
+      : {}),
+  };
+}
+
+export const rootMetadata: Metadata = homeMetadata("en");
+
+export function calculatorMetadata(slug: string, locale: Locale = "en"): Metadata {
   const config = CALCULATOR_CONFIGS.find((c) => c.slug === slug);
   if (!config) {
-    return { title: "Calculadora no encontrada" };
+    return { title: NOT_FOUND_TITLE[locale] };
   }
 
   const seo = CALCULATOR_SEO[slug];
-  const title = seo?.title.es ?? tr(config.title, "es");
-  const description = tr(config.shortDescription, "es");
+  const title = seo?.title[locale] ?? tr(config.title, locale);
+  const description = tr(config.shortDescription, locale);
 
   return buildPageMetadata({
     title,
     description,
     path: `/calculadora/${slug}`,
     keywords: seo?.keywords ?? [],
+    locale,
   });
 }
 
@@ -265,14 +321,14 @@ export function organizationJsonLd() {
   };
 }
 
-export function webSiteJsonLd() {
+export function webSiteJsonLd(locale: Locale = "en") {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: SITE_NAME,
     url: SITE_URL,
-    description: DEFAULT_DESCRIPTION.es,
-    inLanguage: ["es", "en", "pt"],
+    description: DEFAULT_DESCRIPTION[locale],
+    inLanguage: ["en", "es", "pt"],
     publisher: {
       "@type": "Organization",
       name: ORGANIZATION.name,
@@ -281,7 +337,7 @@ export function webSiteJsonLd() {
   };
 }
 
-export function webApplicationJsonLd() {
+export function webApplicationJsonLd(locale: Locale = "en") {
   return {
     "@context": "https://schema.org",
     "@type": "WebApplication",
@@ -289,14 +345,14 @@ export function webApplicationJsonLd() {
     url: SITE_URL,
     applicationCategory: "BusinessApplication",
     operatingSystem: "Web",
-    description: DEFAULT_DESCRIPTION.es,
+    description: DEFAULT_DESCRIPTION[locale],
     offers: {
       "@type": "Offer",
       price: "0",
       priceCurrency: "USD",
     },
-    featureList: CALCULATOR_CONFIGS.map((c) => tr(c.title, "es")),
-    inLanguage: ["es", "en", "pt"],
+    featureList: CALCULATOR_CONFIGS.map((c) => tr(c.title, locale)),
+    inLanguage: ["en", "es", "pt"],
     provider: {
       "@type": "Organization",
       name: ORGANIZATION.name,
@@ -305,29 +361,77 @@ export function webApplicationJsonLd() {
   };
 }
 
-export function faqJsonLd() {
-  const faqs = [
-    {
-      q: "¿Qué es SpritaScore?",
-      a: "SpritaScore es una plataforma B2B de calculadoras que convierte riesgos técnicos de software — vulnerabilidades, deuda técnica y brechas de compliance — en impacto financiero ejecutivo. Es un producto de Sprita IT.",
-    },
-    {
-      q: "¿Qué calculadoras incluye SpritaScore?",
-      a: `Incluye ${CALCULATOR_CONFIGS.length} calculadoras: ${CALCULATOR_CONFIGS.map((c) => tr(c.title, "es")).join(", ")}.`,
-    },
-    {
-      q: "¿SpritaScore está disponible en varios idiomas?",
-      a: "Sí. La interfaz, calculadoras y reportes están disponibles en español, inglés y portugués.",
-    },
-    {
-      q: "¿Los resultados de SpritaScore son una auditoría formal?",
-      a: "No. Los resultados son estimaciones orientativas basadas en la información ingresada. No constituyen auditoría, certificación ni opinión legal.",
-    },
-    {
-      q: "¿Quién desarrolla SpritaScore?",
-      a: "SpritaScore es desarrollado por Sprita IT (sprita-it.com), empresa especializada en seguridad de aplicaciones, DevSecOps, SAST, DAST, SCA y calidad de código.",
-    },
-  ];
+export function faqJsonLd(locale: Locale = "en") {
+  const names = CALCULATOR_CONFIGS.map((c) => tr(c.title, locale)).join(", ");
+  const count = CALCULATOR_CONFIGS.length;
+  const faqs = {
+    en: [
+      {
+        q: "What is SpritaScore?",
+        a: "SpritaScore is a B2B calculator platform that turns software technical risks — vulnerabilities, technical debt, and compliance gaps — into executive financial impact. It is a product of Sprita IT.",
+      },
+      {
+        q: "Which calculators does SpritaScore include?",
+        a: `It includes ${count} calculators: ${names}.`,
+      },
+      {
+        q: "Is SpritaScore available in more than one language?",
+        a: "Yes. The interface, calculators, and reports are available in English, Spanish, and Portuguese.",
+      },
+      {
+        q: "Are SpritaScore results a formal audit?",
+        a: "No. Results are indicative estimates based on the information you enter. They are not an audit, a certification, or legal advice.",
+      },
+      {
+        q: "Who builds SpritaScore?",
+        a: "SpritaScore is built by Sprita IT (sprita-it.com), a company focused on application security, DevSecOps, SAST, DAST, SCA, and code quality.",
+      },
+    ],
+    es: [
+      {
+        q: "¿Qué es SpritaScore?",
+        a: "SpritaScore es una plataforma B2B de calculadoras que convierte riesgos técnicos de software — vulnerabilidades, deuda técnica y brechas de compliance — en impacto financiero ejecutivo. Es un producto de Sprita IT.",
+      },
+      {
+        q: "¿Qué calculadoras incluye SpritaScore?",
+        a: `Incluye ${count} calculadoras: ${names}.`,
+      },
+      {
+        q: "¿SpritaScore está disponible en varios idiomas?",
+        a: "Sí. La interfaz, calculadoras y reportes están disponibles en español, inglés y portugués.",
+      },
+      {
+        q: "¿Los resultados de SpritaScore son una auditoría formal?",
+        a: "No. Los resultados son estimaciones orientativas basadas en la información ingresada. No constituyen auditoría, certificación ni opinión legal.",
+      },
+      {
+        q: "¿Quién desarrolla SpritaScore?",
+        a: "SpritaScore es desarrollado por Sprita IT (sprita-it.com), empresa especializada en seguridad de aplicaciones, DevSecOps, SAST, DAST, SCA y calidad de código.",
+      },
+    ],
+    pt: [
+      {
+        q: "O que é o SpritaScore?",
+        a: "O SpritaScore é uma plataforma B2B de calculadoras que converte riscos técnicos de software — vulnerabilidades, dívida técnica e lacunas de compliance — em impacto financeiro executivo. É um produto da Sprita IT.",
+      },
+      {
+        q: "Quais calculadoras o SpritaScore inclui?",
+        a: `Inclui ${count} calculadoras: ${names}.`,
+      },
+      {
+        q: "O SpritaScore está disponível em vários idiomas?",
+        a: "Sim. A interface, as calculadoras e os relatórios estão disponíveis em inglês, espanhol e português.",
+      },
+      {
+        q: "Os resultados do SpritaScore são uma auditoria formal?",
+        a: "Não. Os resultados são estimativas indicativas com base na informação introduzida. Não constituem auditoria, certificação nem opinião legal.",
+      },
+      {
+        q: "Quem desenvolve o SpritaScore?",
+        a: "O SpritaScore é desenvolvido pela Sprita IT (sprita-it.com), empresa especializada em segurança de aplicações, DevSecOps, SAST, DAST, SCA e qualidade de código.",
+      },
+    ],
+  }[locale];
 
   return {
     "@context": "https://schema.org",
@@ -343,7 +447,7 @@ export function faqJsonLd() {
   };
 }
 
-export function calculatorJsonLd(config: CalculatorConfig) {
+export function calculatorJsonLd(config: CalculatorConfig, locale: Locale = "en") {
   const seo = CALCULATOR_SEO[config.slug];
   const path = `/calculadora/${config.slug}`;
 
@@ -351,8 +455,8 @@ export function calculatorJsonLd(config: CalculatorConfig) {
     {
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
-      name: seo?.title.es ?? tr(config.title, "es"),
-      description: tr(config.shortDescription, "es"),
+      name: seo?.title[locale] ?? tr(config.title, locale),
+      description: tr(config.shortDescription, locale),
       url: absoluteUrl(path),
       applicationCategory: "BusinessApplication",
       operatingSystem: "Web",
@@ -376,13 +480,13 @@ export function calculatorJsonLd(config: CalculatorConfig) {
         {
           "@type": "ListItem",
           position: 2,
-          name: "Calculadoras",
+          name: CATALOG_LABEL[locale],
           item: `${SITE_URL}/#calculadoras`,
         },
         {
           "@type": "ListItem",
           position: 3,
-          name: tr(config.title, "es"),
+          name: tr(config.title, locale),
           item: absoluteUrl(path),
         },
       ],
@@ -390,12 +494,31 @@ export function calculatorJsonLd(config: CalculatorConfig) {
   ];
 }
 
-export function privacyMetadata(): Metadata {
-  return buildPageMetadata({
+const PRIVACY_META: Record<Locale, { title: string; description: string }> = {
+  en: {
+    title: "Privacy policy",
+    description:
+      "SpritaScore privacy policy: how we handle contact data, calculator results, and our own cookies.",
+  },
+  es: {
     title: "Política de privacidad",
     description:
       "Política de privacidad de SpritaScore: cómo tratamos datos de contacto, resultados de calculadoras y cookies propias.",
+  },
+  pt: {
+    title: "Política de privacidade",
+    description:
+      "Política de privacidade do SpritaScore: como tratamos dados de contacto, resultados das calculadoras e cookies próprios.",
+  },
+};
+
+export function privacyMetadata(locale: Locale = "en"): Metadata {
+  const copy = PRIVACY_META[locale];
+  return buildPageMetadata({
+    title: copy.title,
+    description: copy.description,
     path: "/privacidad",
     keywords: ["privacidad", "privacy policy", "cookies", "GDPR"],
+    locale,
   });
 }

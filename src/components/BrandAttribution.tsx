@@ -24,7 +24,7 @@ const COPY = {
   },
 };
 
-export function BrandAttribution({ variant = "bar", locale = "es" }: BrandAttributionProps) {
+export function BrandAttribution({ variant = "bar", locale = "en" }: BrandAttributionProps) {
   const c = COPY[locale];
 
   if (variant === "bar") {

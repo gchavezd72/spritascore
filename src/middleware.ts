@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { localeFromPath } from "@/lib/calculatorPath";
+import { LOCALE_COOKIE, readLocaleCookie } from "@/lib/localePreference";
 import { rateLimit } from "@/lib/rateLimit";
 
 function hostnameOf(request: NextRequest): string {
@@ -26,6 +28,9 @@ function shouldRewrite(pathname: string): boolean {
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const requestHeaders = new Headers(request.headers);
+  const locale =
+    localeFromPath(pathname) ?? readLocaleCookie(request.cookies.get(LOCALE_COOKIE)?.value);
+  requestHeaders.set("x-sprita-locale", locale);
 
   if (pathname.startsWith("/api/crm")) {
     const ip =

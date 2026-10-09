@@ -4,7 +4,7 @@ interface PageProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
-/** Locale-less entry → default Spanish, preserve query (Instantly UTMs / sector). */
+/** Locale-less entry → default English, preserve query (Instantly UTMs / sector). */
 export default async function Page({ searchParams }: PageProps) {
   const params = await searchParams;
   const qs = new URLSearchParams(
@@ -12,5 +12,5 @@ export default async function Page({ searchParams }: PageProps) {
       typeof v === "string" ? [[k, v]] : Array.isArray(v) ? v.map((x) => [k, x]) : []
     )
   ).toString();
-  redirect(qs ? `/es/calculadora/05?${qs}` : "/es/calculadora/05");
+  redirect(qs ? `/en/calculadora/05?${qs}` : "/en/calculadora/05");
 }

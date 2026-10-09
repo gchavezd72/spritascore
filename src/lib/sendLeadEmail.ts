@@ -106,7 +106,7 @@ function asString(value: unknown): string {
 }
 
 function asLocale(value: unknown): LocaleCode {
-  return value === "en" || value === "pt" ? value : "es";
+  return value === "en" || value === "es" || value === "pt" ? value : "en";
 }
 
 function row(label: string, value: unknown): string {

@@ -8,7 +8,7 @@ export function Calc05LocaleSync({ locale }: { locale: Locale }) {
   const { setLocale } = useLocale();
 
   useEffect(() => {
-    setLocale(locale);
+    setLocale(locale, { persist: false });
   }, [locale, setLocale]);
 
   return null;

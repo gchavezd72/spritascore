@@ -73,7 +73,7 @@ const ENVIRONMENT_LABELS: Record<string, LocalizedText> = {
 export function calculateIsoQuality(
   inputs: Record<string, unknown>,
   currency: Currency,
-  locale: Locale = "es"
+  locale: Locale = "en"
 ): CalculationResult {
   const devCost = num(inputs.devMonthlyCost, 5000);
   const devCount = num(inputs.devCount, 5);
@@ -253,7 +253,7 @@ export function calculateIsoQuality(
 export function calculateOwaspWeb(
   inputs: Record<string, unknown>,
   currency: Currency,
-  locale: Locale = "es"
+  locale: Locale = "en"
 ): CalculationResult {
   const category = getOwaspCategory(str(inputs.owaspCategory, "2025:A01"));
   const hourlyRate = num(inputs.hourlyRate, 75);
@@ -435,7 +435,7 @@ export function calculateOwaspWeb(
 export function calculateOwaspMobile(
   inputs: Record<string, unknown>,
   currency: Currency,
-  locale: Locale = "es"
+  locale: Locale = "en"
 ): CalculationResult {
   const category = getMobileCategory(str(inputs.mobileCategory, "M1"));
   const hourlyRate = num(inputs.hourlyRate, 75);
@@ -615,7 +615,7 @@ export function calculateOwaspMobile(
 export function calculateSector(
   inputs: Record<string, unknown>,
   currency: Currency,
-  locale: Locale = "es"
+  locale: Locale = "en"
 ): CalculationResult {
   const sectorId = str(inputs.sector, "retail");
   const sector = getSector(sectorId)!;
@@ -784,7 +784,7 @@ const NOISE_MULTIPLIERS: Record<string, number> = {
 export function calculateAspmCost(
   inputs: Record<string, unknown>,
   currency: Currency,
-  locale: Locale = "es"
+  locale: Locale = "en"
 ): CalculationResult {
   const appCount = num(inputs.appCount, 20);
   const tools = (inputs.securityTools as string[]) ?? ["sast", "sca"];
@@ -948,7 +948,7 @@ function daysUntil(date: Date): number {
 export function calculateCraCompliance(
   inputs: Record<string, unknown>,
   currency: Currency,
-  locale: Locale = "es"
+  locale: Locale = "en"
 ): CalculationResult {
   const annualRevenue = num(inputs.annualRevenue, 5000000);
   const productCategory = str(inputs.productCategory, "default");
@@ -1237,7 +1237,7 @@ function getDoraMaturityDiagnosis(normalizedPct: number, locale: Locale): string
 export function calculateDoraCompliance(
   inputs: Record<string, unknown>,
   currency: Currency,
-  locale: Locale = "es"
+  locale: Locale = "en"
 ): CalculationResult {
   const annualRevenue = num(inputs.annualRevenue, 50_000_000);
   const hourlyRate = num(inputs.hourlyRate, 95);
@@ -1418,7 +1418,7 @@ export function calculate(
   calculatorId: CalculatorId,
   inputs: Record<string, unknown>,
   currency: Currency,
-  locale: Locale = "es"
+  locale: Locale = "en"
 ): CalculationResult {
   let result: CalculationResult;
   switch (calculatorId) {
