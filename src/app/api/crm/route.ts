@@ -121,6 +121,32 @@ function rejectDisposable(email: string) {
   return isDisposableEmail(email);
 }
 
+function honeypotTripped(body: unknown): boolean {
+  if (!body || typeof body !== "object") return false;
+  const value = (body as { company_website?: unknown }).company_website;
+  return typeof value === "string" && value.trim().length > 0;
+}
+
+const recentLeads = new Map<string, number>();
+const LEAD_DEDUPE_MS = 10 * 60 * 1000;
+
+function leadDedupeKey(event: string, email: string): string {
+  return `${event}:${email.trim().toLowerCase()}`;
+}
+
+function isRecentLead(key: string): boolean {
+  const now = Date.now();
+  for (const [stored, at] of recentLeads) {
+    if (now - at > LEAD_DEDUPE_MS) recentLeads.delete(stored);
+  }
+  const previous = recentLeads.get(key);
+  return previous != null && now - previous < LEAD_DEDUPE_MS;
+}
+
+function rememberLead(key: string) {
+  recentLeads.set(key, Date.now());
+}
+
 export async function POST(request: NextRequest) {
   try {
     if (!isAllowedOrigin(request)) {
@@ -133,6 +159,10 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json();
 
+    if (honeypotTripped(body)) {
+      return NextResponse.json({ error: "Datos inválidos" }, { status: 400 });
+    }
+
     if (body?.event === "software_score_form_submit") {
       const parsed = executiveLeadSchema.safeParse(body);
       if (!parsed.success) {
@@ -143,6 +173,11 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: "Use un correo corporativo" }, { status: 400 });
       }
 
+      const dedupeKey = leadDedupeKey(parsed.data.event, parsed.data.lead.email);
+      if (isRecentLead(dedupeKey)) {
+        return NextResponse.json({ success: true });
+      }
+
       const delivered = await notifyLead({
         ...parsed.data,
         timestamp: new Date().toISOString(),
@@ -151,6 +186,8 @@ export async function POST(request: NextRequest) {
       if (!delivered) {
         return NextResponse.json({ error: "No se pudo registrar el lead" }, { status: 502 });
       }
+
+      rememberLead(dedupeKey);
 
       if (process.env.NODE_ENV === "development") {
         console.info("[CRM Executive Lead]", parsed.data.lead.email);
@@ -169,6 +206,11 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: "Use un correo corporativo" }, { status: 400 });
       }
 
+      const dedupeKey = leadDedupeKey(parsed.data.event, parsed.data.lead.email);
+      if (isRecentLead(dedupeKey)) {
+        return NextResponse.json({ success: true });
+      }
+
       const delivered = await notifyLead({
         ...parsed.data,
         timestamp: new Date().toISOString(),
@@ -178,6 +220,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: "No se pudo registrar el lead" }, { status: 502 });
       }
 
+      rememberLead(dedupeKey);
       return NextResponse.json({ success: true });
     }
 
@@ -191,6 +234,11 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: "Use un correo corporativo" }, { status: 400 });
       }
 
+      const dedupeKey = leadDedupeKey(parsed.data.event, parsed.data.lead.email);
+      if (isRecentLead(dedupeKey)) {
+        return NextResponse.json({ success: true });
+      }
+
       const delivered = await notifyLead({
         ...parsed.data,
         score: parsed.data.readinessScore ?? undefined,
@@ -202,6 +250,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: "No se pudo registrar el lead" }, { status: 502 });
       }
 
+      rememberLead(dedupeKey);
       return NextResponse.json({ success: true });
     }
 
@@ -215,6 +264,10 @@ export async function POST(request: NextRequest) {
     }
 
     const { resultId, lead, ...metrics } = parsed.data;
+    const dedupeKey = leadDedupeKey("lead_submitted", lead.email);
+    if (isRecentLead(dedupeKey)) {
+      return NextResponse.json({ success: true });
+    }
 
     const delivered = await notifyLead({
       event: "lead_submitted",
@@ -227,6 +280,8 @@ export async function POST(request: NextRequest) {
     if (!delivered) {
       return NextResponse.json({ error: "No se pudo registrar el lead" }, { status: 502 });
     }
+
+    rememberLead(dedupeKey);
 
     if (process.env.NODE_ENV === "development") {
       console.info("[CRM Lead]", { email: lead.email, resultId });

@@ -1,5 +1,5 @@
 # SpritaScore — Full context for AI and search systems
-Version: 2026-07
+Version: 2026-11
 Canonical URL: https://spritascore.com
 
 ## Entity summary
@@ -18,7 +18,7 @@ Security and engineering teams struggle to communicate risk in financial terms t
 1. User selects a specialized calculator
 2. Completes a guided wizard (2–5 minutes)
 3. Receives partial results immediately: risk score, economic estimate (min/probable/max), impact matrix, risk factors, top recommendations
-4. Optional lead capture unlocks full executive summary, detailed cost breakdown, all recommendations, and PDF report
+4. The score, summary, and PDF stay available in the browser. A form only requests a later scope review. It does not unlock hidden results.
 
 ## Calculators detail
 
@@ -48,13 +48,17 @@ Assesses gap against CRA essential requirements, vulnerability management, and r
 
 ### 7. DORA compliance assessment
 URL: https://spritascore.com/calculadora/compliance-dora
-15-question maturity assessment for EU Digital Operational Resilience Act: ICT risk governance, incident management, resilience testing, ICT third-party providers. Scale 1–5 per question, max score 75.
+15-question assessment for the EU Digital Operational Resilience Act: ICT risk governance, incident management, resilience testing, and ICT third-party providers. The score shown to the visitor is exposure from 0 to 100.
 
 ## Sprita IT services alignment
 Sprita IT provides: SAST, DAST, SCA, Code Quality analysis, ASPM, Software Risk Assessment, and compliance evidence for CRA, DORA, NIS2, and sector regulations.
 
 ## Languages
-UI and reports available in Spanish, English, and Portuguese. Language is user-selected in the browser (client-side i18n).
+English is the default homepage (https://spritascore.com/). Spanish is at https://spritascore.com/es and Portuguese is at https://spritascore.com/pt. A saved language preference applies on pages that do not pin a language in the URL. Reports use the same three languages.
+
+## Executive score and EU AI Act
+- Executive software risk score: https://spritascore.com/en/executive-software-risk-score (also /es/puntaje-ejecutivo-riesgo-software and /pt/pontuacao-executiva-risco-software). Fifteen declared answers. Displayed exposure is 0–100.
+- EU AI Act readiness: https://spritascore.com/en/eu-ai-act-compliance (also /es/cumplimiento-eu-ai-act and /pt/conformidade-eu-ai-act). The displayed score stays on 0–100. It is not a conformity assessment.
 
 ## Geographic relevance
 - EU: CRA, DORA, NIS2
@@ -62,8 +66,8 @@ UI and reports available in Spanish, English, and Portuguese. Language is user-s
 - US: OWASP and ASPM calculators
 
 ## Contact & CTA
-- Email: info@spritascore.com
-- Technical diagnosis: mailto:info@spritascore.com?subject=Diagnóstico técnico Spritascore
+- Email: info@sprita-it.com
+- Scope review: https://spritascore.com/en/software-audit
 - Privacy policy: https://spritascore.com/privacidad
 
 ## Crawling guidance

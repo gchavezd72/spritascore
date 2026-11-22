@@ -12,6 +12,7 @@ import { tr } from "@/lib/translate";
 
 export function Footer() {
   const { t, locale } = useTranslations();
+  const home = locale === "en" ? "/" : `/${locale}`;
   const f = t.footer;
   const l = t.landing;
 
@@ -41,13 +42,13 @@ export function Footer() {
             <h2>{l.footer.productTitle}</h2>
             <ul>
               <li>
-                <Link href="/#producto">{l.footer.product.score}</Link>
+                <Link href={`${home}#producto`}>{l.footer.product.score}</Link>
               </li>
               <li>
-                <Link href="/#metodo">{l.footer.product.how}</Link>
+                <Link href={`${home}#metodo`}>{l.footer.product.how}</Link>
               </li>
               <li>
-                <Link href="/#sectores">{l.footer.product.sectors}</Link>
+                <Link href={`${home}#sectores`}>{l.footer.product.sectors}</Link>
               </li>
               <li>
                 <Link href={auditPath(locale)}>{getAuditCopy(locale).nav}</Link>

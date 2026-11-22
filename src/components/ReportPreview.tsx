@@ -41,7 +41,7 @@ export function ReportPreview({ result }: ReportPreviewProps) {
     <div id="report-content" className="bg-white text-slate-900 p-8 max-w-4xl mx-auto print:p-0" lang={reportLocale}>
       <div className="flex justify-between items-start mb-8 border-b pb-6 print:mb-4">
         <div>
-          <h1 className="text-2xl font-bold text-brand-navy">Spritascore</h1>
+          <h1 className="text-2xl font-bold text-brand-navy">SpritaScore</h1>
           <p className="text-sm text-slate-500">{rp.productName}</p>
         </div>
         <div className="text-right text-sm text-slate-500">

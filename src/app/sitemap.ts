@@ -25,6 +25,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     { url: SITE_URL, lastModified: now, changeFrequency: "weekly", priority: 1 },
+    { url: `${SITE_URL}/es`, lastModified: now, changeFrequency: "weekly", priority: 0.95 },
+    { url: `${SITE_URL}/pt`, lastModified: now, changeFrequency: "weekly", priority: 0.95 },
     {
       url: `${SITE_URL}/en/executive-software-risk-score`,
       lastModified: now,
@@ -54,7 +56,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE_URL}${AUDIT_ROUTES.pt}`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
     { url: `${SITE_URL}/privacidad`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
     { url: `${SITE_URL}/analytics`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
-    { url: "https://analytics.spritascore.com", lastModified: now, changeFrequency: "weekly", priority: 0.8 },
     ...regionalPages,
     ...legacyCalculators,
   ];

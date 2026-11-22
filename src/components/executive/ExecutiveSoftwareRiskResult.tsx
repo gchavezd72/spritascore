@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Download, ClipboardCopy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -13,6 +14,7 @@ import type { ExecutiveAnswerId } from "@/data/executiveSoftwareRiskScore";
 import { AuditOffer } from "@/components/AuditOffer";
 import { ExecutiveLeadForm } from "@/components/executive/ExecutiveLeadForm";
 import { EXECUTIVE_CARD } from "@/data/executiveSoftwareRiskScore";
+import { auditPath } from "@/lib/auditRoutes";
 import type { UtmParams } from "@/lib/executiveUtm";
 import { formatExecutive, getExecutiveCopy } from "@/i18n/executive";
 import type { Locale } from "@/types/calculator";
@@ -81,7 +83,7 @@ export function ExecutiveSoftwareRiskResult({
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="text-center">
-            <p className="text-sm uppercase tracking-wider text-muted-foreground mb-2">
+            <p className="text-sm tracking-wide text-muted-foreground mb-2">
               {copy.ui.riskExposureScore}
             </p>
             <p className={cn("text-5xl font-bold tracking-tight", LEVEL_COLORS[result.level])}>
@@ -94,51 +96,38 @@ export function ExecutiveSoftwareRiskResult({
               aria-label={copy.ui.riskExposureScore}
             />
             <p className="text-sm text-muted-foreground mt-3 max-w-md mx-auto">{copy.ui.zeroRiskNote}</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-            <div className="p-4 rounded-xl bg-background border border-border-hairline">
-              <p className="text-xs text-muted-foreground uppercase tracking-wide">
-                {copy.ui.executiveMaturity}
+            <p className="font-semibold text-brand-navy mt-4">{result.levelLabel}</p>
+            {`${result.exposureLabel} ${copy.ui.exposureSuffix}`.trim().toLowerCase() !== result.levelLabel.toLowerCase() && (
+              <Badge
+                variant={
+                  result.level === "low"
+                    ? "bajo"
+                    : result.level === "moderate"
+                      ? "moderado"
+                      : result.level === "high"
+                        ? "alto"
+                        : "critico"
+                }
+                className="mt-2"
+              >
+                {result.exposureLabel} {copy.ui.exposureSuffix}
+              </Badge>
+            )}
+            <p className="text-sm text-muted-foreground mt-3 max-w-xl mx-auto leading-relaxed">
+              {result.interpretation}
+            </p>
+            <details className="mt-4 max-w-md mx-auto text-left text-sm text-muted-foreground">
+              <summary className="cursor-pointer text-brand-navy">{copy.ui.maturityDetails}</summary>
+              <p className="mt-3">
+                {copy.ui.executiveMaturity}: {result.levelLabel}
               </p>
-              <p className="font-semibold text-brand-navy mt-1">{result.levelLabel}</p>
-              {`${result.exposureLabel} ${copy.ui.exposureSuffix}`.trim().toLowerCase() !== result.levelLabel.toLowerCase() && (
-                <Badge
-                  variant={
-                    result.level === "low"
-                      ? "bajo"
-                      : result.level === "moderate"
-                        ? "moderado"
-                        : result.level === "high"
-                          ? "alto"
-                          : "critico"
-                  }
-                  className="mt-2"
-                >
-                  {result.exposureLabel} {copy.ui.exposureSuffix}
-                </Badge>
-              )}
-            </div>
-            <div className="p-4 rounded-xl bg-background border border-border-hairline">
-              <p className="text-xs text-muted-foreground uppercase tracking-wide">
-                {copy.ui.maturityPoints}
+              <p className="mt-1">
+                {copy.ui.maturityPoints}: {result.rawMaturityPoints} / 15
               </p>
-              <p className="font-semibold text-brand-navy mt-1">
-                {result.rawMaturityPoints}{" "}
-                <span className="text-muted-foreground font-normal">/ 15</span>
-              </p>
-              <p className="text-sm text-muted-foreground mt-1">
+              <p className="mt-1">
                 {formatExecutive(copy.ui.maturityPercent, { percent: result.maturityPercent })}
               </p>
-            </div>
-            <div className="p-4 rounded-xl bg-background border border-border-hairline">
-              <p className="text-xs text-muted-foreground uppercase tracking-wide">
-                {copy.ui.interpretation}
-              </p>
-              <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
-                {result.interpretation}
-              </p>
-            </div>
+            </details>
           </div>
 
           {result.recommendations.length > 0 && (
@@ -159,19 +148,20 @@ export function ExecutiveSoftwareRiskResult({
           )}
 
           <div className="flex flex-col sm:flex-row gap-3">
-            <Button
-              className="flex-1"
-              onClick={() => {
-                trackExecutiveEvent("software_score_assessment_click", {
-                  riskExposureScore: result.riskExposureScore,
-                  level: result.level,
-                  language: locale,
-                  ...utm,
-                });
-                document.getElementById("assessment-form")?.scrollIntoView({ behavior: "smooth" });
-              }}
-            >
-              {copy.ui.requestAssessment}
+            <Button asChild className="flex-1">
+              <Link
+                href={auditPath(locale, EXECUTIVE_CARD.id)}
+                onClick={() => {
+                  trackExecutiveEvent("software_score_assessment_click", {
+                    riskExposureScore: result.riskExposureScore,
+                    level: result.level,
+                    language: locale,
+                    ...utm,
+                  });
+                }}
+              >
+                {copy.ui.requestAssessment}
+              </Link>
             </Button>
             {onReview && (
               <Button type="button" variant="outline" className="flex-1" onClick={onReview}>

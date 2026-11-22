@@ -27,7 +27,7 @@ export const pt: TranslationKeys = {
     },
   },
   hero: {
-    badge: "Spritascore — Application Risk & Cost Calculator",
+    badge: "SpritaScore — Application Risk & Cost Calculator",
     title: "Calcule quanto uma vulnerabilidade ou a má qualidade do código pode custar à sua empresa",
     subtitle:
       "Converta riscos técnicos em impacto financeiro. Estime o custo de defeitos, vulnerabilidades OWASP, riscos mobile, exposição por setor, o tempo que sua equipe perde sem um ASPM e seu nível de compliance com o EU Cyber Resilience Act e DORA — em poucos minutos e com poucas perguntas.",

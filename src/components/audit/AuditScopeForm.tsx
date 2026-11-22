@@ -6,6 +6,7 @@ import { getAuditCopy } from "@/i18n/audit";
 import { AUDIT_IDS, auditMatch, type AuditId } from "@/lib/auditRoutes";
 import { trackEvent } from "@/lib/analytics";
 import type { Locale } from "@/types/calculator";
+import { HoneypotField } from "@/components/HoneypotField";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -23,6 +24,7 @@ export function AuditScopeForm({
   const [marketing, setMarketing] = useState(false);
   const [service, setService] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [companyWebsite, setCompanyWebsite] = useState("");
   const [error, setError] = useState("");
   const [done, setDone] = useState(false);
 
@@ -54,6 +56,7 @@ export function AuditScopeForm({
           auditId,
           calculatorId: model || undefined,
           consentService: true,
+          company_website: companyWebsite,
         }),
       });
       if (res.status === 400) {
@@ -83,7 +86,8 @@ export function AuditScopeForm({
   }
 
   return (
-    <form method="post" onSubmit={onSubmit} className="space-y-4 rounded-xl border bg-white p-6">
+    <form method="post" onSubmit={onSubmit} className="relative space-y-4 rounded-xl border bg-white p-6">
+      <HoneypotField onChange={setCompanyWebsite} />
       <div>
         <h2 className="text-xl font-bold text-foreground">{copy.formTitle}</h2>
         <p className="mt-2 text-sm text-muted-foreground">{copy.formLead}</p>

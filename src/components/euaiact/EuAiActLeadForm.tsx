@@ -13,6 +13,7 @@ import { sanitizeInput } from "@/lib/utils";
 import { trackEvent } from "@/lib/analytics";
 import { isDisposableEmail, type UtmParams } from "@/lib/executiveUtm";
 import type { EuAiActResult } from "@/lib/calculateEuAiAct";
+import { HoneypotField } from "@/components/HoneypotField";
 import { getEuAiActCopy } from "@/i18n/euAiAct";
 import type { Locale } from "@/types/calculator";
 
@@ -27,6 +28,7 @@ export function EuAiActLeadForm({ locale, result, utm }: EuAiActLeadFormProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [done, setDone] = useState(false);
+  const [companyWebsite, setCompanyWebsite] = useState("");
 
   const schema = useMemo(
     () =>
@@ -81,6 +83,7 @@ export function EuAiActLeadForm({ locale, result, utm }: EuAiActLeadFormProps) {
         .filter(Boolean)
         .join(" · "),
       topRecommendations: result.gaps.slice(0, 5).map((gap) => gap.key),
+      company_website: companyWebsite,
       ...utm,
     };
 
@@ -118,7 +121,8 @@ export function EuAiActLeadForm({ locale, result, utm }: EuAiActLeadFormProps) {
         <CardDescription>{copy.form.description}</CardDescription>
       </CardHeader>
       <CardContent>
-        <form method="post" onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form method="post" onSubmit={handleSubmit(onSubmit)} className="relative space-y-4">
+          <HoneypotField onChange={setCompanyWebsite} />
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <Label htmlFor="firstName">{copy.form.firstName} *</Label>

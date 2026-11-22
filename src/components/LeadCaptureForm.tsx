@@ -13,6 +13,7 @@ import { isDisposableEmail } from "@/lib/email";
 import { sanitizeInput } from "@/lib/utils";
 import { trackEvent } from "@/lib/analytics";
 import { tr } from "@/lib/translate";
+import { HoneypotField } from "@/components/HoneypotField";
 import { useTranslations } from "@/components/LanguageProvider";
 import type { CalculationResult, LeadData } from "@/types/calculator";
 import { getCalculatorById } from "@/data/calculatorConfigs";
@@ -39,6 +40,7 @@ interface LeadCaptureFormProps {
 
 export function LeadCaptureForm({ result, onSuccess }: LeadCaptureFormProps) {
   const [loading, setLoading] = useState(false);
+  const [companyWebsite, setCompanyWebsite] = useState("");
   const [error, setError] = useState("");
   const { t, locale } = useTranslations();
 
@@ -101,6 +103,7 @@ export function LeadCaptureForm({ result, onSuccess }: LeadCaptureFormProps) {
           spritaScore: inputs.spritaScore,
           impactFormatted: inputs.impactFormatted,
           classification: inputs.classification,
+          company_website: companyWebsite,
         }),
       });
       if (!res.ok) throw new Error("submit failed");
@@ -124,7 +127,8 @@ export function LeadCaptureForm({ result, onSuccess }: LeadCaptureFormProps) {
         <CardDescription>{t.leadForm.description}</CardDescription>
       </CardHeader>
       <CardContent>
-        <form method="post" onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form method="post" onSubmit={handleSubmit(onSubmit)} className="relative space-y-4">
+          <HoneypotField onChange={setCompanyWebsite} />
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <Label htmlFor="firstName">{t.leadForm.firstName} *</Label>

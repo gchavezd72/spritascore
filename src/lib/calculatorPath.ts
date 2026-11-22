@@ -2,6 +2,7 @@ import { EU_AI_ACT_ROUTES, getEuAiActRoute } from "@/data/euAiAct";
 import { EXECUTIVE_ROUTES, getExecutiveRoute } from "@/data/executiveSoftwareRiskScore";
 import { CALC05_ROUTES, getCalc05Route } from "@/i18n/calc05";
 import { AUDIT_ROUTES } from "@/lib/auditRoutes";
+import { regionalSibling } from "@/lib/regionalSibling";
 import { isRegion, REGION_LOCALE } from "@/lib/regions";
 import type { Locale } from "@/types/calculator";
 
@@ -35,6 +36,19 @@ export function localizedSibling(pathname: string, locale: Locale): string | nul
   return null;
 }
 
+/**
+ * Where an explicit language choice should navigate.
+ * Returns null when this page has no translated URL, so the control only saves the preference.
+ */
+export function languageSwitchPath(pathname: string, locale: Locale): string | null {
+  const sibling = localizedSibling(pathname, locale) ?? regionalSibling(pathname, locale);
+  if (sibling) return sibling;
+  if (pathname === "/" || pathname === "/es" || pathname === "/pt") {
+    return locale === "en" ? "/" : `/${locale}`;
+  }
+  return null;
+}
+
 /** Locale pinned by the URL. Unprefixed pages return null and use the saved preference or English. */
 export function localeFromPath(pathname: string): Locale | null {
   for (const routes of LOCALIZED_ROUTES) {
@@ -42,6 +56,9 @@ export function localeFromPath(pathname: string): Locale | null {
       if (routes[locale] === pathname) return locale;
     }
   }
+  if (pathname === "/analytics" || pathname.startsWith("/analytics/")) return "es";
+  if (pathname === "/es" || pathname.startsWith("/es/")) return "es";
+  if (pathname === "/pt" || pathname.startsWith("/pt/")) return "pt";
   const region = pathname.split("/").filter(Boolean)[0];
   if (region && isRegion(region)) return REGION_LOCALE[region];
   return null;

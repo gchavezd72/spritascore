@@ -1,40 +1,56 @@
 # SpritaScore
 > Application Risk & Cost Calculator by Sprita IT
 
-SpritaScore (https://spritascore.com) is a B2B web platform that translates software security, quality, and compliance risks into executive financial impact. Built by Sprita IT for technology, security, and compliance teams.
+SpritaScore (https://spritascore.com) is a B2B web platform that turns software security, quality, and compliance risk into an executive estimate of financial impact. It is a brand of Sprita iT (https://sprita-it.com).
+
+The score shown to visitors is 0–100. A higher number means higher exposure. Results are estimates from declared answers. They are not an audit, a certification, or a legal opinion.
+
+## Languages
+- English homepage: [SpritaScore](https://spritascore.com/)
+- Spanish homepage: [SpritaScore en español](https://spritascore.com/es)
+- Portuguese homepage: [SpritaScore em português](https://spritascore.com/pt)
 
 ## Primary capabilities
-- Risk score (0–100) and economic exposure estimates
-- Prioritized remediation recommendations
-- Printable/PDF reports after lead capture
-- Languages: Spanish (ES), English (EN), Portuguese (PT)
+- Risk exposure score from 0 to 100 and an economic estimate
+- Prioritized recommendations from the answers given
+- A PDF report in the browser, without gating it behind a form
+- Optional request for a scope review with Sprita iT
 
-## Calculators (7)
-- ISO 25010 poor code quality cost: https://spritascore.com/calculadora/no-calidad-codigo
-- OWASP Top 10 web vulnerability cost: https://spritascore.com/calculadora/owasp-top10-web
-- OWASP Mobile Top 10: https://spritascore.com/calculadora/owasp-mobile-top10
-- Sector industrial risk: https://spritascore.com/calculadora/riesgo-por-sector
-- Cost of not having ASPM: https://spritascore.com/calculadora/costo-de-no-usar-aspm
-- EU Cyber Resilience Act (CRA) compliance: https://spritascore.com/calculadora/compliance-eu-cra
-- DORA (Digital Operational Resilience Act) assessment: https://spritascore.com/calculadora/compliance-dora
+## Calculators (9)
+- [Executive software risk score](https://spritascore.com/en/executive-software-risk-score)
+- [ISO 25010 code quality cost](https://spritascore.com/calculadora/no-calidad-codigo)
+- [OWASP Top 10 web](https://spritascore.com/calculadora/owasp-top10-web)
+- [OWASP Mobile Top 10](https://spritascore.com/calculadora/owasp-mobile-top10)
+- [Sector risk](https://spritascore.com/en/calculadora/05)
+- [Cost of not using ASPM](https://spritascore.com/calculadora/costo-de-no-usar-aspm)
+- [EU Cyber Resilience Act](https://spritascore.com/calculadora/compliance-eu-cra)
+- [DORA](https://spritascore.com/calculadora/compliance-dora)
+- [EU AI Act readiness](https://spritascore.com/en/eu-ai-act-compliance)
 
-## Frameworks & standards referenced
-ISO/IEC 25010, OWASP Top 10 (2021), OWASP Mobile Top 10 (2024), EU Cyber Resilience Act, DORA, ASPM best practices, sector risk models.
+Spanish and Portuguese routes exist for the executive score, sector risk, EU AI Act, and the scope-review page.
+
+## Scope review
+- [English](https://spritascore.com/en/software-audit)
+- [Spanish](https://spritascore.com/es/auditoria-de-software)
+- [Portuguese](https://spritascore.com/pt/auditoria-de-software)
+
+## Frameworks referenced
+ISO/IEC 25010, OWASP Top 10, OWASP Mobile Top 10, EU Cyber Resilience Act, DORA, EU AI Act, and ASPM practice. SpritaScore does not certify compliance with any of them.
 
 ## Organization
 - Product: SpritaScore — https://spritascore.com (a brand of Sprita iT)
-- Company: Sprita iT — https://sprita-it.com
-- Contact: info@spritascore.com
+- Company: Sprita IT — https://sprita-it.com
+- Contact: info@sprita-it.com
 
-## Regional SEO URLs
-- Spain/LATAM (es-es): https://spritascore.com/es-es
-- United States (en-us): https://spritascore.com/en-us
-- European Union (en-eu): https://spritascore.com/en-eu
-- Portugal/Brazil (pt-pt): https://spritascore.com/pt-pt
+## Regional guides
+- [Spain and Latin America](https://spritascore.com/es-es)
+- [United States](https://spritascore.com/en-us)
+- [European Union](https://spritascore.com/en-eu)
+- [Portugal and Brazil](https://spritascore.com/pt-pt)
 
 ## Important disclaimer
 Results are indicative estimates, not formal audits, certifications, or legal opinions.
 
 ## Extended documentation
-Full product context for AI systems: https://spritascore.com/llms-full.txt
-Sitemap: https://spritascore.com/sitemap.xml
+- [Full product context](https://spritascore.com/llms-full.txt)
+- [Sitemap](https://spritascore.com/sitemap.xml)

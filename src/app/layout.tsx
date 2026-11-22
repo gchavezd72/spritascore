@@ -35,9 +35,11 @@ const spaceMono = Space_Mono({
 });
 
 export async function generateMetadata() {
-  const locale = readLocaleCookie((await headers()).get("x-sprita-locale"));
+  const headerStore = await headers();
+  const locale = readLocaleCookie(headerStore.get("x-sprita-locale"));
+  const pathname = headerStore.get("x-sprita-pathname") ?? "/";
   return {
-    ...homeMetadata(locale),
+    ...homeMetadata(locale, pathname),
     metadataBase: new URL("https://spritascore.com"),
   };
 }
@@ -47,7 +49,10 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const locale = readLocaleCookie((await headers()).get("x-sprita-locale"));
+  const headerStore = await headers();
+  const locale = readLocaleCookie(headerStore.get("x-sprita-locale"));
+  const pathname = headerStore.get("x-sprita-pathname") ?? "/";
+  const homeFaq = pathname === "/" || pathname === "/es" || pathname === "/pt";
 
   return (
     <html lang={locale} className={`${geistSans.variable} ${geistMono.variable} ${spaceMono.variable} h-full antialiased`}>
@@ -62,7 +67,7 @@ export default async function RootLayout({
             organizationJsonLd(),
             webSiteJsonLd(locale),
             webApplicationJsonLd(locale),
-            faqJsonLd(locale),
+            ...(homeFaq ? [faqJsonLd(locale)] : []),
           ]}
         />
         <LanguageProvider initialLocale={locale}>

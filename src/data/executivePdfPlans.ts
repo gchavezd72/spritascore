@@ -29,7 +29,7 @@ const LEVEL_PLANS: Record<Locale, Record<ExecutiveMaturityLevel, ActionPlanPhase
       mediumTerm: [
         "Institutionalize audit evidence: risk trends, remediation SLAs, and release controls.",
         "Integrate SAST/DAST/SCA signals into executive dashboards.",
-        "Request a no-cost Sprita iT Software Risk Assessment for a prioritized roadmap.",
+        "Request a scope review from Sprita iT for a prioritized roadmap.",
       ],
     },
     high: {
@@ -96,7 +96,7 @@ const LEVEL_PLANS: Record<Locale, Record<ExecutiveMaturityLevel, ActionPlanPhase
       mediumTerm: [
         "Institucionalice evidencia de auditoría: tendencias de riesgo, SLAs de remediación y controles de release.",
         "Integre señales SAST/DAST/SCA en tableros ejecutivos.",
-        "Solicite una evaluación de riesgo de software sin costo de Sprita iT.",
+        "Solicite una revisión de alcance a Sprita iT.",
       ],
     },
     high: {
@@ -163,7 +163,7 @@ const LEVEL_PLANS: Record<Locale, Record<ExecutiveMaturityLevel, ActionPlanPhase
       mediumTerm: [
         "Institucionalize evidência de auditoria: tendências de risco, SLAs de remediação e controles de release.",
         "Integre sinais SAST/DAST/SCA em dashboards executivos.",
-        "Solicite uma avaliação de risco de software sem custo da Sprita iT.",
+        "Solicite uma revisão de escopo à Sprita iT.",
       ],
     },
     high: {

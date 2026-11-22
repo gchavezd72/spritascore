@@ -13,6 +13,7 @@ import { sanitizeInput } from "@/lib/utils";
 import { trackExecutiveEvent } from "@/lib/analytics";
 import { isDisposableEmail, type UtmParams } from "@/lib/executiveUtm";
 import type { ExecutiveScoreResult } from "@/lib/calculateExecutiveRiskScore";
+import { HoneypotField } from "@/components/HoneypotField";
 import { getExecutiveCopy } from "@/i18n/executive";
 import type { Locale } from "@/types/calculator";
 
@@ -28,6 +29,7 @@ export function ExecutiveLeadForm({ locale, result, utm, onSuccess }: ExecutiveL
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [done, setDone] = useState(false);
+  const [companyWebsite, setCompanyWebsite] = useState("");
 
   const schema = useMemo(
     () =>
@@ -78,6 +80,7 @@ export function ExecutiveLeadForm({ locale, result, utm, onSuccess }: ExecutiveL
       executiveSummary: result.interpretation,
       topRecommendations: result.recommendations.slice(0, 5).map((item) => item.text),
       topWeakCategories: result.topWeakCategories,
+      company_website: companyWebsite,
       ...utm,
     };
 
@@ -116,7 +119,8 @@ export function ExecutiveLeadForm({ locale, result, utm, onSuccess }: ExecutiveL
         <CardDescription>{copy.form.description}</CardDescription>
       </CardHeader>
       <CardContent>
-        <form method="post" onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form method="post" onSubmit={handleSubmit(onSubmit)} className="relative space-y-4">
+          <HoneypotField onChange={setCompanyWebsite} />
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <Label htmlFor="firstName">{copy.form.firstName} *</Label>

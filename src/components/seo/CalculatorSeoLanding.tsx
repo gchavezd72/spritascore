@@ -173,14 +173,14 @@ export function CalculatorSeoLanding({ region, internalSlug }: CalculatorSeoLand
           <div className="container mx-auto px-4">
             {customCalculatorHref ? (
               <div className="max-w-xl mx-auto text-center space-y-4 py-8">
-                <CalculatorPageHeader config={config} />
+                <CalculatorPageHeader config={config} as="h2" />
                 <Link href={customCalculatorHref} className="btn btn-solid inline-flex">
                   {st("run")}
                 </Link>
               </div>
             ) : (
               <>
-                <CalculatorPageHeader config={config} />
+                <CalculatorPageHeader config={config} as="h2" />
                 <CalculatorWizard config={config} />
               </>
             )}

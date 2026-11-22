@@ -25,12 +25,44 @@ function shouldRewrite(pathname: string): boolean {
   return true;
 }
 
+const APEX_HOSTS = new Set([
+  "www.spritascore.com",
+  "spritascore.vercel.app",
+  "analytics.spritascore.com",
+]);
+
+function rejectsBackslash(request: NextRequest, pathname: string): boolean {
+  const raw = `${pathname} ${request.url}`;
+  return raw.includes("\\") || raw.toLowerCase().includes("%5c");
+}
+
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  if (rejectsBackslash(request, pathname)) {
+    return new NextResponse("Bad request", {
+      status: 400,
+      headers: {
+        "content-type": "text/plain; charset=utf-8",
+        "cache-control": "no-store",
+      },
+    });
+  }
+
+  const hostname = hostnameOf(request);
+  if (APEX_HOSTS.has(hostname)) {
+    const dest = new URL(request.url);
+    dest.protocol = "https:";
+    dest.hostname = "spritascore.com";
+    dest.port = "";
+    return NextResponse.redirect(dest, 308);
+  }
+
   const requestHeaders = new Headers(request.headers);
   const locale =
     localeFromPath(pathname) ?? readLocaleCookie(request.cookies.get(LOCALE_COOKIE)?.value);
   requestHeaders.set("x-sprita-locale", locale);
+  requestHeaders.set("x-sprita-pathname", pathname);
 
   if (pathname.startsWith("/api/crm")) {
     const ip =
@@ -38,7 +70,7 @@ export function middleware(request: NextRequest) {
       request.headers.get("x-real-ip") ||
       "unknown";
 
-    if (!rateLimit(`crm:${ip}`, 10, 60_000)) {
+    if (!rateLimit(`crm:${ip}`, 10, 60_000) || !rateLimit(`crm-day:${ip}`, 20, 86_400_000)) {
       return NextResponse.json({ error: "Demasiadas solicitudes" }, { status: 429 });
     }
   }
@@ -51,6 +83,8 @@ export function middleware(request: NextRequest) {
   if (analyticsHost && shouldRewrite(pathname)) {
     const url = request.nextUrl.clone();
     url.pathname = pathname === "/" ? "/analytics" : `/analytics${pathname}`;
+    requestHeaders.set("x-sprita-pathname", url.pathname);
+    requestHeaders.set("x-sprita-locale", "es");
     return NextResponse.rewrite(url, { request: { headers: requestHeaders } });
   }
 

@@ -35,6 +35,16 @@ async function main() {
   assert(nextConfig.includes("X-Frame-Options"), "Security headers missing X-Frame-Options");
 
   assert(fs.existsSync(path.join(root, "src/middleware.ts")), "Rate-limit middleware missing");
+  const middleware = fs.readFileSync(path.join(root, "src/middleware.ts"), "utf8");
+  assert(middleware.includes("Bad request"), "Backslash requests should return 400");
+  assert(middleware.includes("308"), "Duplicate hosts should redirect to the apex");
+  assert(middleware.includes("crm-day:"), "CRM should have a daily rate limit");
+  assert(nextConfig.includes("poweredByHeader: false"), "X-Powered-By should be disabled");
+  const securityTxt = fs.readFileSync(path.join(root, "public/.well-known/security.txt"), "utf8");
+  assert(securityTxt.includes("mailto:info@sprita-it.com"), "security.txt should name the product contact");
+  assert(securityTxt.includes("Expires:"), "security.txt should expire");
+  assert(crmRoute.includes("honeypotTripped"), "CRM should reject a filled honeypot before email");
+  assert(crmRoute.includes("isRecentLead"), "CRM should dedupe a repeated lead");
 
   const { sanitizeInput } = await import(pathToFileURL(path.join(root, "src/lib/utils.ts")).href);
   const sanitized = sanitizeInput("  test\x00<script>  ");

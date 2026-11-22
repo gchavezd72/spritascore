@@ -19,6 +19,13 @@ export const metadata: Metadata = {
       "x-default": `${SITE_URL}${AUDIT_ROUTES.en}`,
     },
   },
+  openGraph: {
+    title: copy.metaTitle,
+    description: copy.metaDescription,
+    url: `${SITE_URL}${AUDIT_ROUTES.es}`,
+    type: "website",
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: copy.metaTitle }],
+  },
 };
 
 export default async function Page({

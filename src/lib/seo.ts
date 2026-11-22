@@ -19,9 +19,9 @@ export const ORGANIZATION = {
 } as const;
 
 const DEFAULT_DESCRIPTION = {
-  es: "Convierte el riesgo técnico en impacto financiero. Calculadoras de costo y compliance para vulnerabilidades OWASP, deuda técnica ISO 25010, EU Cyber Resilience Act, DORA, ASPM y riesgo por sector. Disponible en español, inglés y portugués.",
-  en: "Turn technical risk into financial impact. Cost and compliance calculators for OWASP vulnerabilities, ISO 25010 technical debt, EU Cyber Resilience Act, DORA, ASPM, and sector risk. Available in Spanish, English, and Portuguese.",
-  pt: "Converta risco técnico em impacto financeiro. Calculadoras de custo e compliance para vulnerabilidades OWASP, dívida técnica ISO 25010, EU Cyber Resilience Act, DORA, ASPM e risco por setor. Disponível em espanhol, inglês e português.",
+  es: "Convierte el riesgo técnico en impacto financiero. Calculadoras para OWASP, ISO 25010, el EU Cyber Resilience Act, DORA, ASPM y riesgo por sector.",
+  en: "Turn technical risk into financial impact. Calculators for OWASP, ISO 25010, the EU Cyber Resilience Act, DORA, ASPM and sector risk. Score from 0 to 100.",
+  pt: "Converta o risco técnico em impacto financeiro. Calculadoras para OWASP, ISO 25010, o EU Cyber Resilience Act, DORA, ASPM e risco por setor.",
 };
 
 const DEFAULT_KEYWORDS = [
@@ -184,7 +184,10 @@ export function buildPageMetadata({
   const allKeywords = [...new Set([...DEFAULT_KEYWORDS, ...keywords])];
   const alreadyBranded = /SpritaScore\s*$/.test(title) || /\|\s*SpritaScore\b/.test(title);
   const languages = hreflangAlternates
-    ? { ...hreflangAlternates, "x-default": hreflangAlternates["es-es"] ?? url }
+    ? {
+        ...hreflangAlternates,
+        "x-default": hreflangAlternates["x-default"] ?? hreflangAlternates["es-es"] ?? url,
+      }
     : siteAlternates(path).languages;
   const og = openGraphLocales(locale);
 
@@ -201,11 +204,13 @@ export function buildPageMetadata({
       locale: og.locale,
       alternateLocale: og.alternateLocale,
       type,
+      images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: title, type: "image/png" }],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
+      images: [`${SITE_URL}/og-image.png`],
     },
     robots: {
       index: true,
@@ -240,19 +245,29 @@ const HOME_TITLE: Record<Locale, string> = {
 
 export const DEFAULT_TITLE = HOME_TITLE.en;
 
-export function homeMetadata(locale: Locale): Metadata {
+export function homeMetadata(locale: Locale, pathname = "/"): Metadata {
   const title = HOME_TITLE[locale];
   const description = DEFAULT_DESCRIPTION[locale];
   const socialTitle = locale === "en" ? HOME_OG.title : title;
   const socialDescription = locale === "en" ? HOME_OG.description : description;
   const og = openGraphLocales(locale);
+  const isHome = pathname === "/" || pathname === "/es" || pathname === "/pt";
+  const path = pathname === "/es" || pathname === "/pt" ? pathname : "";
 
   return {
     ...buildPageMetadata({
       title,
       description,
-      path: "",
+      path: isHome ? path : "",
       locale,
+      hreflangAlternates: isHome
+        ? {
+            en: SITE_URL,
+            es: `${SITE_URL}/es`,
+            pt: `${SITE_URL}/pt`,
+            "x-default": SITE_URL,
+          }
+        : undefined,
     }),
     title: {
       default: title,
@@ -261,7 +276,7 @@ export function homeMetadata(locale: Locale): Metadata {
     openGraph: {
       title: socialTitle,
       description: socialDescription,
-      url: HOME_OG.url,
+      url: isHome && path ? `${SITE_URL}${path}` : HOME_OG.url,
       siteName: SITE_NAME,
       locale: og.locale,
       alternateLocale: og.alternateLocale,

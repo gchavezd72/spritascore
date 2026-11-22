@@ -23,6 +23,7 @@ export const metadata: Metadata = {
     description: copy.meta.ogDescription,
     url: `${SITE_URL}${route}`,
     type: "website",
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: copy.meta.h1 }],
   },
 };
 
