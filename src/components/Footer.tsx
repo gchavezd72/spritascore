@@ -25,7 +25,7 @@ export function Footer() {
             <p className="ft-about">{l.footer.tagline}</p>
           </div>
           <div>
-            <h2>{f.calculatorsTitle}</h2>
+            <p className="ft-label">{f.calculatorsTitle}</p>
             <ul>
               {CALCULATOR_CONFIGS.map((calc) => (
                 <li key={calc.id}>
@@ -39,7 +39,7 @@ export function Footer() {
             </ul>
           </div>
           <div>
-            <h2>{l.footer.productTitle}</h2>
+            <p className="ft-label">{l.footer.productTitle}</p>
             <ul>
               <li>
                 <Link href={`${home}#producto`}>{l.footer.product.score}</Link>
@@ -59,7 +59,7 @@ export function Footer() {
             </ul>
           </div>
           <div>
-            <h2>{f.contactTitle}</h2>
+            <p className="ft-label">{f.contactTitle}</p>
             <ul>
               <li>
                 <a href="mailto:info@sprita-it.com">info@sprita-it.com</a>

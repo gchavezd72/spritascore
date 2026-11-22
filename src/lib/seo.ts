@@ -19,9 +19,9 @@ export const ORGANIZATION = {
 } as const;
 
 const DEFAULT_DESCRIPTION = {
-  es: "Convierte el riesgo técnico en impacto financiero. Calculadoras para OWASP, ISO 25010, el EU Cyber Resilience Act, DORA, ASPM y riesgo por sector.",
-  en: "Turn technical risk into financial impact. Calculators for OWASP, ISO 25010, the EU Cyber Resilience Act, DORA, ASPM and sector risk. Score from 0 to 100.",
-  pt: "Converta o risco técnico em impacto financeiro. Calculadoras para OWASP, ISO 25010, o EU Cyber Resilience Act, DORA, ASPM e risco por setor.",
+  es: "Estimación de riesgo de software para CIO, CTO y CISO. Respuestas declaradas, exposición de 0 a 100 y un rango de costo. No es una auditoría ni lee el código.",
+  en: "Software risk estimate for CIOs, CTOs and CISOs. Declared answers, a 0–100 exposure score and a cost range. Not an audit, and it does not read your code.",
+  pt: "Estimativa de risco de software para CIO, CTO e CISO. Respostas declaradas, exposição de 0 a 100 e uma faixa de custo. Não é auditoria nem lê o código.",
 };
 
 const DEFAULT_KEYWORDS = [

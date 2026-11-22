@@ -14,9 +14,12 @@ export default function HomePage() {
   const l = t.landing;
   const cs = t.calculatorSelector;
   const calculatorCount = CALCULATOR_CONFIGS.length;
-  const stats = l.stats.map((stat, index) =>
-    index === 0 ? { ...stat, n: calculatorCount } : stat
-  );
+  const sectorCalc = CALCULATOR_CONFIGS.find((calc) => calc.id === "sector");
+  const stats = l.stats.map((stat, index) => {
+    if (index === 0) return { ...stat, n: calculatorCount };
+    if (index === 2) return { ...stat, n: l.marquee.length };
+    return stat;
+  });
 
   return (
     <div className="sc">
@@ -32,10 +35,10 @@ export default function HomePage() {
                 <br />
                 <span className="it">{l.hero.h1b}</span>
               </h1>
-              <p className="lead">{l.hero.lead}</p>
+              <p className="lead">{formatTemplate(l.hero.lead, { count: calculatorCount })}</p>
               <div className="hero-cta">
                 <Link href="#calculadoras" className="btn btn-solid">
-                  {l.hero.cta1} <span className="arr">↗</span>
+                  {l.hero.cta1}
                 </Link>
                 <Link href={auditPath(locale)} className="btn btn-ghost">
                   {l.hero.cta2}
@@ -208,6 +211,11 @@ export default function HomePage() {
                 </span>
               ))}
             </div>
+            {sectorCalc ? (
+              <Link href={calculatorPath(sectorCalc, locale)} className="btn btn-ghost" style={{ marginTop: 28 }}>
+                {l.sectors.cta}
+              </Link>
+            ) : null}
           </Reveal>
         </div>
       </section>
@@ -224,7 +232,7 @@ export default function HomePage() {
               <span className="hl">{l.quote.hl}</span>
               {l.quote.after}
             </p>
-            <div className="quote-a">{l.quote.author}</div>
+            {l.quote.author ? <div className="quote-a">{l.quote.author}</div> : null}
           </Reveal>
         </div>
       </section>

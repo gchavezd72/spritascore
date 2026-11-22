@@ -38,10 +38,10 @@ export function CookieConsent() {
           {after}
         </p>
         <div className="flex shrink-0 gap-3">
-          <Button variant="ghost" size="sm" onClick={() => respond("rejected")}>
+          <Button variant="ghost" onClick={() => respond("rejected")}>
             {t.cookieConsent.reject}
           </Button>
-          <Button size="sm" onClick={() => respond("accepted")}>
+          <Button onClick={() => respond("accepted")}>
             {t.cookieConsent.accept}
           </Button>
         </div>

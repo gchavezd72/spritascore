@@ -249,15 +249,15 @@ export const pt: TranslationKeys = {
     s6BodyAfter: ".",
   },
   landing: {
-    nav: { calculators: "Calculadoras", score: "O score", how: "Como funciona", sectors: "Setores", contact: "Contato", calcNow: "Calcular agora", menu: "Menu" },
+    nav: { calculators: "Calculadoras", score: "O score", how: "Como funciona", sectors: "Setores", contact: "Contato", calcNow: "Calcular exposição", menu: "Menu" },
     hero: {
-      eyebrow: "Calculadora de risco e custo de aplicações",
-      h1a: "Transforme o risco técnico",
-      h1b: "em impacto financeiro.",
-      lead: "Calcule quanto uma vulnerabilidade ou a má qualidade do código pode custar à sua empresa — em minutos e com pouquíssimas perguntas.",
-      cta1: "Calcular meu risco",
+      eyebrow: "Para CIO, CTO e CISO",
+      h1a: "Mostre ao comitê",
+      h1b: "quanto o risco custa.",
+      lead: "{count} calculadoras transformam as respostas que você declara em uma exposição de 0 a 100 e uma faixa de custo. É uma estimativa, não uma auditoria, e não lê o seu código.",
+      cta1: "Calcular minha exposição",
       cta2: "Ver o que uma auditoria cobre",
-      scoreLabel: "Score de risco",
+      scoreLabel: "Exemplo",
       scroll: "Role",
     },
     marquee: ["ISO/IEC 25010", "OWASP Top 10", "OWASP Mobile Top 10", "EU Cyber Resilience Act", "DORA", "ASPM"],
@@ -266,12 +266,12 @@ export const pt: TranslationKeys = {
       before: "O risco de uma aplicação decide-se em ",
       pct: "o código",
       after: " que se escreve, testa e publica.",
-      sub: "Não deixe que a velocidade da IA comprometa a sua segurança — coloque a análise de código com IA, a gestão de vulnerabilidades e o SBOM na linguagem que a sua direção entende.",
+      sub: "Dê preço às vulnerabilidades, às lacunas de qualidade e aos controles que você já conhece. As calculadoras não analisam o seu código nem geram um SBOM.",
     },
     stats: [
       { n: 6, label: "Calculadoras de risco especializadas" },
-      { n: 5, label: "Minutos, em média, por estimativa" },
-      { n: 4, label: "Padrões e marcos aplicados" },
+      { n: 5, label: "Minutos para uma primeira estimativa" },
+      { n: 4, label: "Marcos listados acima" },
       { n: 3, label: "Idiomas: ES · EN · PT" },
     ],
     calc: {
@@ -301,7 +301,7 @@ export const pt: TranslationKeys = {
     },
     score: {
       eyebrow: "O score",
-      lead: "Cada calculadora devolve um score de risco e uma estimativa econômica: convertemos vulnerabilidades, dívida técnica e lacunas de compliance em um número que seu comitê entende.",
+      lead: "Cada calculadora devolve uma exposição de 0 a 100 e uma estimativa de custo a partir das respostas que você declara. Quanto maior a exposição, pior.",
       points: [
         { k: "Explicável", v: "Veja os fatores-chave que movem o resultado. Sem caixas-pretas." },
         { k: "Acionável", v: "Receba recomendações priorizadas para remediar." },
@@ -315,7 +315,7 @@ export const pt: TranslationKeys = {
       lead: "Sem compromisso, em poucos minutos e com pouquíssimas perguntas.",
       steps: [
         { t: "Selecione", d: "Escolha a calculadora que corresponde ao seu cenário de risco." },
-        { t: "Responda", d: "Complete o wizard com o contexto da sua empresa e aplicação." },
+        { t: "Responda", d: "Complete o formulário com o contexto da sua empresa e da aplicação." },
         { t: "Calcule", d: "Obtenha score de risco, estimativa econômica e fatores-chave." },
         { t: "Aja", d: "Solicite o escopo de uma auditoria para a lacuna que você declarou." },
       ],
@@ -323,14 +323,15 @@ export const pt: TranslationKeys = {
     sectors: {
       eyebrow: "Risco por setor",
       h2: "O custo de uma vulnerabilidade muda conforme a sua indústria.",
+      cta: "Calcular o custo por setor",
       chips: ["Banca & finanças", "Seguros", "Saúde", "Varejo & consumo", "Indústria & energia", "Setor público", "Tecnologia", "Real estate"],
     },
     quote: {
       eyebrow: "O princípio",
-      before: "“Nem todos os defeitos custam o mesmo. Os mais perigosos nem sempre são os mais ",
+      before: "Nem todos os defeitos custam o mesmo. Os mais perigosos nem sempre são os mais ",
       hl: "visíveis",
-      after: ".”",
-      author: "A ideia por trás do SpritaScore",
+      after: ".",
+      author: "",
     },
     cta: {
       eyebrow: "Auditoria de software",

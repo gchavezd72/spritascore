@@ -249,15 +249,15 @@ export const en: TranslationKeys = {
     s6BodyAfter: ".",
   },
   landing: {
-    nav: { calculators: "Calculators", score: "The score", how: "How it works", sectors: "Sectors", contact: "Contact", calcNow: "Calculate now", menu: "Menu" },
+    nav: { calculators: "Calculators", score: "The score", how: "How it works", sectors: "Sectors", contact: "Contact", calcNow: "Calculate exposure", menu: "Menu" },
     hero: {
-      eyebrow: "Application risk and cost calculator",
-      h1a: "Turn technical risk",
-      h1b: "into financial impact.",
-      lead: "Estimate how much a vulnerability or poor code quality could cost your company — in minutes, with just a few questions.",
-      cta1: "Calculate my risk",
+      eyebrow: "For CIOs, CTOs and CISOs",
+      h1a: "Show the board",
+      h1b: "what risk costs.",
+      lead: "{count} calculators turn the answers you declare into a 0–100 exposure score and a cost range. This is an estimate, not an audit, and it does not read your code.",
+      cta1: "Calculate my exposure",
       cta2: "See what an audit covers",
-      scoreLabel: "Risk score",
+      scoreLabel: "Example",
       scroll: "Scroll",
     },
     marquee: ["ISO/IEC 25010", "OWASP Top 10", "OWASP Mobile Top 10", "EU Cyber Resilience Act", "DORA", "ASPM"],
@@ -266,12 +266,12 @@ export const en: TranslationKeys = {
       before: "Application risk is decided in ",
       pct: "the code",
       after: " that is written, tested, and released.",
-      sub: "Don't let the speed of AI compromise your security — put AI code analysis, vulnerability management and SBOM in the language your leadership understands.",
+      sub: "Price the vulnerabilities, quality gaps, and controls you already know. The calculators do not scan your code or build an SBOM.",
     },
     stats: [
       { n: 6, label: "Specialized risk calculators" },
-      { n: 5, label: "Minutes, on average, per estimate" },
-      { n: 4, label: "Standards and frameworks applied" },
+      { n: 5, label: "Minutes for a first estimate" },
+      { n: 4, label: "Frameworks listed above" },
       { n: 3, label: "Languages: ES · EN · PT" },
     ],
     calc: {
@@ -301,7 +301,7 @@ export const en: TranslationKeys = {
     },
     score: {
       eyebrow: "The score",
-      lead: "Every calculator returns a risk score and an economic estimate: we turn vulnerabilities, technical debt and compliance gaps into a figure your board understands.",
+      lead: "Each calculator returns an exposure score from 0 to 100 and a cost estimate from the answers you declare. Higher exposure is worse.",
       points: [
         { k: "Explainable", v: "See the key factors driving the result. No black boxes." },
         { k: "Actionable", v: "Get prioritized recommendations to remediate." },
@@ -315,7 +315,7 @@ export const en: TranslationKeys = {
       lead: "No commitment, in just a few minutes and a handful of questions.",
       steps: [
         { t: "Select", d: "Pick the calculator that matches your risk scenario." },
-        { t: "Answer", d: "Complete the wizard with your company and application context." },
+        { t: "Answer", d: "Complete the short form with your company and application context." },
         { t: "Calculate", d: "Get a risk score, economic estimate and key factors." },
         { t: "Act", d: "Request an audit scope for the gap you declared." },
       ],
@@ -323,14 +323,15 @@ export const en: TranslationKeys = {
     sectors: {
       eyebrow: "Risk by sector",
       h2: "The cost of a vulnerability changes with your industry.",
+      cta: "Calculate sector cost",
       chips: ["Banking & finance", "Insurance", "Health", "Retail & consumer", "Industry & energy", "Public sector", "Technology", "Real estate"],
     },
     quote: {
       eyebrow: "The principle",
-      before: "“Not all defects cost the same. The most dangerous aren't always the most ",
+      before: "Not all defects cost the same. The most dangerous aren't always the most ",
       hl: "visible",
-      after: ".”",
-      author: "The idea behind SpritaScore",
+      after: ".",
+      author: "",
     },
     cta: {
       eyebrow: "Software audit",
