@@ -115,6 +115,7 @@ export function ExecutiveSoftwareRiskCalculator({ locale, route }: ExecutiveSoft
         result={result}
         answers={answers}
         utm={getPersistedUtm()}
+        onReview={() => setCompleted(false)}
       />
     );
   }

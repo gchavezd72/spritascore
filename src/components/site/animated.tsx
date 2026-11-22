@@ -69,9 +69,17 @@ export function CountUp({ target, locale = "en" }: { target: number; locale?: st
   return <span ref={ref}>{value.toLocaleString(localeTag(locale))}</span>;
 }
 
+/** Homepage illustrations stay on the public 0–100 scale. */
+const COVER_SCORE_MAX = 100;
+const COVER_SCORE_EXAMPLE = 84;
+
+function coverFill(value: number) {
+  return Math.min(COVER_SCORE_MAX, (value / COVER_SCORE_MAX) * 100).toFixed(1);
+}
+
 /** Hero score ring: conic-gradient fills as the number counts to `target`. */
 export function ScoreRing({
-  target = 842,
+  target = COVER_SCORE_EXAMPLE,
   label,
   locale = "en",
 }: {
@@ -79,13 +87,14 @@ export function ScoreRing({
   label: string;
   locale?: string;
 }) {
-  const { ref, value } = useCountUp<HTMLDivElement>(target, 1700);
-  const v = ((value / 1000) * 100).toFixed(1);
+  const shown = Math.min(COVER_SCORE_MAX, target);
+  const { ref, value } = useCountUp<HTMLDivElement>(shown, 1700);
   return (
-    <div className="ring" ref={ref} style={{ ["--v" as string]: v } as React.CSSProperties}>
+    <div className="ring" ref={ref} style={{ ["--v" as string]: coverFill(value) } as React.CSSProperties}>
       <div className="ring-tick" />
       <div className="ring-inner">
         <div className="ring-num">{value.toLocaleString(localeTag(locale))}</div>
+        <div className="ring-scale">/ 100</div>
         <div className="ring-lab">{label}</div>
       </div>
     </div>
@@ -94,7 +103,7 @@ export function ScoreRing({
 
 /** Large gauge used in the dark "El score" section. */
 export function ScoreGauge({
-  target = 842,
+  target = COVER_SCORE_EXAMPLE,
   sub,
   locale = "en",
 }: {
@@ -102,12 +111,13 @@ export function ScoreGauge({
   sub: string;
   locale?: string;
 }) {
-  const { ref, value } = useCountUp<HTMLDivElement>(target, 1700);
-  const v = ((value / 1000) * 100).toFixed(1);
+  const shown = Math.min(COVER_SCORE_MAX, target);
+  const { ref, value } = useCountUp<HTMLDivElement>(shown, 1700);
   return (
-    <div className="gauge" ref={ref} style={{ ["--v" as string]: v } as React.CSSProperties}>
+    <div className="gauge" ref={ref} style={{ ["--v" as string]: coverFill(value) } as React.CSSProperties}>
       <div className="gauge-c">
         <div className="gauge-n">{value.toLocaleString(localeTag(locale))}</div>
+        <div className="gauge-scale">/ 100</div>
         <div className="gauge-sub">{sub}</div>
       </div>
     </div>

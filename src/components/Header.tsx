@@ -4,7 +4,10 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Logo } from "@/components/Logo";
 import { useTranslations } from "@/components/LanguageProvider";
+import { getAuditCopy } from "@/i18n/audit";
+import { auditPath } from "@/lib/auditRoutes";
 import { localizedSibling } from "@/lib/calculatorPath";
+import { regionalSibling } from "@/lib/regionalSibling";
 import { cn } from "@/lib/utils";
 import type { Locale } from "@/types/calculator";
 
@@ -13,6 +16,7 @@ const LOCALES: Locale[] = ["en", "es", "pt"];
 export function Header() {
   const { t, locale, setLocale } = useTranslations();
   const n = t.landing.nav;
+  const auditNav = getAuditCopy(locale).nav;
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -32,6 +36,7 @@ export function Header() {
           <Link href="/#producto">{n.score}</Link>
           <Link href="/#metodo">{n.how}</Link>
           <Link href="/#sectores">{n.sectors}</Link>
+          <Link href={auditPath(locale)}>{auditNav}</Link>
           <Link href="/#contacto">{n.contact}</Link>
           <Link href="/analytics">Analytics</Link>
         </nav>
@@ -44,7 +49,7 @@ export function Header() {
                 className={locale === loc ? "on" : ""}
                 onClick={() => {
                   setLocale(loc);
-                  const nextPath = localizedSibling(window.location.pathname, loc);
+                  const nextPath = localizedSibling(window.location.pathname, loc) ?? regionalSibling(window.location.pathname, loc);
                   if (nextPath && nextPath !== window.location.pathname) {
                     window.location.assign(`${nextPath}${window.location.search}${window.location.hash}`);
                   }

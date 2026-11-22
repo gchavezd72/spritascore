@@ -182,13 +182,14 @@ export function buildPageMetadata({
 }: PageMetadataInput & { hreflangAlternates?: Record<string, string> }): Metadata {
   const url = absoluteUrl(path);
   const allKeywords = [...new Set([...DEFAULT_KEYWORDS, ...keywords])];
+  const alreadyBranded = /SpritaScore\s*$/.test(title) || /\|\s*SpritaScore\b/.test(title);
   const languages = hreflangAlternates
     ? { ...hreflangAlternates, "x-default": hreflangAlternates["es-es"] ?? url }
     : siteAlternates(path).languages;
   const og = openGraphLocales(locale);
 
   return {
-    title,
+    title: alreadyBranded ? { absolute: title } : title,
     description,
     keywords: allKeywords,
     alternates: { canonical: url, languages },

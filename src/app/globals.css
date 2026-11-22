@@ -505,6 +505,14 @@ a:focus-visible,
   line-height: 1;
   letter-spacing: -0.03em;
 }
+.sc .ring-scale,
+.sc .gauge-scale {
+  font-family: var(--font-space-mono), "Space Mono", monospace;
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  margin-top: 8px;
+  opacity: 0.55;
+}
 .sc .ring-lab {
   font-family: var(--font-space-mono), "Space Mono", monospace;
   font-size: 11px;

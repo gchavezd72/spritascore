@@ -111,25 +111,33 @@ export default async function RegionalSeoPage({ params }: PageProps) {
     );
     if (!content) notFound();
 
+    const locale = REGION_LOCALE[region];
+    const methodLabels = {
+      es: { factors: "Factores", outputs: "Salidas", limits: "Limitaciones", back: "Calculadora", cta: "Ir a la calculadora" },
+      en: { factors: "Factors", outputs: "Outputs", limits: "Limitations", back: "Calculator", cta: "Go to calculator" },
+      pt: { factors: "Fatores", outputs: "Saídas", limits: "Limitações", back: "Calculadora", cta: "Ir à calculadora" },
+    }[locale];
+
     return (
       <SeoPageShell
+        locale={locale}
         h1={content.h1}
         summary={content.overview[0]}
         ctaHref={regionPath(region, calcSection(region), slug) + "#calculadora"}
-        ctaLabel={REGION_LOCALE[region] === "es" ? "Ir a la calculadora" : REGION_LOCALE[region] === "pt" ? "Ir à calculadora" : "Go to calculator"}
+        ctaLabel={methodLabels.cta}
         faq={content.faq}
       >
         {content.overview.map((p) => (
           <p key={p} className="seo-p">{p}</p>
         ))}
-        <h2 className="seo-h2">Factores</h2>
+        <h2 className="seo-h2">{methodLabels.factors}</h2>
         <ul className="seo-list">{content.factors.map((f) => <li key={f}>{f}</li>)}</ul>
-        <h2 className="seo-h2">Salidas</h2>
+        <h2 className="seo-h2">{methodLabels.outputs}</h2>
         <ul className="seo-list">{content.outputs.map((o) => <li key={o}>{o}</li>)}</ul>
-        <h2 className="seo-h2">Limitaciones</h2>
+        <h2 className="seo-h2">{methodLabels.limits}</h2>
         <ul className="seo-list">{content.limitations.map((l) => <li key={l}>{l}</li>)}</ul>
         <p className="seo-p">
-          <Link href={regionPath(region, calcSection(region), slug)}>← Calculadora</Link>
+          <Link href={regionPath(region, calcSection(region), slug)}>← {methodLabels.back}</Link>
         </p>
       </SeoPageShell>
     );
@@ -139,9 +147,12 @@ export default async function RegionalSeoPage({ params }: PageProps) {
   if (!guideSlug) notFound();
   const content = getGuideContentForRegion(guideSlug, region);
   if (!content) notFound();
+  const guideLocale = REGION_LOCALE[region];
+  const referencesTitle = guideLocale === "es" ? "Referencias" : guideLocale === "pt" ? "Referências" : "References";
 
   return (
     <SeoPageShell
+      locale={guideLocale}
       h1={content.h1}
       summary={content.summary}
       ctaHref="/#calculadoras"
@@ -155,7 +166,7 @@ export default async function RegionalSeoPage({ params }: PageProps) {
           ))}
         </section>
       ))}
-      <h2 className="seo-h2">Referencias</h2>
+      <h2 className="seo-h2">{referencesTitle}</h2>
       <ul className="seo-links">
         {content.references.map((ref) => (
           <li key={ref.url}>

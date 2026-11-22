@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import type { Locale } from "@/types/calculator";
 import { getTranslations } from "@/i18n";
 import { localeFromPath } from "@/lib/calculatorPath";
@@ -51,12 +51,12 @@ export function LanguageProvider({
     return () => window.clearTimeout(frame);
   }, []);
 
-  const setLocale = (next: Locale, options?: { persist?: boolean }) => {
+  const setLocale = useCallback((next: Locale, options?: { persist?: boolean }) => {
     setLocaleState(next);
     if (options?.persist === false) return;
     localStorage.setItem(LOCALE_KEY, next);
     document.cookie = localeCookieString(next);
-  };
+  }, []);
 
   return (
     <LanguageContext.Provider value={{ locale, setLocale }}>

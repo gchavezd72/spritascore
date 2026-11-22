@@ -5,6 +5,8 @@ import { BrandFooterLine } from "@/components/BrandBar";
 import { Logo } from "@/components/Logo";
 import { useTranslations } from "@/components/LanguageProvider";
 import { CALCULATOR_CONFIGS } from "@/data/calculatorConfigs";
+import { getAuditCopy } from "@/i18n/audit";
+import { auditPath } from "@/lib/auditRoutes";
 import { calculatorPath } from "@/lib/calculatorPath";
 import { tr } from "@/lib/translate";
 
@@ -46,6 +48,9 @@ export function Footer() {
               </li>
               <li>
                 <Link href="/#sectores">{l.footer.product.sectors}</Link>
+              </li>
+              <li>
+                <Link href={auditPath(locale)}>{getAuditCopy(locale).nav}</Link>
               </li>
               <li>
                 <Link href="/analytics">Analytics</Link>

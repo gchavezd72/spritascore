@@ -62,14 +62,6 @@ export function ReportPreview({ result }: ReportPreviewProps) {
           <p className="text-xs text-slate-500 uppercase">{rp.riskScore}</p>
           <p className="text-2xl font-bold text-brand-navy">{localizedResult.score}/100</p>
         </div>
-        {typeof localizedResult.inputs?.spritaScore === "number" && (
-          <div>
-            <p className="text-xs text-slate-500 uppercase">SpritaScore</p>
-            <p className="text-2xl font-bold text-brand-navy">
-              {localizedResult.inputs.spritaScore as number}/1000
-            </p>
-          </div>
-        )}
         <div>
           <p className="text-xs text-slate-500 uppercase">{rp.level}</p>
           <p className="text-2xl font-bold text-slate-900">

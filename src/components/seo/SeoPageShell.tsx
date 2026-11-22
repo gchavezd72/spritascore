@@ -3,11 +3,34 @@ import type { ReactNode } from "react";
 import { FaqSection } from "@/components/seo/FaqSection";
 import type { FaqItem } from "@/data/seoContent/types";
 import { ORGANIZATION } from "@/lib/seo";
+import type { Locale } from "@/types/calculator";
+
+const SHELL_COPY: Record<Locale, { brand: string; faq: string; cta: string; services: string }> = {
+  es: {
+    brand: "SpritaScore · marca de",
+    faq: "Preguntas frecuentes",
+    cta: "Ejecutar calculadora",
+    services: "Servicios Sprita iT",
+  },
+  en: {
+    brand: "SpritaScore · a brand of",
+    faq: "Frequently asked questions",
+    cta: "Run calculator",
+    services: "Sprita iT services",
+  },
+  pt: {
+    brand: "SpritaScore · uma marca da",
+    faq: "Perguntas frequentes",
+    cta: "Executar calculadora",
+    services: "Serviços Sprita iT",
+  },
+};
 
 interface SeoPageShellProps {
   h1: string;
   summary: string;
   children: ReactNode;
+  locale?: Locale;
   faq?: FaqItem[];
   faqTitle?: string;
   ctaHref?: string;
@@ -21,17 +44,19 @@ export function SeoPageShell({
   summary,
   children,
   faq,
-  faqTitle = "Preguntas frecuentes",
+  locale = "es",
+  faqTitle,
   ctaHref = "/#calculadoras",
-  ctaLabel = "Ejecutar calculadora",
+  ctaLabel,
   secondaryCtaHref = ORGANIZATION.url,
-  secondaryCtaLabel = "Servicios Sprita iT",
+  secondaryCtaLabel,
 }: SeoPageShellProps) {
+  const shell = SHELL_COPY[locale];
   return (
     <article className="seo-page">
       <div className="container mx-auto px-4 max-w-4xl py-12">
         <p className="seo-eyebrow">
-          SpritaScore · marca de{" "}
+          {shell.brand}{" "}
           <a href={ORGANIZATION.url} target="_blank" rel="noopener noreferrer">
             Sprita iT
           </a>
@@ -40,14 +65,14 @@ export function SeoPageShell({
         <p className="seo-lead">{summary}</p>
         <div className="seo-cta-row">
           <Link href={ctaHref} className="btn btn-solid">
-            {ctaLabel}
+            {ctaLabel ?? shell.cta}
           </Link>
           <a href={secondaryCtaHref} className="btn btn-ghost" target="_blank" rel="noopener noreferrer">
-            {secondaryCtaLabel} ↗
+            {secondaryCtaLabel ?? shell.services} ↗
           </a>
         </div>
         <div className="seo-body">{children}</div>
-        {faq && faq.length > 0 && <FaqSection title={faqTitle} items={faq} />}
+        {faq && faq.length > 0 && <FaqSection title={faqTitle ?? shell.faq} items={faq} />}
       </div>
     </article>
   );

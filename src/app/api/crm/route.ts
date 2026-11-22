@@ -72,6 +72,22 @@ const executiveLeadSchema = z.object({
   referrer: z.string().trim().max(500).optional(),
 });
 
+const auditLeadSchema = z.object({
+  event: z.literal("audit_scope_request"),
+  lead: z.object({
+    name: safeString(200).pipe(z.string().min(2)),
+    company: safeString(200).pipe(z.string().min(2)),
+    email: z.string().trim().email().max(200).transform((value) => sanitizeInput(value)),
+    role: safeString(120).pipe(z.string().min(2)),
+    country: safeString(50),
+    wantsEmailReport: z.boolean(),
+  }),
+  language: z.enum(["en", "es", "pt"]),
+  auditId: z.enum(["AUD-01", "AUD-02", "AUD-03", "AUD-04", "AUD-05", "AUD-06", "AUD-07"]),
+  calculatorId: z.string().trim().max(100).optional(),
+  consentService: z.literal(true),
+});
+
 const euAiActLeadSchema = z.object({
   event: z.literal("euaiact_form_submit"),
   lead: z.object({
@@ -138,6 +154,28 @@ export async function POST(request: NextRequest) {
 
       if (process.env.NODE_ENV === "development") {
         console.info("[CRM Executive Lead]", parsed.data.lead.email);
+      }
+
+      return NextResponse.json({ success: true });
+    }
+
+    if (body?.event === "audit_scope_request") {
+      const parsed = auditLeadSchema.safeParse(body);
+      if (!parsed.success) {
+        return NextResponse.json({ error: "Datos inválidos" }, { status: 400 });
+      }
+
+      if (rejectDisposable(parsed.data.lead.email)) {
+        return NextResponse.json({ error: "Use un correo corporativo" }, { status: 400 });
+      }
+
+      const delivered = await notifyLead({
+        ...parsed.data,
+        timestamp: new Date().toISOString(),
+      });
+
+      if (!delivered) {
+        return NextResponse.json({ error: "No se pudo registrar el lead" }, { status: 502 });
       }
 
       return NextResponse.json({ success: true });

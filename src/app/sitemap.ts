@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { CALCULATOR_CONFIGS } from "@/data/calculatorConfigs";
+import { AUDIT_ROUTES } from "@/lib/auditRoutes";
 import { allPublicSeoPaths } from "@/lib/seoRoutes";
 import { SITE_URL } from "@/lib/seo";
 
@@ -48,6 +49,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE_URL}/es/calculadora/05`, lastModified: now, changeFrequency: "weekly", priority: 0.95 },
     { url: `${SITE_URL}/en/calculadora/05`, lastModified: now, changeFrequency: "weekly", priority: 0.95 },
     { url: `${SITE_URL}/pt/calculadora/05`, lastModified: now, changeFrequency: "weekly", priority: 0.95 },
+    { url: `${SITE_URL}${AUDIT_ROUTES.en}`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${SITE_URL}${AUDIT_ROUTES.es}`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${SITE_URL}${AUDIT_ROUTES.pt}`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
     { url: `${SITE_URL}/privacidad`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
     { url: `${SITE_URL}/analytics`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
     { url: "https://analytics.spritascore.com", lastModified: now, changeFrequency: "weekly", priority: 0.8 },

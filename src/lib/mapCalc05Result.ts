@@ -15,9 +15,9 @@ const CLASS_TO_RISK: Record<Calc05Result["classification"], RiskLevel> = {
   critical: "critico",
 };
 
-/** Calc05 score is 0–1000 (1000 = safer). Platform risk score is 0–100 (higher = worse). */
+/** Calc05 score is already exposure 0–100 (higher = worse). */
 export function calc05ToPlatformScore(spritaScore: number): number {
-  return Math.max(0, Math.min(100, Math.round(100 - spritaScore / 10)));
+  return Math.max(0, Math.min(100, Math.round(spritaScore)));
 }
 
 function rec(
@@ -240,7 +240,7 @@ function summaries(
     varejo: { es: "retail / e-commerce", en: "retail / e-commerce", pt: "varejo / e-commerce" },
     industria: { es: "industria / energía", en: "industry / energy", pt: "indústria / energia" },
     publico: { es: "sector público", en: "public sector", pt: "setor público" },
-    outro: { es: "su sector", en: "your sector", pt: "seu setor" },
+    outro: { es: "otras industrias", en: "cross-industry", pt: "outras indústrias" },
   };
   const sector = sectorLabels[input.sector]?.[locale] ?? input.sector;
   const classLabel = {

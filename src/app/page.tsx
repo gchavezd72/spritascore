@@ -5,6 +5,7 @@ import { Reveal } from "@/components/Reveal";
 import { CountUp, ScoreRing, ScoreGauge, HeroBg } from "@/components/site/animated";
 import { useTranslations } from "@/components/LanguageProvider";
 import { CALCULATOR_CONFIGS } from "@/data/calculatorConfigs";
+import { auditPath } from "@/lib/auditRoutes";
 import { calculatorPath, catalogGroup, type CatalogGroup } from "@/lib/calculatorPath";
 import { formatTemplate, tr } from "@/lib/translate";
 
@@ -36,7 +37,7 @@ export default function HomePage() {
                 <Link href="#calculadoras" className="btn btn-solid">
                   {l.hero.cta1} <span className="arr">↗</span>
                 </Link>
-                <Link href="#contacto" className="btn btn-ghost">
+                <Link href={auditPath(locale)} className="btn btn-ghost">
                   {l.hero.cta2}
                 </Link>
               </div>
@@ -241,12 +242,9 @@ export default function HomePage() {
                 </h2>
               </div>
               <div className="cta-actions">
-                <a
-                  href="mailto:info@sprita-it.com?subject=Diagn%C3%B3stico%20t%C3%A9cnico%20Spritascore"
-                  className="btn btn-light"
-                >
+                <Link href={auditPath(locale)} className="btn btn-light">
                   {l.cta.btn} <span className="arr">↗</span>
-                </a>
+                </Link>
                 <span className="overline" style={{ color: "rgba(255,255,255,.85)" }}>
                   {l.cta.note}
                 </span>

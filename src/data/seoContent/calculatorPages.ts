@@ -176,7 +176,7 @@ const CONTENT: Record<string, Partial<Record<ContentKey, SeoCalculatorContent>>>
         { question: "Can I run the calculator without scoring every ISO dimension?", answer: "Yes. Sliders default to midpoint (3/5). Adjust only what you know; team hours and incidents still drive much of the cost estimate." },
         { question: "Does the cost include tool licenses or cloud spend?", answer: "The core model focuses on labor and incident interruption. Licenses and infrastructure are not directly modeled except via recommendations." },
         { question: "How should I present results to the board?", answer: "Lead with probable annual cost, equivalent reactive hours, and risk level. Show scenarios if maintainability improves or incidents drop. Attach SpritaScore's 30/90-day action plan." },
-        { question: "Does SpritaScore store my inputs?", answer: "Calculations run in your session to produce the report. See SpritaScore's privacy policy for handling when you unlock the full report or submit contact details." },
+        { question: "Does SpritaScore store my inputs?", answer: "Calculations run in your session to produce the report. The result stays in this browser. See SpritaScore's privacy policy for contact details you choose to submit." },
       ],
       methodologySlug: "no-calidad-codigo",
       relatedGuideSlugs: ["nis2-application-security", "owasp-top-10-risk"],

@@ -123,10 +123,14 @@ function buildLeadEmail(payload: Record<string, unknown>) {
   const lead = asRecord(payload.lead);
   const event = asString(payload.event);
   const isExecutive = event === "software_score_form_submit";
+  const isAudit = event === "audit_scope_request";
+  const company = asString(lead.company) || "Nuevo lead";
 
-  const subject = isExecutive
-    ? `[SpritaScore] Executive Risk Score — ${asString(lead.company) || "Nuevo lead"}`
-    : `[SpritaScore] Nuevo lead — ${asString(lead.company) || "Calculadora"}`;
+  const subject = isAudit
+    ? `[SpritaScore] Solicitud ${asString(payload.auditId) || "AUD"} | ${asLocale(payload.language).toUpperCase()} | ${company}`
+    : isExecutive
+      ? `[SpritaScore] Executive Risk Score — ${company}`
+      : `[SpritaScore] Nuevo lead — ${company}`;
 
   const rows = [
     row("Nombre", lead.name),
@@ -136,14 +140,16 @@ function buildLeadEmail(payload: Record<string, unknown>) {
     row("País", lead.country),
     row("Sector", lead.sector),
     row("Nº aplicaciones", lead.appCount),
-    row("Quiere reporte por email", lead.wantsEmailReport ? "Sí" : "No"),
+    row(isAudit ? "Consentimiento comercial" : "Quiere reporte por email", lead.wantsEmailReport ? "Sí" : "No"),
+    row("Auditoría solicitada", payload.auditId),
+    row("Autoriza respuesta", payload.consentService === true ? "Sí" : ""),
     row("Calculadora", payload.calculatorTitle ?? payload.calculatorId),
     row("ID resultado", payload.resultId),
     row("Score", payload.score),
     row("Nivel de riesgo", payload.riskLevel),
     row("Costo estimado", payload.estimatedCostFormatted ?? payload.estimatedCost),
     row("Impacto formateado", payload.impactFormatted),
-    row("SpritaScore (0-1000)", payload.spritaScore),
+    row("SpritaScore (0-100)", payload.spritaScore),
     row("Clasificación", payload.classification),
     row("Madurez", payload.maturityPercent != null ? `${payload.maturityPercent}%` : ""),
     row("Puntos madurez", payload.rawMaturityPoints),
@@ -176,7 +182,7 @@ function buildLeadEmail(payload: Record<string, unknown>) {
       </div>
       <div style="border:1px solid #e6e9ef;border-top:none;padding:24px;border-radius:0 0 8px 8px">
         <p style="margin:0 0 16px;font-size:14px;line-height:1.5">
-          ${isExecutive ? "Solicitud de Software Risk Assessment ejecutivo." : "Lead capturado desde una calculadora."}
+          ${isAudit ? "Solicitud de alcance de auditoría. No se inició ningún análisis." : isExecutive ? "Solicitud de Software Risk Assessment ejecutivo." : "Lead capturado desde una calculadora."}
         </p>
         <table style="width:100%;border-collapse:collapse">${rows}</table>
         ${recommendations ? `<h3 style="font-size:14px;margin:20px 0 8px">Recomendaciones destacadas</h3><ul style="margin:0;padding-left:18px;font-size:13px">${recommendations}</ul>` : ""}
@@ -187,12 +193,19 @@ function buildLeadEmail(payload: Record<string, unknown>) {
   `;
 
   const text = [
-    isExecutive ? "Executive Risk Score lead" : "Calculator lead",
+    isAudit ? "Audit scope request. No analysis has started." : isExecutive ? "Executive Risk Score lead" : "Calculator lead",
     "",
     `Nombre: ${asString(lead.name)}`,
     `Empresa: ${asString(lead.company)}`,
     `Email: ${asString(lead.email)}`,
     `Cargo: ${asString(lead.role)}`,
+    ...(isAudit
+      ? [
+          `País: ${asString(lead.country)}`,
+          `Auditoría: ${asString(payload.auditId)}`,
+          `Consentimiento comercial: ${lead.wantsEmailReport ? "Sí" : "No"}`,
+        ]
+      : []),
     `Calculadora: ${asString(payload.calculatorTitle ?? payload.calculatorId)}`,
     `Score: ${asString(payload.score)}`,
     `Riesgo: ${asString(payload.riskLevel)}`,

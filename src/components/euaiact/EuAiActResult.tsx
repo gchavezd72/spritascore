@@ -9,7 +9,9 @@ import { Progress } from "@/components/ui/progress";
 import { trackEvent } from "@/lib/analytics";
 import { downloadEuAiActPdf } from "@/lib/euAiActPdf";
 import type { EuAiActResult as EuAiActResultType, EuAiActAnswers } from "@/lib/calculateEuAiAct";
+import { AuditOffer } from "@/components/AuditOffer";
 import { EuAiActLeadForm } from "@/components/euaiact/EuAiActLeadForm";
+import { EU_AI_ACT_CARD } from "@/data/euAiAct";
 import { getPersistedUtm } from "@/lib/executiveUtm";
 import { getEuAiActCopy } from "@/i18n/euAiAct";
 import type { GapPriority, ReadinessLevel } from "@/data/euAiAct";
@@ -365,6 +367,7 @@ export function EuAiActResult({ locale, route, result, answers }: EuAiActResultP
         </CardContent>
       </Card>
 
+      <AuditOffer calculatorId={EU_AI_ACT_CARD.id} locale={locale} />
       <EuAiActLeadForm locale={locale} result={result} utm={getPersistedUtm()} />
     </div>
   );

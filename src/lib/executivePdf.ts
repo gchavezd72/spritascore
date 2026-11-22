@@ -193,7 +193,7 @@ export function downloadExecutiveScorePdf(
     doc.setTextColor(255, 255, 255);
     drawLine(doc, String(result.riskExposureScore), MARGIN + 32, y + 24);
     doc.setFontSize(8);
-    drawLine(doc, "/ 1000", MARGIN + 32, y + 31);
+    drawLine(doc, "/ 100", MARGIN + 32, y + 31);
     doc.setFontSize(7);
     drawLine(doc, pdf.riskScore.toUpperCase(), MARGIN + 6, y + 12);
 

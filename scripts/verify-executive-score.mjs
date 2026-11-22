@@ -1,6 +1,7 @@
 /**
  * Executive Software Risk Score QA — run: npm run verify:executive
  */
+import fs from "fs";
 import path from "path";
 import { fileURLToPath, pathToFileURL } from "url";
 
@@ -30,8 +31,8 @@ async function main() {
   }
 
   const noResult = calculateExecutiveRiskScore(allNo);
-  if (noResult.riskExposureScore !== 1000 || noResult.rawMaturityPoints !== 0) {
-    console.error("FAIL: all No should be risk 1000 and maturity 0", noResult);
+  if (noResult.riskExposureScore !== 100 || noResult.rawMaturityPoints !== 0 || noResult.maturityPercent !== 0) {
+    console.error("FAIL: all No should be risk 100 and maturity 0", noResult);
     failed++;
   } else {
     passed++;
@@ -39,8 +40,27 @@ async function main() {
 
   const partial = Object.fromEntries(EXECUTIVE_QUESTION_META.map((q) => [q.id, "partially"]));
   const partialResult = calculateExecutiveRiskScore(partial);
-  if (partialResult.rawMaturityPoints !== 7.5) {
-    console.error("FAIL: all Partially should be 7.5 points", partialResult);
+  if (partialResult.rawMaturityPoints !== 7.5 || partialResult.riskExposureScore !== 50) {
+    console.error("FAIL: all Partially should be 7.5 points and risk 50", partialResult);
+    failed++;
+  } else {
+    passed++;
+  }
+
+  const unsure = Object.fromEntries(EXECUTIVE_QUESTION_META.map((q) => [q.id, "not_sure"]));
+  const unsureResult = calculateExecutiveRiskScore(unsure);
+  if (unsureResult.riskExposureScore !== 100 || unsureResult.rawMaturityPoints !== 0) {
+    console.error("FAIL: all Not sure should score 0 points and risk 100", unsureResult);
+    failed++;
+  } else {
+    passed++;
+  }
+
+  const overScale = [yesResult, noResult, partialResult, unsureResult].some(
+    (result) => result.riskExposureScore < 0 || result.riskExposureScore > 100
+  );
+  if (overScale) {
+    console.error("FAIL: executive risk must stay inside 0–100");
     failed++;
   } else {
     passed++;
@@ -55,6 +75,20 @@ async function main() {
 
   if (EXECUTIVE_QUESTION_META.length !== 15) {
     console.error("FAIL: expected 15 questions");
+    failed++;
+  } else {
+    passed++;
+  }
+
+  const scaleFiles = [
+    "src/components/executive/ExecutiveSoftwareRiskResult.tsx",
+    "src/lib/executivePdf.ts",
+    "src/i18n/executive.ts",
+    "src/lib/calculateExecutiveRiskScore.ts",
+  ];
+  const scaleText = scaleFiles.map((rel) => fs.readFileSync(path.join(root, rel), "utf8")).join("\n");
+  if (/\/ 1000|1000 is the worst|1000 la peor|1000 a pior|\* 1000/.test(scaleText)) {
+    console.error("FAIL: executive score copy still mentions 1000");
     failed++;
   } else {
     passed++;

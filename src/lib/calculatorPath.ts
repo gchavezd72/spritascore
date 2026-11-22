@@ -1,12 +1,13 @@
 import { EU_AI_ACT_ROUTES, getEuAiActRoute } from "@/data/euAiAct";
 import { EXECUTIVE_ROUTES, getExecutiveRoute } from "@/data/executiveSoftwareRiskScore";
 import { CALC05_ROUTES, getCalc05Route } from "@/i18n/calc05";
+import { AUDIT_ROUTES } from "@/lib/auditRoutes";
 import { isRegion, REGION_LOCALE } from "@/lib/regions";
 import type { Locale } from "@/types/calculator";
 
 export type CatalogGroup = "executive" | "technical" | "regulatory";
 
-const LOCALIZED_ROUTES = [EXECUTIVE_ROUTES, EU_AI_ACT_ROUTES, CALC05_ROUTES];
+const LOCALIZED_ROUTES = [EXECUTIVE_ROUTES, EU_AI_ACT_ROUTES, CALC05_ROUTES, AUDIT_ROUTES];
 
 export function catalogGroup(id: string): CatalogGroup {
   if (id === "executive-software-risk-score" || id === "sector") return "executive";

@@ -26,7 +26,7 @@ export interface Calc05Input {
 }
 
 export interface Calc05Result {
-  score: number;              // 0–1000
+  score: number;              // exposición 0–100, 100 = peor
   impactBRL: number;          // R$ raw
   impactUSD: number;          // USD raw
   classification: "low" | "medium" | "high" | "critical";
@@ -91,10 +91,11 @@ const MAT_MULT:  Record<number, number> = { 1: 1.6, 2: 1.3, 3: 1.1, 4: 0.9 };
 const HIST_MULT: Record<number, number> = { 1: 1.0, 2: 1.4, 3: 1.25 };
 
 // ── CLASIFICACIÓN ─────────────────────────────────────────────────────────────
-function classify(score: number): Calc05Result["classification"] {
-  if (score >= 800) return "low";
-  if (score >= 550) return "medium";
-  if (score >= 300) return "high";
+/** Bands match the previous 0–1000 “safer” index: 800/550/300 become exposure 200/450/700. */
+function classify(exposurePerMille: number): Calc05Result["classification"] {
+  if (exposurePerMille <= 200) return "low";
+  if (exposurePerMille <= 450) return "medium";
+  if (exposurePerMille <= 700) return "high";
   return "critical";
 }
 
@@ -150,14 +151,15 @@ export function calcular(input: Calc05Input): Calc05Result {
   const impactBRL = Math.min(rawBRL, cap);
   const impactUSD = impactBRL * BRL_TO_USD;
 
-  // Score: 1000 = sin riesgo, 0 = máximo riesgo
-  const score = Math.max(0, 1000 - Math.round((impactBRL / cap) * 1000));
+  // Exposición 0–100 (100 = peor). El per-mil conserva las bandas anteriores.
+  const exposurePerMille = Math.min(1000, Math.max(0, Math.round((impactBRL / cap) * 1000)));
+  const score = Math.min(100, Math.max(0, Math.round(exposurePerMille / 10)));
 
   return {
     score,
     impactBRL,
     impactUSD,
-    classification: classify(score),
+    classification: classify(exposurePerMille),
     bullets: getBulletKeys(input),
     sector,
     currency,

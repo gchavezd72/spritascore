@@ -8,7 +8,9 @@ import { RiskScore } from "@/components/RiskScore";
 import { CostBreakdown } from "@/components/CostBreakdown";
 import { ImpactMatrix } from "@/components/ImpactMatrix";
 import { RecommendationCard } from "@/components/RecommendationCard";
+import { AuditOffer } from "@/components/AuditOffer";
 import { LeadCaptureForm } from "@/components/LeadCaptureForm";
+import { auditPath } from "@/lib/auditRoutes";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { saveResult, saveLead } from "@/lib/storage";
@@ -160,20 +162,22 @@ export function ResultsView({ result: initialResult }: ResultsViewProps) {
         </div>
       )}
 
+      <AuditOffer calculatorId={result.calculatorId} locale={reportLocale} />
+
       <Card className="bg-surface-hover">
         <CardContent className="pt-8 pb-8 text-center">
           <p className="text-lg mb-2 text-foreground">{rv.ctaBody1}</p>
           <p className="text-muted-foreground mb-6">{rv.ctaBody2}</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="mailto:info@sprita-it.com?subject=Diagn%C3%B3stico%20t%C3%A9cnico%20SpritaScore">
+            <Link href={auditPath(reportLocale, result.calculatorId)}>
               <Button
                 size="lg"
-                onClick={() => trackEvent("cta_clicked", { cta: "diagnostico" })}
+                onClick={() => trackEvent("cta_clicked", { cta: "audit_scope", calculator: result.calculatorId })}
               >
                 <Calendar className="h-5 w-5" />
                 {rv.requestDiagnostic}
               </Button>
-            </a>
+            </Link>
             <Link href={`/reporte/${result.id}`}>
               <Button variant="outline" size="lg">
                 <Download className="h-5 w-5" />

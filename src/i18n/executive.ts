@@ -35,6 +35,7 @@ type ExecutiveCopy = {
     previousSection: string;
     nextSection: string;
     seeScore: string;
+    reviewAnswers: string;
     yourResults: string;
     riskExposureScore: string;
     executiveMaturity: string;
@@ -180,6 +181,7 @@ const COPY: Record<Locale, ExecutiveCopy> = {
       previousSection: "Previous section",
       nextSection: "Next section",
       seeScore: "See my score",
+      reviewAnswers: "Review answers",
       yourResults: "Your results",
       riskExposureScore: "Your Risk Exposure Score",
       executiveMaturity: "Executive Maturity",
@@ -195,7 +197,7 @@ const COPY: Record<Locale, ExecutiveCopy> = {
       pdfGenerating: "Generating PDF…",
       pdfError: "Could not generate the PDF. Please try again or use Print to PDF from your browser.",
       pdfSaved: "PDF downloaded in this browser.",
-      zeroRiskNote: "0 is the best answer on this questionnaire and 1000 is the worst. A score of 0 does not claim that real-world risk is zero.",
+      zeroRiskNote: "0 is the best answer on this questionnaire and 100 is the worst. A score of 0 does not claim that real-world risk is zero.",
     },
     form: {
       title: "Request a no-cost Software Risk Assessment",
@@ -325,6 +327,7 @@ const COPY: Record<Locale, ExecutiveCopy> = {
       previousSection: "Sección anterior",
       nextSection: "Siguiente sección",
       seeScore: "Ver mi puntaje",
+      reviewAnswers: "Revisar respuestas",
       yourResults: "Sus resultados",
       riskExposureScore: "Su puntaje de exposición al riesgo",
       executiveMaturity: "Madurez ejecutiva",
@@ -340,7 +343,7 @@ const COPY: Record<Locale, ExecutiveCopy> = {
       pdfGenerating: "Generando PDF…",
       pdfError: "No se pudo generar el PDF. Intente de nuevo o use Imprimir como PDF en su navegador.",
       pdfSaved: "PDF descargado en este navegador.",
-      zeroRiskNote: "0 es la mejor respuesta de este cuestionario y 1000 la peor. Un 0 no afirma que el riesgo real sea cero.",
+      zeroRiskNote: "0 es la mejor respuesta de este cuestionario y 100 la peor. Un 0 no afirma que el riesgo real sea cero.",
     },
     form: {
       title: "Solicitar evaluación de riesgo de software sin costo",
@@ -470,6 +473,7 @@ const COPY: Record<Locale, ExecutiveCopy> = {
       previousSection: "Seção anterior",
       nextSection: "Próxima seção",
       seeScore: "Ver minha pontuação",
+      reviewAnswers: "Rever respostas",
       yourResults: "Seus resultados",
       riskExposureScore: "Sua pontuação de exposição ao risco",
       executiveMaturity: "Maturidade executiva",
@@ -485,7 +489,7 @@ const COPY: Record<Locale, ExecutiveCopy> = {
       pdfGenerating: "Gerando PDF…",
       pdfError: "Não foi possível gerar o PDF. Tente novamente ou use Imprimir como PDF no navegador.",
       pdfSaved: "PDF baixado neste navegador.",
-      zeroRiskNote: "0 é a melhor resposta deste questionário e 1000 a pior. Um 0 não afirma que o risco real seja zero.",
+      zeroRiskNote: "0 é a melhor resposta deste questionário e 100 a pior. Um 0 não afirma que o risco real seja zero.",
     },
     form: {
       title: "Solicitar avaliação de risco de software sem custo",

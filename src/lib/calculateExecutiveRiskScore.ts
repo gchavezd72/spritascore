@@ -46,7 +46,10 @@ export function calculateExecutiveRiskScore(
   }
 
   const maturityPercent = Math.round((rawMaturityPoints / 15) * 100);
-  const riskExposureScore = Math.round(((15 - rawMaturityPoints) / 15) * 1000);
+  const riskExposureScore = Math.min(
+    100,
+    Math.max(0, Math.round(((15 - rawMaturityPoints) / 15) * 100))
+  );
   const level = getMaturityLevel(rawMaturityPoints);
   const levelConfig = copy.levels[level];
 

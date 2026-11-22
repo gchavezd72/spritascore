@@ -14,6 +14,7 @@ import {
   guidesSection,
   isRegion,
   methodologySection,
+  REGION_LOCALE,
   regionPath,
   type Region,
 } from "@/lib/regions";
@@ -43,6 +44,30 @@ export default async function RegionalHomePage({ params }: PageProps) {
   if (!isRegion(r)) notFound();
   const region = r as Region;
   const content = getRegionalHomeContent(region);
+  const locale = REGION_LOCALE[region];
+  const labels = {
+    es: {
+      brand: "SpritaScore · marca de",
+      calculators: "Calculadoras",
+      guides: "Guías",
+      methodology: "Metodología",
+      interactive: "Versión interactiva completa",
+    },
+    en: {
+      brand: "SpritaScore · a brand of",
+      calculators: "Calculators",
+      guides: "Guides",
+      methodology: "Methodology",
+      interactive: "Full interactive version",
+    },
+    pt: {
+      brand: "SpritaScore · uma marca da",
+      calculators: "Calculadoras",
+      guides: "Guias",
+      methodology: "Metodologia",
+      interactive: "Versão interativa completa",
+    },
+  }[locale];
 
   return (
     <article className="seo-page">
@@ -57,7 +82,7 @@ export default async function RegionalHomePage({ params }: PageProps) {
       />
       <div className="container mx-auto px-4 max-w-4xl py-12">
         <p className="seo-eyebrow">
-          SpritaScore · marca de{" "}
+          {labels.brand}{" "}
           <a href={ORGANIZATION.url} target="_blank" rel="noopener noreferrer">
             Sprita iT
           </a>
@@ -74,7 +99,7 @@ export default async function RegionalHomePage({ params }: PageProps) {
             </div>
           ))}
         </div>
-        <h2 className="seo-h2">Calculadoras</h2>
+        <h2 className="seo-h2">{labels.calculators}</h2>
         <ul className="seo-links">
           {CALCULATOR_SEO_ROUTES.map((route) => (
             <li key={route.internalSlug}>
@@ -84,7 +109,7 @@ export default async function RegionalHomePage({ params }: PageProps) {
             </li>
           ))}
         </ul>
-        <h2 className="seo-h2">Guías</h2>
+        <h2 className="seo-h2">{labels.guides}</h2>
         <ul className="seo-links">
           {GUIDE_SLUGS.map((slug) => (
             <li key={slug}>
@@ -95,9 +120,9 @@ export default async function RegionalHomePage({ params }: PageProps) {
           ))}
         </ul>
         <p className="seo-p">
-          <Link href={regionPath(region, methodologySection(region))}>Metodología</Link>
+          <Link href={regionPath(region, methodologySection(region))}>{labels.methodology}</Link>
           {" · "}
-          <Link href="/">Versión interactiva completa</Link>
+          <Link href="/">{labels.interactive}</Link>
         </p>
         <FaqSection title="FAQ" items={content.faq} />
       </div>

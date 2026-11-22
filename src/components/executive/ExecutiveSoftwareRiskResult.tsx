@@ -10,7 +10,9 @@ import { trackExecutiveEvent } from "@/lib/analytics";
 import { downloadExecutiveScorePdf } from "@/lib/executivePdf";
 import type { ExecutiveScoreResult } from "@/lib/calculateExecutiveRiskScore";
 import type { ExecutiveAnswerId } from "@/data/executiveSoftwareRiskScore";
+import { AuditOffer } from "@/components/AuditOffer";
 import { ExecutiveLeadForm } from "@/components/executive/ExecutiveLeadForm";
+import { EXECUTIVE_CARD } from "@/data/executiveSoftwareRiskScore";
 import type { UtmParams } from "@/lib/executiveUtm";
 import { formatExecutive, getExecutiveCopy } from "@/i18n/executive";
 import type { Locale } from "@/types/calculator";
@@ -29,6 +31,7 @@ interface ExecutiveSoftwareRiskResultProps {
   result: ExecutiveScoreResult;
   answers: Record<string, ExecutiveAnswerId>;
   utm: UtmParams;
+  onReview?: () => void;
 }
 
 export function ExecutiveSoftwareRiskResult({
@@ -37,6 +40,7 @@ export function ExecutiveSoftwareRiskResult({
   result,
   answers,
   utm,
+  onReview,
 }: ExecutiveSoftwareRiskResultProps) {
   const copy = getExecutiveCopy(locale);
   const [pdfError, setPdfError] = useState("");
@@ -46,7 +50,7 @@ export function ExecutiveSoftwareRiskResult({
   const copySummary = async () => {
     const text = [
       `${copy.meta.h1} — SpritaScore`,
-      `${copy.ui.riskExposureScore}: ${result.riskExposureScore} / 1000`,
+      `${copy.ui.riskExposureScore}: ${result.riskExposureScore} / 100`,
       `${copy.ui.executiveMaturity}: ${result.levelLabel}`,
       `${copy.ui.maturityPoints}: ${result.rawMaturityPoints} / 15`,
       result.interpretation,
@@ -82,10 +86,10 @@ export function ExecutiveSoftwareRiskResult({
             </p>
             <p className={cn("text-5xl font-bold tracking-tight", LEVEL_COLORS[result.level])}>
               {result.riskExposureScore}
-              <span className="text-2xl text-muted-foreground font-semibold"> / 1000</span>
+              <span className="text-2xl text-muted-foreground font-semibold"> / 100</span>
             </p>
             <Progress
-              value={(result.riskExposureScore / 1000) * 100}
+              value={result.riskExposureScore}
               className="mt-4 h-3 max-w-md mx-auto"
               aria-label={copy.ui.riskExposureScore}
             />
@@ -169,7 +173,13 @@ export function ExecutiveSoftwareRiskResult({
             >
               {copy.ui.requestAssessment}
             </Button>
+            {onReview && (
+              <Button type="button" variant="outline" className="flex-1" onClick={onReview}>
+                {copy.ui.reviewAnswers}
+              </Button>
+            )}
             <Button
+              type="button"
               variant="outline"
               className="flex-1"
               onClick={handlePdfDownload}
@@ -198,6 +208,7 @@ export function ExecutiveSoftwareRiskResult({
         </CardContent>
       </Card>
 
+      <AuditOffer calculatorId={EXECUTIVE_CARD.id} locale={locale} />
       <ExecutiveLeadForm locale={locale} result={result} utm={utm} />
     </div>
   );

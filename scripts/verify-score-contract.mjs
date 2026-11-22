@@ -79,6 +79,16 @@ async function main() {
   const mapped = mapCalc05ToCalculationResult(input, calc05, "es", bulletTexts);
   const mappedText = JSON.stringify(mapped);
   check("calc05 display omits /1000", !mappedText.includes("/1000"));
+  check("calc05 score stays inside 0-100", calc05.score >= 0 && calc05.score <= 100, calc05.score);
+  check(
+    "calc05 mapped score matches exposure",
+    mapped.score === calc05.score && mapped.inputs.spritaScore === calc05.score && mapped.score <= 100,
+    { score: mapped.score, spritaScore: mapped.inputs.spritaScore }
+  );
+  const atCap = calcular({ ...input, hist: 2 });
+  check("calc05 impact at the cap is exposure 100", atCap.score === 100 && atCap.classification === "critical", atCap);
+  const calm = calcular({ sector: "varejo", vol: 1, ia: 1, sca: 1, mat: 4, hist: 1, currency: "BRL" });
+  check("calc05 low exposure stays low and under 100", calm.score === 7 && calm.classification === "low", calm);
   check("calc05 bullets omit LGPD and ANPD", !/LGPD|ANPD|Art\. 46/.test(bulletTexts.join("\n") + mappedText));
   check("calc05 USD notes the BRL rate", mappedText.includes("0,18") || mappedText.includes("0.18"));
 
