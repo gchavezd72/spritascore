@@ -49,6 +49,38 @@ export function languageSwitchPath(pathname: string, locale: Locale): string | n
   return null;
 }
 
+/** Same-origin application path. Rejects protocol-relative and scheme-bearing values. */
+export function isSafeAppPath(path: string): boolean {
+  if (path.length === 0 || path.length > 512) return false;
+  if (!path.startsWith("/") || path.startsWith("//") || path.startsWith("/\\")) return false;
+  if (path.includes("\\") || path.includes("://") || path.includes("\0")) return false;
+  if (/[\r\n]/.test(path)) return false;
+  return true;
+}
+
+/**
+ * Builds a same-origin URL from a checked path plus the current search and hash.
+ * Returns null when the result would leave this origin.
+ */
+export function sameOriginDestination(
+  path: string,
+  search: string,
+  hash: string,
+  origin: string,
+): string | null {
+  if (!isSafeAppPath(path)) return null;
+  if (search !== "" && !search.startsWith("?")) return null;
+  if (hash !== "" && !hash.startsWith("#")) return null;
+  let url: URL;
+  try {
+    url = new URL(`${path}${search}${hash}`, origin);
+  } catch {
+    return null;
+  }
+  if (url.origin !== origin) return null;
+  return `${url.pathname}${url.search}${url.hash}`;
+}
+
 /** Locale pinned by the URL. Unprefixed pages return null and use the saved preference or English. */
 export function localeFromPath(pathname: string): Locale | null {
   for (const routes of LOCALIZED_ROUTES) {

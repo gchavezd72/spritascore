@@ -47,6 +47,17 @@ const Q4_OPTIONS = [1, 2, 3] as const;
 const Q5_OPTIONS = [1, 2, 3, 4] as const;
 const Q6_OPTIONS = [2, 3, 1] as const;
 
+function toCalc05Input(
+  answers: Partial<Omit<Calc05Input, "currency">>,
+  currency: Currency,
+): Calc05Input | null {
+  const { sector, vol, ia, sca, mat, hist } = answers;
+  if (sector == null || vol == null || ia == null || sca == null || mat == null || hist == null) {
+    return null;
+  }
+  return { sector, vol, ia, sca, mat, hist, currency };
+}
+
 export function Calc05({ copy, locale, initialSector }: Calc05Props) {
   const router = useRouter();
   const [step, setStep] = useState(0);
@@ -80,7 +91,8 @@ export function Calc05({ copy, locale, initialSector }: Calc05Props) {
       return;
     }
 
-    const input = { ...answers, currency } as Calc05Input;
+    const input = toCalc05Input(answers, currency);
+    if (!input) return;
     const res = calcular(input);
     const bulletTexts = res.bullets.map((key) => copy.bullets[key] ?? key);
     const mapped = mapCalc05ToCalculationResult(input, res, locale, bulletTexts);

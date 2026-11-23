@@ -1,7 +1,9 @@
 import { redirect } from "next/navigation";
 
+type PageSearchParams = Promise<Record<string, string | string[] | undefined>>;
+
 interface PageProps {
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
+  searchParams: PageSearchParams;
 }
 
 /** Locale-less entry → default English, preserve query (Instantly UTMs / sector). */

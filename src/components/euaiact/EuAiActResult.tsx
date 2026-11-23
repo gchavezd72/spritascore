@@ -60,8 +60,8 @@ export function EuAiActResult({ locale, route, result, answers }: EuAiActResultP
       `${copy.ui.primaryClassification}: ${verdict.label}`,
       `${copy.ui.confidenceLabel}: ${copy.confidence[result.confidence].label}`,
     ];
-    if (result.readinessScore != null) {
-      lines.push(`${copy.ui.readinessScore}: ${result.readinessScore}/100 (${copy.levels[result.readinessLevel!].label})`);
+    if (result.readinessScore != null && result.readinessLevel != null) {
+      lines.push(`${copy.ui.readinessScore}: ${result.readinessScore}/100 (${copy.levels[result.readinessLevel].label})`);
       lines.push(`${copy.ui.evidenceCoverage}: ${result.evidenceCoverage}% (${copy.evidenceBands[result.evidenceBand]})`);
     }
     await navigator.clipboard.writeText(lines.join("\n"));
@@ -196,7 +196,7 @@ export function EuAiActResult({ locale, route, result, answers }: EuAiActResultP
       </Card>
 
       {/* Readiness */}
-      {!result.criticalStop && result.readinessScore != null && (
+      {!result.criticalStop && result.readinessScore != null && result.readinessLevel != null && (
         <Card>
           <CardHeader>
             <CardTitle className="text-lg">{copy.ui.readinessHeading}</CardTitle>
@@ -207,15 +207,15 @@ export function EuAiActResult({ locale, route, result, answers }: EuAiActResultP
                 <p className="text-xs uppercase tracking-wider text-muted-foreground mb-2">
                   {copy.ui.readinessScore}
                 </p>
-                <p className={cn("text-4xl font-bold", LEVEL_COLOR[result.readinessLevel!])}>
+                <p className={cn("text-4xl font-bold", LEVEL_COLOR[result.readinessLevel])}>
                   {result.readinessScore}
                   <span className="text-xl text-muted-foreground font-semibold"> / 100</span>
                 </p>
                 <p className="text-sm font-semibold text-brand-navy mt-1">
-                  {copy.levels[result.readinessLevel!].label}
+                  {copy.levels[result.readinessLevel].label}
                 </p>
                 <p className="text-xs text-muted-foreground mt-1">
-                  {copy.levels[result.readinessLevel!].interpretation}
+                  {copy.levels[result.readinessLevel].interpretation}
                 </p>
               </div>
               <div className="text-center p-4 rounded-xl bg-background border border-border-hairline">

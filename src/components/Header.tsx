@@ -7,7 +7,7 @@ import { Logo } from "@/components/Logo";
 import { useTranslations } from "@/components/LanguageProvider";
 import { getAuditCopy } from "@/i18n/audit";
 import { auditPath } from "@/lib/auditRoutes";
-import { languageSwitchPath } from "@/lib/calculatorPath";
+import { languageSwitchPath, sameOriginDestination } from "@/lib/calculatorPath";
 import { cn } from "@/lib/utils";
 import type { Locale } from "@/types/calculator";
 
@@ -72,7 +72,14 @@ export function Header() {
                     setLocale(loc);
                     event.preventDefault();
                     if (nextPath === window.location.pathname) return;
-                    window.location.assign(`${nextPath}${window.location.search}${window.location.hash}`);
+                    const destination = sameOriginDestination(
+                      nextPath,
+                      window.location.search,
+                      window.location.hash,
+                      window.location.origin,
+                    );
+                    if (!destination) return;
+                    window.location.assign(destination);
                   }}
                 >
                   {loc.toUpperCase()}

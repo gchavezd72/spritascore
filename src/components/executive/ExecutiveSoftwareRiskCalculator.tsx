@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -30,7 +30,6 @@ export function ExecutiveSoftwareRiskCalculator({ locale, route }: ExecutiveSoft
   const [answers, setAnswers] = useState<Record<string, ExecutiveAnswerId>>({});
   const [started, setStarted] = useState(false);
   const [completed, setCompleted] = useState(false);
-  const utm = useMemo(() => getPersistedUtm(), [completed]);
 
   useEffect(() => {
     const captured = captureUtmFromSearch(window.location.search);

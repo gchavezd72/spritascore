@@ -27,8 +27,10 @@ export const metadata: Metadata = {
   },
 };
 
+type PageSearchParams = Promise<Record<string, string | string[] | undefined>>;
+
 interface PageProps {
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
+  searchParams: PageSearchParams;
 }
 
 export default async function Page({ searchParams }: PageProps) {

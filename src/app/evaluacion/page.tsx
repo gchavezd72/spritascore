@@ -3,8 +3,10 @@ import { redirect } from "next/navigation";
 import { AUDIT_ROUTES } from "@/lib/auditRoutes";
 import { readLocaleCookie } from "@/lib/localePreference";
 
+type PageSearchParams = Promise<Record<string, string | string[] | undefined>>;
+
 interface PageProps {
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
+  searchParams: PageSearchParams;
 }
 
 export default async function Page({ searchParams }: PageProps) {

@@ -10,13 +10,18 @@ import { CALCULATOR_CATEGORY_ORDER, CALCULATOR_CATEGORY_COLORS } from "@/data/ca
 import { CalculatorIcon } from "@/components/CalculatorIcon";
 import { tr } from "@/lib/translate";
 import { useTranslations } from "@/components/LanguageProvider";
-import type { CalculatorCategory } from "@/types/calculator";
+import type { CalculatorCategory, CalculatorConfig } from "@/types/calculator";
 import { cn } from "@/lib/utils";
 
-function groupByCategory() {
-  const groups = {} as Record<CalculatorCategory, typeof CALCULATOR_CONFIGS>;
+function groupByCategory(): Record<CalculatorCategory, CalculatorConfig[]> {
+  const groups: Record<CalculatorCategory, CalculatorConfig[]> = {
+    seguridad: [],
+    calidad: [],
+    compliance: [],
+    ahorros: [],
+  };
   for (const cat of CALCULATOR_CATEGORY_ORDER) {
-    groups[cat] = CALCULATOR_CONFIGS.filter((c) => c.category === cat);
+    groups[cat] = CALCULATOR_CONFIGS.filter((item) => item.category === cat);
   }
   return groups;
 }

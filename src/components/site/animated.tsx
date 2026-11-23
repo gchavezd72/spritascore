@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import type { CSSProperties } from "react";
 import { useParallax } from "@/hooks/useParallax";
 
 /** Parallax background layers for the hero (isolated so scrolling only
@@ -77,6 +78,12 @@ function coverFill(value: number) {
   return Math.min(COVER_SCORE_MAX, (value / COVER_SCORE_MAX) * 100).toFixed(1);
 }
 
+type CoverStyle = CSSProperties & { "--v": string };
+
+function coverStyle(value: number): CoverStyle {
+  return { "--v": coverFill(value) };
+}
+
 /** Hero score ring: conic-gradient fills as the number counts to `target`. */
 export function ScoreRing({
   target = COVER_SCORE_EXAMPLE,
@@ -90,7 +97,7 @@ export function ScoreRing({
   const shown = Math.min(COVER_SCORE_MAX, target);
   const { ref, value } = useCountUp<HTMLDivElement>(shown, 1700);
   return (
-    <div className="ring" ref={ref} style={{ ["--v" as string]: coverFill(value) } as React.CSSProperties}>
+    <div className="ring" ref={ref} style={coverStyle(value)}>
       <div className="ring-tick" />
       <div className="ring-inner">
         <div className="ring-num">{value.toLocaleString(localeTag(locale))}</div>
@@ -114,7 +121,7 @@ export function ScoreGauge({
   const shown = Math.min(COVER_SCORE_MAX, target);
   const { ref, value } = useCountUp<HTMLDivElement>(shown, 1700);
   return (
-    <div className="gauge" ref={ref} style={{ ["--v" as string]: coverFill(value) } as React.CSSProperties}>
+    <div className="gauge" ref={ref} style={coverStyle(value)}>
       <div className="gauge-c">
         <div className="gauge-n">{value.toLocaleString(localeTag(locale))}</div>
         <div className="gauge-scale">/ 100</div>

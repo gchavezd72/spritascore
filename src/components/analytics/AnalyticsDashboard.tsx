@@ -29,12 +29,12 @@ import { loadDemoAnalysis } from "@/lib/kiuwan/demo";
 import { allowedUpload } from "@/lib/kiuwan/classify";
 import { MAX_FILE_BYTES, MAX_FILES, MAX_TOTAL_BYTES, parseKiuwanFiles } from "@/lib/kiuwan/parse";
 import { priorityLabel } from "@/lib/kiuwan/normalize";
+import { PRIORITIES } from "@/lib/kiuwan/types";
 import type {
   AnalysisModel,
   Improvement,
   KiuwanFileKind,
   ParseWarning,
-  Priority,
   Selection,
   SheetId,
 } from "@/lib/kiuwan/types";
@@ -166,9 +166,7 @@ export function AnalyticsDashboard() {
   const priorities = useMemo(() => {
     if (!model) return [];
     const present = new Set(model.findings.map((item) => item.priority));
-    return (["very-high", "high", "medium", "low", "very-low", "unknown"] as Priority[]).filter((item) =>
-      present.has(item)
-    );
+    return PRIORITIES.filter((item) => present.has(item));
   }, [model]);
 
   const onFiles = (list: FileList | File[] | null) => {
@@ -178,10 +176,32 @@ export function AnalyticsDashboard() {
 
   const toggleValue = (key: "priorities" | "languages" | "characteristics" | "types", value: string) => {
     setSelection((current) => {
-      const list = current[key] as string[];
-      const exists = list.includes(value);
-      const next = exists ? list.filter((item) => item !== value) : [...list, value];
-      return { ...current, [key]: next } as Selection;
+      if (key === "priorities") {
+        const priority = PRIORITIES.find((item) => item === value);
+        if (!priority) return current;
+        const exists = current.priorities.includes(priority);
+        const priorities = exists
+          ? current.priorities.filter((item) => item !== priority)
+          : [...current.priorities, priority];
+        return { ...current, priorities };
+      }
+      if (key === "languages") {
+        const exists = current.languages.includes(value);
+        const languages = exists
+          ? current.languages.filter((item) => item !== value)
+          : [...current.languages, value];
+        return { ...current, languages };
+      }
+      if (key === "characteristics") {
+        const exists = current.characteristics.includes(value);
+        const characteristics = exists
+          ? current.characteristics.filter((item) => item !== value)
+          : [...current.characteristics, value];
+        return { ...current, characteristics };
+      }
+      const exists = current.types.includes(value);
+      const types = exists ? current.types.filter((item) => item !== value) : [...current.types, value];
+      return { ...current, types };
     });
   };
 

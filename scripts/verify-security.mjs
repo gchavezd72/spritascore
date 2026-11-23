@@ -54,6 +54,36 @@ async function main() {
   assert(isDisposableEmail("user@mailinator.com"), "Disposable email detection");
   assert(!isDisposableEmail("user@company.com"), "Corporate email should pass");
 
+  const { localeCookieString, localeFromCookieHeader, readLocaleCookie } = await import(
+    pathToFileURL(path.join(root, "src/lib/localePreference.ts")).href
+  );
+  assert(localeCookieString("es") === "spritascore_locale=es; Path=/; Max-Age=31536000; SameSite=Lax", "Spanish locale cookie is a literal");
+  assert(localeCookieString("pt", true).endsWith("; Secure"), "HTTPS locale cookie is Secure");
+  assert(!localeCookieString("en").includes("Secure"), "HTTP locale cookie stays readable on localhost");
+  assert(localeFromCookieHeader("a=b; spritascore_locale=pt") === "pt", "Locale cookie parser reads pt");
+  assert(localeFromCookieHeader("spritascore_locale=english") === null, "Locale cookie parser rejects unknown values");
+  assert(readLocaleCookie("nope") === "en", "Unknown locale falls back to English");
+
+  const { sameOriginDestination } = await import(
+    pathToFileURL(path.join(root, "src/lib/calculatorPath.ts")).href
+  );
+  const origin = "https://spritascore.com";
+  assert(
+    sameOriginDestination("/es", "?utm=1", "#contacto", origin) === "/es?utm=1#contacto",
+    "Language switch keeps the current query and hash",
+  );
+  assert(sameOriginDestination("//evil.example", "", "", origin) === null, "Protocol-relative navigation is rejected");
+  assert(sameOriginDestination("https://evil.example", "", "", origin) === null, "Absolute navigation is rejected");
+  assert(
+    sameOriginDestination("/pt", "?next=https://evil.example", "", origin) === "/pt?next=https://evil.example",
+    "A URL inside the query stays on this origin",
+  );
+
+  const { jsonLdHtml } = await import(pathToFileURL(path.join(root, "src/components/JsonLd.tsx")).href);
+  const encoded = jsonLdHtml({ name: "</script><script>alert(1)</script>" });
+  assert(!encoded.includes("</"), "JSON-LD escapes a closing script tag");
+  assert(JSON.parse(encoded).name === "</script><script>alert(1)</script>", "JSON-LD escape round-trips");
+
   const executiveForm = fs.readFileSync(
     path.join(root, "src/components/executive/ExecutiveLeadForm.tsx"),
     "utf8"
