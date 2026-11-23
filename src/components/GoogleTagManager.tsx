@@ -14,9 +14,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 export function GoogleTagManagerHead() {
   return (
     <>
+      {/* App Router has no pages/_document.js. The root layout renders these scripts so consent is denied before GTM loads. */}
+      {/* eslint-disable-next-line @next/next/no-before-interactive-script-outside-document */}
       <Script id="gtm-consent-default" strategy="beforeInteractive">
         {CONSENT_DEFAULT}
       </Script>
+      {/* eslint-disable-next-line @next/next/no-before-interactive-script-outside-document */}
       <Script id="gtm-head" strategy="beforeInteractive">
         {GTM_BOOT}
       </Script>

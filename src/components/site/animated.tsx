@@ -34,8 +34,8 @@ function useCountUp<T extends HTMLElement>(target: number, durationMs = 1200) {
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduced) {
-      setValue(target);
-      return;
+      const frame = requestAnimationFrame(() => setValue(target));
+      return () => cancelAnimationFrame(frame);
     }
 
     const io = new IntersectionObserver(

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Input } from "@/components/ui/input";
@@ -48,12 +48,13 @@ export function LeadCaptureForm({ result, onSuccess }: LeadCaptureFormProps) {
     register,
     handleSubmit,
     setValue,
-    watch,
+    control,
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(buildSchema(t)),
     defaultValues: { wantsEmailReport: false },
   });
+  const wantsEmailReport = useWatch({ control, name: "wantsEmailReport" });
 
   const onSubmit = async (data: FormValues) => {
     setLoading(true);
@@ -172,7 +173,7 @@ export function LeadCaptureForm({ result, onSuccess }: LeadCaptureFormProps) {
             <input
               type="checkbox"
               className="accent-brand-green"
-              checked={watch("wantsEmailReport")}
+              checked={wantsEmailReport}
               onChange={(e) => setValue("wantsEmailReport", e.target.checked)}
             />
             <span className="text-sm text-muted-foreground">{t.leadForm.wantsEmailReport}</span>

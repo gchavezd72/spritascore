@@ -41,12 +41,20 @@ export function ExecutiveSoftwareRiskCalculator({ locale, route }: ExecutiveSoft
       ...getPersistedUtm(),
     });
 
+    let saved: string | null = null;
     try {
-      const saved = sessionStorage.getItem(STORAGE_KEY);
-      if (saved) setAnswers(JSON.parse(saved) as Record<string, ExecutiveAnswerId>);
+      saved = sessionStorage.getItem(STORAGE_KEY);
     } catch {
-      /* ignore */
+      saved = null;
     }
+    if (!saved) return;
+    queueMicrotask(() => {
+      try {
+        setAnswers(JSON.parse(saved) as Record<string, ExecutiveAnswerId>);
+      } catch {
+        /* ignore */
+      }
+    });
   }, [locale, route]);
 
   useEffect(() => {

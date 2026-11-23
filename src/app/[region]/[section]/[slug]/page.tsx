@@ -12,7 +12,6 @@ import {
   resolveCalculatorBySeoSlug,
   resolveGuideBySeoSlug,
   GUIDE_SEO_SLUGS,
-  type GuideSlug,
 } from "@/lib/seoRoutes";
 import {
   calcSection,

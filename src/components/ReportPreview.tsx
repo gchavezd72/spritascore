@@ -13,6 +13,17 @@ interface ReportPreviewProps {
   result: CalculationResult;
 }
 
+function printWithTitle(title: string) {
+  const previousTitle = document.title;
+  document.title = title;
+  const restoreTitle = () => {
+    document.title = previousTitle;
+    window.removeEventListener("afterprint", restoreTitle);
+  };
+  window.addEventListener("afterprint", restoreTitle);
+  window.print();
+}
+
 export function ReportPreview({ result }: ReportPreviewProps) {
   const { reportLocale, localizedResult, t } = useReportContext(result);
   const calc = getCalculatorById(localizedResult.calculatorId);
@@ -27,14 +38,7 @@ export function ReportPreview({ result }: ReportPreviewProps) {
       locale: reportLocale,
     });
     const prefix = calc?.slug ?? localizedResult.calculatorId;
-    const previousTitle = document.title;
-    document.title = calculatorPdfBasename(prefix);
-    const restoreTitle = () => {
-      document.title = previousTitle;
-      window.removeEventListener("afterprint", restoreTitle);
-    };
-    window.addEventListener("afterprint", restoreTitle);
-    window.print();
+    printWithTitle(calculatorPdfBasename(prefix));
   };
 
   return (

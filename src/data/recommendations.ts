@@ -742,6 +742,6 @@ export function getRecommendationByKey(key: string): Recommendation {
       type: "tecnica",
     };
   }
-  const { key: _key, ...rest } = template;
-  return { ...rest, id: `rec-${key}` };
+  const { key: templateKey, ...rest } = template;
+  return { ...rest, id: `rec-${templateKey}` };
 }

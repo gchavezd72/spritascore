@@ -1,26 +1,35 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "@/components/LanguageProvider";
 import { updateAnalyticsConsent } from "@/lib/gtm";
 
 const CONSENT_KEY = "spritascore_cookie_consent";
+const listeners = new Set<() => void>();
+
+function subscribe(listener: () => void) {
+  listeners.add(listener);
+  return () => listeners.delete(listener);
+}
+
+function consentMissing() {
+  return localStorage.getItem(CONSENT_KEY) == null;
+}
+
+function emitConsent() {
+  listeners.forEach((listener) => listener());
+}
 
 export function CookieConsent() {
-  const [visible, setVisible] = useState(false);
+  const visible = useSyncExternalStore(subscribe, consentMissing, () => false);
   const { t } = useTranslations();
-
-  useEffect(() => {
-    const stored = localStorage.getItem(CONSENT_KEY);
-    if (!stored) setVisible(true);
-  }, []);
 
   const respond = (value: "accepted" | "rejected") => {
     localStorage.setItem(CONSENT_KEY, value);
     updateAnalyticsConsent(value === "accepted" ? "granted" : "denied");
-    setVisible(false);
+    emitConsent();
   };
 
   if (!visible) return null;

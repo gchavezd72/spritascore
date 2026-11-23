@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -162,9 +163,9 @@ export function ReportUnlockModal({ result, onUnlocked }: ReportUnlockModalProps
           </Button>
           <p className="text-xs text-muted-foreground text-center">
             {t.leadForm.privacyNotice.split("{privacyLink}")[0]}
-            <a href="/privacidad" className="underline hover:text-foreground">
+            <Link href="/privacidad" className="underline hover:text-foreground">
               {t.leadForm.privacyLinkText}
-            </a>
+            </Link>
             {t.leadForm.privacyNotice.split("{privacyLink}")[1]}
           </p>
         </form>

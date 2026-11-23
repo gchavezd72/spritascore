@@ -68,17 +68,23 @@ export function EuAiActCalculator({ locale, route }: EuAiActCalculatorProps) {
 
   useEffect(() => {
     trackEvent("euaiact_view", { route, language: locale });
+    let saved: string | null = null;
     try {
-      const saved = sessionStorage.getItem(STORAGE_KEY);
-      if (saved) {
+      saved = sessionStorage.getItem(STORAGE_KEY);
+    } catch {
+      saved = null;
+    }
+    if (!saved) return;
+    queueMicrotask(() => {
+      try {
         const parsed = JSON.parse(saved);
         setClassAnswers(parsed.classAnswers ?? {});
         setAnnexArea(parsed.annexArea ?? "none");
         setReadinessAnswers(parsed.readinessAnswers ?? {});
+      } catch {
+        /* ignore */
       }
-    } catch {
-      /* ignore */
-    }
+    });
   }, [locale, route]);
 
   useEffect(() => {

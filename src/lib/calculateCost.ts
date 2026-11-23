@@ -19,7 +19,6 @@ import {
   EXPLOITATION_LEVELS,
   EXPOSURE_LEVELS,
   MATURITY_LEVELS,
-  PRODUCT_CATEGORIES,
   REGULATIONS,
 } from "@/data/commonOptions";
 import type { CalculationResult, CalculatorId, Currency, Locale, LocalizedText } from "@/types/calculator";
@@ -259,7 +258,6 @@ export function calculateOwaspWeb(
   const hourlyRate = num(inputs.hourlyRate, 75);
   const remediationDays = num(inputs.remediationDays, 14);
   const exposureDays = num(inputs.exposureDays, 30);
-  const userCount = num(inputs.userCount, 10000);
   const sensitiveRecords = num(inputs.sensitiveRecords, 50000);
   const annualRevenue = num(inputs.annualRevenue, 5000000);
 
