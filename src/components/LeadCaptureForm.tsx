@@ -108,11 +108,7 @@ export function LeadCaptureForm({ result, onSuccess }: LeadCaptureFormProps) {
         }),
       });
       if (!res.ok) throw new Error("submit failed");
-      trackEvent("lead_submitted", {
-        resultId: result.id,
-        sector: sanitized.sector,
-        calculator: result.calculatorId,
-      });
+      trackEvent("lead_submitted", { calculator: result.calculatorId, locale });
       onSuccess(sanitized);
     } catch {
       setError(t.leadForm.error);

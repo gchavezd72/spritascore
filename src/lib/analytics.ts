@@ -2,6 +2,7 @@ export type AnalyticsEvent =
   | "calculator_started"
   | "calculator_completed"
   | "lead_submitted"
+  | "audit_scope_request"
   | "report_downloaded"
   | "cta_clicked";
 
@@ -23,7 +24,7 @@ import { pushAnalyticsEvent } from "@/lib/gtm";
 
 interface EventPayload {
   calculator?: string;
-  score?: number;
+  score?: number | null;
   riskLevel?: string;
   cost?: number;
   cta?: string;

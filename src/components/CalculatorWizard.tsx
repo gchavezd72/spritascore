@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -80,6 +80,7 @@ export function CalculatorWizard({ config }: CalculatorWizardProps) {
   const router = useRouter();
   const { t, locale } = useTranslations();
   const [currentStep, setCurrentStep] = useState(0);
+  const startedCalculator = useRef<CalculatorConfig["id"] | null>(null);
   const schema = buildSchema(config, t);
   const methods = useForm({
     resolver: zodResolver(schema),
@@ -123,6 +124,10 @@ export function CalculatorWizard({ config }: CalculatorWizardProps) {
   };
 
   const handleNext = async () => {
+    if (startedCalculator.current !== config.id) {
+      startedCalculator.current = config.id;
+      trackEvent("calculator_started", { calculator: config.id, locale });
+    }
     const valid = await validateCurrentStep();
     if (!valid) return;
 
@@ -137,12 +142,11 @@ export function CalculatorWizard({ config }: CalculatorWizardProps) {
     const values = methods.getValues();
     const currency = (values.currency as Currency) || "USD";
 
-    trackEvent("calculator_started", { calculator: config.id });
-
     const result = calculate(config.id, values as Record<string, unknown>, currency, locale);
     saveResult(result);
     trackEvent("calculator_completed", {
       calculator: config.id,
+      locale,
       score: result.score,
       riskLevel: result.riskLevel,
       cost: result.cost.probable ?? result.cost.annual,

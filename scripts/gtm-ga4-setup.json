@@ -18,6 +18,8 @@
       "type": "Data Layer Variable",
       "key": "lead_source"
     },
+    { "name": "DLV - locale", "type": "Data Layer Variable", "key": "locale" },
+    { "name": "DLV - lead_type", "type": "Data Layer Variable", "key": "lead_type" },
     {
       "name": "DLV - sector",
       "type": "Data Layer Variable",
@@ -35,10 +37,9 @@
     }
   ],
   "triggers": [
-    { "name": "CE - All SpritaScore events", "type": "Custom Event", "event": ".*", "use_regex": true },
-    { "name": "CE - generate_lead", "type": "Custom Event", "events": ["lead_submitted", "software_score_form_submit"] },
-    { "name": "CE - calculator_started", "type": "Custom Event", "event": "calculator_started" },
-    { "name": "CE - calculator_completed", "type": "Custom Event", "event": "calculator_completed" },
+    { "name": "CE - generate_lead", "type": "Custom Event", "events": ["lead_submitted", "software_score_form_submit", "euaiact_form_submit", "audit_scope_request"] },
+    { "name": "CE - calculator_started", "type": "Custom Event", "events": ["calculator_started", "software_score_start", "euaiact_start"] },
+    { "name": "CE - calculator_completed", "type": "Custom Event", "events": ["calculator_completed", "software_score_completed", "euaiact_completed"] },
     { "name": "CE - file_download", "type": "Custom Event", "events": ["report_downloaded", "software_score_pdf_download"] },
     { "name": "CE - cta_clicked", "type": "Custom Event", "event": "cta_clicked" },
     { "name": "CE - software_score_completed", "type": "Custom Event", "event": "software_score_completed" }
@@ -52,15 +53,25 @@
       "consent": "analytics_storage"
     },
     {
-      "name": "GA4 - Event (all custom)",
+      "name": "GA4 - Event calculator_started",
       "type": "GA4 Event",
       "measurement_id": "G-PET5JPXKYG",
-      "event_name": "{{DLV - ga4_event_name}}",
-      "trigger": "CE - All SpritaScore events",
+      "event_name": "calculator_started",
+      "trigger": "CE - calculator_started",
       "parameters": {
         "calculator_id": "{{DLV - calculator_id}}",
-        "lead_source": "{{DLV - lead_source}}",
-        "sector": "{{DLV - sector}}",
+        "locale": "{{DLV - locale}}"
+      }
+    },
+    {
+      "name": "GA4 - Event calculator_completed",
+      "type": "GA4 Event",
+      "measurement_id": "G-PET5JPXKYG",
+      "event_name": "calculator_completed",
+      "trigger": "CE - calculator_completed",
+      "parameters": {
+        "calculator_id": "{{DLV - calculator_id}}",
+        "locale": "{{DLV - locale}}",
         "score": "{{DLV - score}}",
         "risk_level": "{{DLV - risk_level}}"
       }
@@ -71,6 +82,12 @@
       "measurement_id": "G-PET5JPXKYG",
       "event_name": "generate_lead",
       "trigger": "CE - generate_lead",
+      "parameters": {
+        "calculator_id": "{{DLV - calculator_id}}",
+        "locale": "{{DLV - locale}}",
+        "lead_source": "{{DLV - lead_source}}",
+        "lead_type": "{{DLV - lead_type}}"
+      },
       "mark_as_conversion": true
     }
   ],
@@ -87,6 +104,10 @@
     "software_score_pdf_download",
     "software_score_assessment_click",
     "software_score_form_submit",
+    "euaiact_start",
+    "euaiact_completed",
+    "euaiact_form_submit",
+    "audit_scope_request",
     "consent_update"
   ]
 }

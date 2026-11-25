@@ -10,6 +10,7 @@ import {
   CLASSIFICATION_STAGES,
   READINESS_DOMAINS,
   ANNEX_III_AREAS,
+  EU_AI_ACT_CARD,
   type ClassificationStage,
   type ClassAnswerId,
   type ReadinessAnswerId,
@@ -115,7 +116,7 @@ export function EuAiActCalculator({ locale, route }: EuAiActCalculatorProps) {
   const markStarted = () => {
     if (!started) {
       setStarted(true);
-      trackEvent("euaiact_start", { route, language: locale });
+      trackEvent("euaiact_start", { calculator: EU_AI_ACT_CARD.id, route, language: locale });
     }
   };
 
@@ -145,6 +146,7 @@ export function EuAiActCalculator({ locale, route }: EuAiActCalculatorProps) {
 
   const goNext = () => {
     if (!stepComplete) return;
+    markStarted();
     if (stepIndex < steps.length - 1) {
       setStepIndex((i) => i + 1);
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -153,6 +155,9 @@ export function EuAiActCalculator({ locale, route }: EuAiActCalculatorProps) {
     const result = calculateEuAiAct({ classification: classAnswers, annexArea, readiness: readinessAnswers });
     setCompleted(true);
     trackEvent("euaiact_completed", {
+      calculator: EU_AI_ACT_CARD.id,
+      score: result.readinessScore,
+      riskLevel: result.verdict,
       verdict: result.verdict,
       readinessScore: result.readinessScore,
       confidence: result.confidence,
@@ -191,9 +196,13 @@ export function EuAiActCalculator({ locale, route }: EuAiActCalculatorProps) {
     classAnswers.S1 === "no" && classAnswers.S2 === "no" && classAnswers.S3 === "no";
 
   const finishOutOfScope = () => {
+    markStarted();
     setCompleted(true);
     const result = calculateEuAiAct({ classification: classAnswers, annexArea, readiness: readinessAnswers });
     trackEvent("euaiact_completed", {
+      calculator: EU_AI_ACT_CARD.id,
+      score: result.readinessScore,
+      riskLevel: result.verdict,
       verdict: result.verdict,
       readinessScore: result.readinessScore,
       confidence: result.confidence,

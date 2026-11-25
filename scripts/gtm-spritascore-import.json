@@ -211,6 +211,56 @@
         ],
         "fingerprint": "1783468365745",
         "formatValue": {}
+      },
+      {
+        "accountId": "6227957134",
+        "containerId": "6761",
+        "variableId": "8",
+        "name": "DLV - locale",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "setDefaultValue",
+            "value": "false"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "locale"
+          }
+        ],
+        "formatValue": {}
+      },
+      {
+        "accountId": "6227957134",
+        "containerId": "6761",
+        "variableId": "9",
+        "name": "DLV - lead_type",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "setDefaultValue",
+            "value": "false"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "lead_type"
+          }
+        ],
+        "formatValue": {}
       }
     ],
     "trigger": [
@@ -338,6 +388,78 @@
           }
         ],
         "fingerprint": "1783468366092"
+      },
+      {
+        "accountId": "6227957134",
+        "containerId": "6761",
+        "triggerId": "15",
+        "name": "CE - EU AI Act and audit leads",
+        "type": "CUSTOM_EVENT",
+        "customEventFilter": [
+          {
+            "type": "MATCH_REGEX",
+            "parameter": [
+              {
+                "type": "TEMPLATE",
+                "key": "arg0",
+                "value": "{{_event}}"
+              },
+              {
+                "type": "TEMPLATE",
+                "key": "arg1",
+                "value": "^(euaiact_form_submit|audit_scope_request)$"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "accountId": "6227957134",
+        "containerId": "6761",
+        "triggerId": "16",
+        "name": "CE - Specialized calculator started",
+        "type": "CUSTOM_EVENT",
+        "customEventFilter": [
+          {
+            "type": "MATCH_REGEX",
+            "parameter": [
+              {
+                "type": "TEMPLATE",
+                "key": "arg0",
+                "value": "{{_event}}"
+              },
+              {
+                "type": "TEMPLATE",
+                "key": "arg1",
+                "value": "^(software_score_start|euaiact_start)$"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "accountId": "6227957134",
+        "containerId": "6761",
+        "triggerId": "17",
+        "name": "CE - Specialized calculator completed",
+        "type": "CUSTOM_EVENT",
+        "customEventFilter": [
+          {
+            "type": "MATCH_REGEX",
+            "parameter": [
+              {
+                "type": "TEMPLATE",
+                "key": "arg0",
+                "value": "{{_event}}"
+              },
+              {
+                "type": "TEMPLATE",
+                "key": "arg1",
+                "value": "^(software_score_completed|euaiact_completed)$"
+              }
+            ]
+          }
+        ]
       }
     ],
     "tag": [
@@ -421,6 +543,36 @@
                     "value": "{{DLV - calculator_id}}"
                   }
                 ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "locale"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{DLV - locale}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "lead_type"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{DLV - lead_type}}"
+                  }
+                ]
               }
             ]
           }
@@ -428,7 +580,8 @@
         "fingerprint": "1783468365301",
         "firingTriggerId": [
           "10",
-          "11"
+          "11",
+          "15"
         ],
         "tagFiringOption": "ONCE_PER_EVENT",
         "monitoringMetadata": {
@@ -478,13 +631,29 @@
                     "value": "{{DLV - calculator_id}}"
                   }
                 ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "locale"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{DLV - locale}}"
+                  }
+                ]
               }
             ]
           }
         ],
         "fingerprint": "1783468366133",
         "firingTriggerId": [
-          "12"
+          "12",
+          "16"
         ],
         "tagFiringOption": "ONCE_PER_EVENT",
         "monitoringMetadata": {
@@ -564,13 +733,29 @@
                     "value": "{{DLV - risk_level}}"
                   }
                 ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "locale"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{DLV - locale}}"
+                  }
+                ]
               }
             ]
           }
         ],
         "fingerprint": "1783468365327",
         "firingTriggerId": [
-          "13"
+          "13",
+          "17"
         ],
         "tagFiringOption": "ONCE_PER_EVENT",
         "monitoringMetadata": {

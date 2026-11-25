@@ -24,8 +24,7 @@ console.log(`
 SpritaScore GTM setup (container GTM-NDXVZKB3)
 =============================================
 
-The site already loads GTM. The container is currently EMPTY (no tags).
-Import the prepared configuration:
+The site already loads GTM. Review the existing workspace before import.
 
 1. Open https://tagmanager.google.com → container GTM-NDXVZKB3
 2. Admin → Import container
@@ -34,7 +33,8 @@ Import the prepared configuration:
 4. Workspace: Default Workspace
 5. Import option: Merge → Overwrite conflicting tags, triggers, and variables
 6. Edit variable "GA4 - Measurement ID" → your G-XXXXXXXXXX
-7. Submit → Publish
+7. Preview the workspace and confirm that each successful lead submission
+   fires exactly one generate_lead tag before publishing the GTM changes.
 
 If import fails with "formato no válido", re-download the latest file from the repo
 (scripts/gtm-spritascore-import.json) — it must include fingerprint and tagManagerUrl fields.
@@ -45,9 +45,13 @@ Before import, set your GA4 Measurement ID (G-XXXXXXXXXX):
 Or edit variable "GA4 - Measurement ID" in GTM after import.
 
 Included tags:
-- GA4 - Configuration (Initialization - All Pages, consent required)
-- GA4 - Event (dynamic) on SpritaScore dataLayer events
-- GA4 - Conversion generate_lead on lead forms
+- GA4 - Configuration (Initialization - All Pages)
+- GA4 - Events calculator_started and calculator_completed
+- GA4 - Event generate_lead for successful report, assessment and audit requests
 
-Test: GTM Preview → https://spritascore.com → accept cookies → submit a lead
+In GA4, create event-scoped custom dimensions for calculator_id, locale and
+lead_type. Mark generate_lead as a key event if it is not already configured.
+
+Test in GTM Preview on an approved test deployment and check GA4 DebugView.
+Use a test lead and confirm that the expected inbox receives it.
 `);

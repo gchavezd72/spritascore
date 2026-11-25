@@ -94,7 +94,7 @@ export function EuAiActLeadForm({ locale, result, utm }: EuAiActLeadFormProps) {
         body: JSON.stringify(payload),
       });
       if (!res.ok) throw new Error("submit failed");
-      trackEvent("euaiact_form_submit", payload);
+      trackEvent("euaiact_form_submit", { calculator: payload.calculatorId, locale });
       setDone(true);
     } catch {
       setError(copy.form.submitError);

@@ -2,9 +2,22 @@
 const GA4_EVENT_MAP: Record<string, string> = {
   lead_submitted: "generate_lead",
   software_score_form_submit: "generate_lead",
+  euaiact_form_submit: "generate_lead",
+  audit_scope_request: "generate_lead",
+  software_score_start: "calculator_started",
+  euaiact_start: "calculator_started",
+  software_score_completed: "calculator_completed",
+  euaiact_completed: "calculator_completed",
   report_downloaded: "file_download",
   software_score_pdf_download: "file_download",
   cta_clicked: "select_content",
+};
+
+const LEAD_TYPE: Record<string, string> = {
+  lead_submitted: "report",
+  software_score_form_submit: "assessment",
+  euaiact_form_submit: "assessment",
+  audit_scope_request: "audit_request",
 };
 
 export type ConsentState = "granted" | "denied";
@@ -84,12 +97,18 @@ export function pushAnalyticsEvent(
     ...payload,
   };
 
+  if (typeof payload.language === "string" && !data.locale) {
+    data.locale = payload.language;
+  }
+
   if (calculatorId && !data.calculator_id) {
     data.calculator_id = calculatorId;
   }
 
-  if (event === "lead_submitted" || event === "software_score_form_submit") {
+  const leadType = LEAD_TYPE[event];
+  if (leadType) {
     data.lead_source = calculatorId || "spritascore";
+    data.lead_type = leadType;
     data.conversion = true;
   }
 

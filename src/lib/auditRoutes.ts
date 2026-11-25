@@ -22,8 +22,12 @@ const AUDIT_MATCH: Record<CalculatorId, { primary: AuditId; alt?: AuditId }> = {
   "eu-ai-act-compliance": { primary: "AUD-04", alt: "AUD-06" },
 };
 
+export function isAuditCalculatorId(value: unknown): value is CalculatorId {
+  return typeof value === "string" && Object.hasOwn(AUDIT_MATCH, value);
+}
+
 export function auditMatch(calculatorId: string): { primary: AuditId; alt?: AuditId } {
-  if (calculatorId in AUDIT_MATCH) return AUDIT_MATCH[calculatorId as CalculatorId];
+  if (isAuditCalculatorId(calculatorId)) return AUDIT_MATCH[calculatorId];
   return { primary: "AUD-07" };
 }
 

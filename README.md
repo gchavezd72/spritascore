@@ -43,14 +43,15 @@ Abra [http://localhost:3000](http://localhost:3000)
 | `RESEND_API_KEY` | API key de Resend para enviar leads a `info@sprita-it.com` |
 | `LEAD_EMAIL_TO` | Destino de leads (default: `info@sprita-it.com`) |
 | `LEAD_EMAIL_FROM` | Remitente verificado en Resend (default: `info@sprita-it.com`) |
-| `CRM_WEBHOOK_URL` | Opcional: webhook adicional (HubSpot, Zapier, Salesforce) |
+| `HUBSPOT_SERVICE_KEY` | Opcional: credencial privada del servidor para registrar leads en HubSpot |
+| `CRM_WEBHOOK_URL` | Opcional: webhook adicional (Zapier, Salesforce) |
 
 ## Despliegue en Vercel
 
 1. Conecte el repositorio en [vercel.com](https://vercel.com)
 2. Instale Resend: `vercel integration add resend/resend-email`
 3. Verifique el dominio `sprita-it.com` en Resend y configure `LEAD_EMAIL_FROM=SpritaScore <info@sprita-it.com>`
-4. Opcional: configure `CRM_WEBHOOK_URL` para duplicar leads en un CRM
+4. Opcional: configure `HUBSPOT_SERVICE_KEY` o `CRM_WEBHOOK_URL` para registrar los leads en un CRM
 5. Deploy automático en cada push a `main`
 
 ```bash
@@ -81,6 +82,22 @@ src/
 - **Lead gating:** Resultado parcial visible; reporte completo tras captura de email
 - **Persistencia:** localStorage (preparado para CRM vía webhook)
 - **Analítica:** Eventos `calculator_started`, `calculator_completed`, `lead_submitted`, `report_downloaded`, `cta_clicked`
+
+## Medición comercial
+
+La configuración en `scripts/gtm-spritascore-import.json` envía a GA4 `calculator_started`, `calculator_completed` y `generate_lead`. Cada etapa lleva el identificador de la calculadora (`calculator_id`) y el idioma del sitio (`locale`). Una solicitud directa de auditoría se registra como `direct`.
+
+`generate_lead` se emite al confirmar el formulario. `lead_type` distingue el desbloqueo de un informe (`report`), el contacto sobre una evaluación (`assessment`) y la solicitud de alcance de auditoría (`audit_request`). Los datos de contacto siguen su flujo de correo y CRM.
+
+Verifica los eventos con `npm run verify:gtm`. Para validar la instalación, usa la vista previa de GTM en un entorno de prueba y comprueba en GA4 que cada envío exitoso genera un solo evento. Confirma también la recepción en el buzón o CRM de prueba. Registra `calculator_id`, `locale` y `lead_type` como dimensiones de evento en GA4. Usa `audit_request` para medir intención explícita de compra y el estado registrado por ventas para medir oportunidades y cierres.
+
+## Conexión con HubSpot
+
+1. En la cuenta [SpritaScore HubSpot 2204944](https://app.hubspot.com/global-home/2204944), abre **Configuración → Integraciones → Service Keys**. Crea la clave `SpritaScore Leads` con `crm.objects.contacts.read`, `crm.objects.contacts.write` y `crm.objects.notes.write`. [Guía de HubSpot sobre Service Keys](https://developers.hubspot.com/changelog/service-keys).
+2. Guarda la clave como `HUBSPOT_SERVICE_KEY` en las variables privadas del entorno de prueba. Para desarrollo local se carga desde `.env.local`. Mantén la clave fuera del repositorio y de los mensajes de chat.
+3. Tras reiniciar el entorno, envía un formulario con un correo de prueba que controles. Verifica el contacto y su nota en HubSpot. Envía después otro tipo de formulario con ese correo y comprueba que la segunda nota aparece en la misma ficha.
+
+Se reutilizan los contactos existentes por correo electrónico y se agrega una nota con el tipo de solicitud, idioma, calculadora y código de auditoría cuando corresponda. La sincronización se aplica a los nuevos envíos. El correo actual sigue respaldando la recepción si HubSpot falla. Los fallos se registran como `[HubSpot]` en los logs del servidor y pueden conciliarse con el buzón. La integración de CRM no suscribe a los contactos a secuencias ni cambia su estado de marketing.
 
 ## Disclaimer
 

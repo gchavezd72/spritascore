@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { getAuditCopy } from "@/i18n/audit";
-import { AUDIT_IDS, auditMatch, type AuditId } from "@/lib/auditRoutes";
+import { AUDIT_IDS, auditMatch, isAuditCalculatorId, type AuditId } from "@/lib/auditRoutes";
 import { trackEvent } from "@/lib/analytics";
 import type { Locale } from "@/types/calculator";
 import { HoneypotField } from "@/components/HoneypotField";
@@ -68,7 +68,13 @@ export function AuditScopeForm({
         setError(copy.error);
         return;
       }
-      trackEvent("cta_clicked", { cta: "audit_scope_request", auditId, model: model ?? "direct" });
+      const calculator = isAuditCalculatorId(model) ? model : "direct";
+      trackEvent("cta_clicked", { cta: "audit_scope_request", auditId, model: calculator });
+      trackEvent("audit_scope_request", {
+        audit_id: auditId,
+        calculator,
+        locale,
+      });
       setDone(true);
     } catch {
       setError(copy.error);

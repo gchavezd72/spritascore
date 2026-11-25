@@ -103,6 +103,7 @@ export function Calc05({ copy, locale, initialSector }: Calc05Props) {
       calculator_id: "sector",
       sector: res.sector,
       score: mapped.score,
+      riskLevel: mapped.riskLevel,
       sprita_score: res.score,
       impact_bucket: impactBucket(res.impactBRL),
       currency: res.currency,

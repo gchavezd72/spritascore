@@ -98,7 +98,7 @@ export function ReportUnlockModal({ result, onUnlocked }: ReportUnlockModalProps
         }),
       });
       if (!res.ok) throw new Error("submit failed");
-      trackEvent("lead_submitted", { resultId: result.id, sector: lead.sector });
+      trackEvent("lead_submitted", { calculator: result.calculatorId, locale });
 
       const updated = { ...result, leadCaptured: true };
       saveResult(updated);

@@ -91,7 +91,7 @@ export function ExecutiveLeadForm({ locale, result, utm, onSuccess }: ExecutiveL
         body: JSON.stringify(payload),
       });
       if (!res.ok) throw new Error("submit failed");
-      trackExecutiveEvent("software_score_form_submit", payload);
+      trackExecutiveEvent("software_score_form_submit", { calculator: payload.calculatorId, locale });
       setDone(true);
       onSuccess?.();
     } catch {

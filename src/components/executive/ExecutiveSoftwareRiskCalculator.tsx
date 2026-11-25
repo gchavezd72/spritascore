@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import { EXECUTIVE_SECTIONS } from "@/data/executiveSoftwareRiskScore";
+import { EXECUTIVE_CARD, EXECUTIVE_SECTIONS } from "@/data/executiveSoftwareRiskScore";
 import type { ExecutiveAnswerId } from "@/data/executiveSoftwareRiskScore";
 import { calculateExecutiveRiskScore } from "@/lib/calculateExecutiveRiskScore";
 import { trackExecutiveEvent } from "@/lib/analytics";
@@ -72,12 +72,15 @@ export function ExecutiveSoftwareRiskCalculator({ locale, route }: ExecutiveSoft
   const progress = (answeredCount / questions.length) * 100;
   const sectionComplete = sectionQuestions.every((q) => answers[q.id]);
 
-  const handleAnswer = (questionId: string, value: ExecutiveAnswerId) => {
+  const markStarted = () => {
     if (!started) {
       setStarted(true);
-      trackExecutiveEvent("software_score_start", { route, timestamp: new Date().toISOString() });
+      trackExecutiveEvent("software_score_start", { calculator: EXECUTIVE_CARD.id, locale, route });
     }
+  };
 
+  const handleAnswer = (questionId: string, value: ExecutiveAnswerId) => {
+    markStarted();
     const question = questions.find((q) => q.id === questionId);
     setAnswers((prev) => ({ ...prev, [questionId]: value }));
 
@@ -90,6 +93,7 @@ export function ExecutiveSoftwareRiskCalculator({ locale, route }: ExecutiveSoft
 
   const goNext = () => {
     if (!sectionComplete) return;
+    markStarted();
     if (sectionIndex < EXECUTIVE_SECTIONS.length - 1) {
       setSectionIndex((i) => i + 1);
       return;
@@ -97,6 +101,10 @@ export function ExecutiveSoftwareRiskCalculator({ locale, route }: ExecutiveSoft
     const result = calculateExecutiveRiskScore(answers, locale);
     setCompleted(true);
     trackExecutiveEvent("software_score_completed", {
+      calculator: EXECUTIVE_CARD.id,
+      locale,
+      score: result.riskExposureScore,
+      riskLevel: result.level,
       riskExposureScore: result.riskExposureScore,
       maturityPercent: result.maturityPercent,
       level: result.level,
